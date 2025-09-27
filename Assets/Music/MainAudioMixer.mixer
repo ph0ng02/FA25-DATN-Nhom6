@@ -49,8 +49,10 @@ AudioMixerController:
   m_EnableSuspend: 1
   m_UpdateMode: 0
   m_ExposedParameters:
+  - guid: a23cd89c863c04207b46d4b17c82ff52
+    name: MasterVolume
   - guid: 841b7fba333734851a4e4d16c5053605
-    name: MyExposedParam
+    name: MusicVolume
   m_AudioMixerGroupViews:
   - guids:
     - 99985edd9d06d40d0905f3e86c86cb45
@@ -102,5 +104,5 @@ AudioMixerSnapshotController:
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: ef95c5d08eb3d4421aba5c1f42664d5a
   m_FloatValues:
-    841b7fba333734851a4e4d16c5053605: -0
+    841b7fba333734851a4e4d16c5053605: 0
   m_TransitionOverrides: {}
