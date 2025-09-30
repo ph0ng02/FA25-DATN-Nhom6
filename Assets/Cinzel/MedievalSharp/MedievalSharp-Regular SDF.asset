@@ -169,6 +169,7 @@ MonoBehaviour:
   m_SourceFontFilePath: 
   m_AtlasPopulationMode: 1
   InternalDynamicOS: 0
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 <<<<<<< HEAD
   m_GlyphTable:
@@ -428,6 +429,10 @@ MonoBehaviour:
   m_GlyphTable: []
   m_CharacterTable: []
 >>>>>>> 6127d8d7fd162c8d812f30721799a9cb5f689923
+=======
+  m_GlyphTable: []
+  m_CharacterTable: []
+>>>>>>> Stashed changes
   m_AtlasTextures:
   - {fileID: 2949820269167095865}
   m_AtlasTextureIndex: 0
