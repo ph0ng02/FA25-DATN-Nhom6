@@ -251,8 +251,10 @@ MonoBehaviour:
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
   m_RenderingLayersMask:
+    serializedVersion: 0
     m_Bits: 1
   m_ShadowRenderingLayersMask:
+    serializedVersion: 0
     m_Bits: 1
   m_Version: 4
   m_LightLayerMask: 1
@@ -2633,6 +2635,7 @@ MonoBehaviour:
   target: {fileID: 0}
   smoothCameraRotation: 12
   cullingLayer:
+    serializedVersion: 2
     m_Bits: 1
   lockCamera: 0
   rightOffset: 0
@@ -3464,6 +3467,7 @@ MonoBehaviour:
   extraGravity: -10
   limitFallVelocity: -15
   groundLayer:
+    serializedVersion: 2
     m_Bits: 1
   groundMinDistance: 0.25
   groundMaxDistance: 0.5
