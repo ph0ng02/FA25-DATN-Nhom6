@@ -79,6 +79,7 @@ namespace Invector.vCharacterController
             SprintInput();
             StrafeInput();
             JumpInput();
+            AttackInput();
         }
 
         public virtual void MoveInput()
@@ -143,6 +144,13 @@ namespace Invector.vCharacterController
         {
             if (Input.GetKeyDown(jumpInput) && JumpConditions())
                 cc.Jump();
+        }
+        protected virtual void AttackInput()
+        {
+            if (Input.GetMouseButtonDown(0)) // click chuột trái
+            {
+                cc.Attack();
+            }
         }
 
         #endregion       

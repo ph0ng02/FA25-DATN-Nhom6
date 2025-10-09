@@ -124,5 +124,12 @@ namespace Invector.vCharacterController
             else
                 animator.CrossFadeInFixedTime("JumpMove", .2f);
         }
+        public virtual void Attack()
+        {
+            if (animator == null) return;
+
+            // Gọi trigger "Attack" trong Animator
+            animator.SetTrigger("Attack");
+        }
     }
 }
