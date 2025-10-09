@@ -20,7 +20,7 @@ public class DoorController : MonoBehaviour
 
     void Update()
     {
-        Vector3 targetPos = isOpen ? openPos : closedPos;
-        door.position = Vector3.MoveTowards(door.position, targetPos, openSpeed * Time.deltaTime);
+        Vector3 target = isOpen ? openPos : closedPos;
+        door.position = Vector3.MoveTowards(door.position, target, openSpeed * Time.deltaTime);
     }
 }

@@ -4,13 +4,11 @@ public class LeverSwitch : MonoBehaviour
 {
     [Header("Lever Settings")]
     public KeyCode interactKey = KeyCode.E;
-    public Transform leverHandle; // phần cần xoay (nếu có)
-    public float rotationAngle = 45f; // góc xoay khi bật
+    public Transform leverHandle;
+    public float rotationAngle = 45f;
     public float rotateSpeed = 3f;
 
     [HideInInspector] public bool isActivated = false;
-
-    [Header("References")]
     public DoorSystemManager manager;
 
     private bool playerInRange = false;
@@ -34,7 +32,6 @@ public class LeverSwitch : MonoBehaviour
             manager.CheckLevers();
         }
 
-        // Cập nhật xoay mượt mà
         if (leverHandle != null)
         {
             Quaternion targetRot = isActivated ? activeRot : startRot;
