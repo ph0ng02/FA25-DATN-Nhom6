@@ -1168,8 +1168,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 267115369}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 746.6, y: 7.63, z: 519.87}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3199,6 +3199,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Door2
       objectReference: {fileID: 0}
+    - target: {fileID: 8321067519362931901, guid: 4d09acfefa4b0e44388ef8e7322b9a76, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8540284270324451307, guid: 4d09acfefa4b0e44388ef8e7322b9a76, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.858682
@@ -3209,7 +3213,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8540284270324451307, guid: 4d09acfefa4b0e44388ef8e7322b9a76, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.00002
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8540284270324451307, guid: 4d09acfefa4b0e44388ef8e7322b9a76, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3268,14 +3272,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 883356193}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4a68e323d3b7c414eaee8b20c8e1d66b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorController
   door: {fileID: 883356192}
-  openHeight: 3
-  openSpeed: 2
+  openHeight: 10
+  openSpeed: 5
   isOpen: 0
 --- !u!1001 &890332832
 PrefabInstance:
@@ -5329,10 +5333,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86581935f5ea4fb4eb223f61bba45922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorSystemManager
-  leverA: {fileID: 1412520208}
-  leverB: {fileID: 1736340198}
-  doorA: {fileID: 1967064443}
-  doorB: {fileID: 883356194}
+  door1: {fileID: 1967064441}
+  door2: {fileID: 883356192}
+  lever1: {fileID: 1412520208}
+  lever2: {fileID: 1736340198}
+  openHeight: 10
+  openSpeed: 5
+  openDirection: {x: 0, y: 1, z: 0}
 --- !u!4 &1291729944
 Transform:
   m_ObjectHideFlags: 0
@@ -5342,13 +5349,13 @@ Transform:
   m_GameObject: {fileID: 1291729942}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 195.90381, y: 0.00002, z: 450.96164}
+  m_LocalPosition: {x: 195.90381, y: 0, z: 450.96164}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1967064441}
   - {fileID: 1516108950}
   - {fileID: 1300315834}
+  - {fileID: 1967064441}
   - {fileID: 883356192}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5653,10 +5660,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LeverSwitch
   interactKey: 101
   leverHandle: {fileID: 510485906}
-  rotationAngle: 45
-  rotateSpeed: 3
+  interactDistance: 3
+  doorManager: {fileID: 1291729943}
   isActivated: 0
-  manager: {fileID: 1291729943}
 --- !u!1001 &1439027708
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7034,10 +7040,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LeverSwitch
   interactKey: 101
   leverHandle: {fileID: 538788208}
-  rotationAngle: 45
-  rotateSpeed: 3
+  interactDistance: 3
+  doorManager: {fileID: 1291729943}
   isActivated: 0
-  manager: {fileID: 1291729943}
 --- !u!1001 &1745544355
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7470,9 +7475,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1291729944}
     m_Modifications:
+    - target: {fileID: 7528863387815936871, guid: 4d09acfefa4b0e44388ef8e7322b9a76, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8321067519362931901, guid: 4d09acfefa4b0e44388ef8e7322b9a76, type: 3}
       propertyPath: m_Name
       value: Door1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8321067519362931901, guid: 4d09acfefa4b0e44388ef8e7322b9a76, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8321067519362931901, guid: 4d09acfefa4b0e44388ef8e7322b9a76, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8540284270324451307, guid: 4d09acfefa4b0e44388ef8e7322b9a76, type: 3}
       propertyPath: m_LocalScale.x
@@ -7484,7 +7501,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8540284270324451307, guid: 4d09acfefa4b0e44388ef8e7322b9a76, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.00002
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8540284270324451307, guid: 4d09acfefa4b0e44388ef8e7322b9a76, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7543,14 +7560,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1967064442}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4a68e323d3b7c414eaee8b20c8e1d66b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorController
   door: {fileID: 1967064441}
-  openHeight: 3
-  openSpeed: 2
+  openHeight: 10
+  openSpeed: 5
   isOpen: 0
 --- !u!1 &1967140294
 GameObject:
@@ -8217,7 +8234,7 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 267115372}
   - {fileID: 208567961}
   - {fileID: 1103528081}
   - {fileID: 1291729944}
+  - {fileID: 267115372}

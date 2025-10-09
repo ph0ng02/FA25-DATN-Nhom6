@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class DoorController : MonoBehaviour
@@ -14,6 +15,7 @@ public class DoorController : MonoBehaviour
 
     void Start()
     {
+        if (door == null) door = transform; // tự động lấy chính object đang gắn script
         closedPos = door.position;
         openPos = door.position + Vector3.up * openHeight;
     }

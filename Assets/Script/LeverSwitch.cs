@@ -5,49 +5,41 @@ public class LeverSwitch : MonoBehaviour
     [Header("Lever Settings")]
     public KeyCode interactKey = KeyCode.E;
     public Transform leverHandle;
-    public float rotationAngle = 45f;
-    public float rotateSpeed = 3f;
+    public float interactDistance = 3f;
+    public DoorSystemManager doorManager;
 
     [HideInInspector] public bool isActivated = false;
-    public DoorSystemManager manager;
+    private bool canActivate = true;
 
-    private bool playerInRange = false;
-    private Quaternion startRot;
-    private Quaternion activeRot;
+    private Transform player;
 
     void Start()
     {
-        if (leverHandle != null)
-        {
-            startRot = leverHandle.localRotation;
-            activeRot = leverHandle.localRotation * Quaternion.Euler(-rotationAngle, 0, 0);
-        }
+        player = GameObject.FindWithTag("Player").transform;
     }
 
     void Update()
     {
-        if (playerInRange && Input.GetKeyDown(interactKey))
+        if (Input.GetKeyDown(interactKey))
         {
-            isActivated = !isActivated;
-            manager.CheckLevers();
-        }
-
-        if (leverHandle != null)
-        {
-            Quaternion targetRot = isActivated ? activeRot : startRot;
-            leverHandle.localRotation = Quaternion.Lerp(leverHandle.localRotation, targetRot, Time.deltaTime * rotateSpeed);
+            float dist = Vector3.Distance(player.position, transform.position);
+            if (dist <= interactDistance && canActivate)
+            {
+                ActivateLever();
+            }
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    void ActivateLever()
     {
-        if (other.CompareTag("Player"))
-            playerInRange = true;
-    }
+        isActivated = true;
+        canActivate = false;
+        leverHandle.localRotation = Quaternion.Euler(45f, 0, 0);
+        Debug.Log($"{gameObject.name} activated!");
 
-    void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-            playerInRange = false;
+        if (doorManager != null)
+        {
+            doorManager.CheckLevers();
+        }
     }
 }
