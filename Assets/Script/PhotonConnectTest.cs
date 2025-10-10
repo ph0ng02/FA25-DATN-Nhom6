@@ -5,7 +5,7 @@ using Photon.Realtime;
 public class PhotonConnectTest : MonoBehaviourPunCallbacks
 {
     bool isConnected = false;
-    string roomName = "TestRoom";
+    string roomName = "EpicRoom";
 
     void Start()
     {
@@ -14,73 +14,62 @@ public class PhotonConnectTest : MonoBehaviourPunCallbacks
         if (!PhotonNetwork.IsConnected)
         {
             PhotonNetwork.ConnectUsingSettings();
-            Debug.Log("🔌 Connecting to Photon...");
-        }
-        else
-        {
-            isConnected = true;
-            PhotonNetwork.JoinLobby();
+            Debug.Log("🔌 Đang kết nối tới Photon...");
         }
     }
 
     public override void OnConnectedToMaster()
     {
-        Debug.Log("✅ Connected to Photon Master Server!");
+        Debug.Log("✅ Đã kết nối tới Photon Master Server!");
         isConnected = true;
+
         PhotonNetwork.JoinLobby();
     }
 
-    public void CreateRoom()
+    public override void OnJoinedLobby()
+    {
+        Debug.Log("🏠 Đã vào Lobby, có thể tạo hoặc join phòng!");
+    }
+
+    public void StartGame()
     {
         if (!isConnected)
         {
-            Debug.LogWarning("⚠️ Not connected yet! Wait for connection to Master Server...");
+            Debug.LogWarning("⚠️ Chưa kết nối tới Master Server!");
             return;
         }
 
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = 4;
 
-        PhotonNetwork.CreateRoom(roomName, options);
-        Debug.Log("🚀 Creating room: " + roomName);
-    }
-
-    public void JoinRoom()
-    {
-        if (!isConnected)
-        {
-            Debug.LogWarning("⚠️ Not connected yet! Wait for connection to Master Server...");
-            return;
-        }
-
-        PhotonNetwork.JoinRoom(roomName);
-        Debug.Log("🎮 Joining room: " + roomName);
+        PhotonNetwork.JoinOrCreateRoom(roomName, options, TypedLobby.Default);
+        Debug.Log("🚀 Đang tạo hoặc tham gia phòng: " + roomName);
     }
 
     public override void OnJoinedRoom()
     {
-        Debug.Log($"🎉 Joined room '{roomName}' successfully! Players in room: {PhotonNetwork.CurrentRoom.PlayerCount}");
+        Debug.Log($"🎉 Đã vào phòng '{roomName}' thành công! Người chơi: {PhotonNetwork.CurrentRoom.PlayerCount}");
 
         if (PhotonNetwork.IsMasterClient)
         {
-            Debug.Log("🗺️ Host detected — loading GameplayScene...");
+            Debug.Log("🗺️ Là chủ phòng — load GameplayScene...");
             PhotonNetwork.LoadLevel("GameplayScene");
         }
     }
 
-    public override void OnJoinRoomFailed(short returnCode, string message)
-    {
-        Debug.LogError($"❌ Join room failed: {message}");
-    }
-
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
-        Debug.LogError($"❌ Create room failed: {message}");
+        Debug.LogError($"❌ Tạo phòng thất bại: {message}");
+    }
+
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        Debug.LogError($"❌ Tham gia phòng thất bại: {message}");
     }
 
     public override void OnDisconnected(DisconnectCause cause)
     {
-        Debug.LogWarning($"⚡ Disconnected from Photon: {cause}");
+        Debug.LogWarning($"⚡ Mất kết nối tới Photon: {cause}");
         isConnected = false;
     }
 }
