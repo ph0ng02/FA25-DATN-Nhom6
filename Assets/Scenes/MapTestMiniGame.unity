@@ -383,6 +383,7 @@ GameObject:
   - component: {fileID: 856507505}
   - component: {fileID: 856507504}
   - component: {fileID: 856507503}
+  - component: {fileID: 856507506}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -457,13 +458,57 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 856507502}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.13052616, y: 0, z: 0, w: 0.9914449}
+  m_LocalPosition: {x: 0, y: 2, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Father: {fileID: 2012184302}
+  m_LocalEulerAnglesHint: {x: 15, y: 0, z: 0}
+--- !u!114 &856507506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856507502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalCameraData
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_TaaSettings:
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
+  m_Version: 2
 --- !u!1 &1099975713
 GameObject:
   m_ObjectHideFlags: 0
@@ -498,23 +543,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyCombo
   comboAttacks:
-  - animTrigger: Attack1
-    windUp: 0.2
-    activeTime: 0.25
-    recovery: 0.4
+  - animationName: EnemiesSlash1
     damage: 8
-    range: 2
-  - animTrigger: Attack2
-    windUp: 0.25
-    activeTime: 0.3
-    recovery: 0.4
+    windUpTime: 0
+    activeTime: 0.25
+    recoveryTime: 0
+  - animationName: EnemiesSlash2
     damage: 10
-    range: 2
-  comboResetTime: 1.2
+    windUpTime: 0
+    activeTime: 0.3
+    recoveryTime: 0
   hitboxTransform: {fileID: 1981313300}
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 0
   hitboxCollider: {fileID: 1981313298}
 --- !u!95 &1099975715
 Animator:
@@ -525,7 +564,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1099975713}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
+  m_Avatar: {fileID: 9000000, guid: 93ec2d5df8b55594ab604b8ddfd2521a, type: 3}
   m_Controller: {fileID: 9100000, guid: 0d601418a8ed2d1428aa357f064b9cb0, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
@@ -559,6 +598,10 @@ MonoBehaviour:
     m_Bits: 0
   useFieldOfView: 1
   viewAngle: 120
+  moveBool: IsMoving
+  speedFloat: MoveSpeed
+  attackTrigger: AttackTrigger
+  attackIndexInt: AttackIndex
 --- !u!54 &1099975717
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -694,6 +737,10 @@ PrefabInstance:
       value: 0.666
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 93ec2d5df8b55594ab604b8ddfd2521a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 93ec2d5df8b55594ab604b8ddfd2521a, type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 0d601418a8ed2d1428aa357f064b9cb0, type: 2}
@@ -789,6 +836,8 @@ GameObject:
   - component: {fileID: 2012184305}
   - component: {fileID: 2012184304}
   - component: {fileID: 2012184303}
+  - component: {fileID: 2012184307}
+  - component: {fileID: 2012184306}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -808,7 +857,8 @@ Transform:
   m_LocalPosition: {x: 150.748, y: 0.9971, z: 756.17365}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 856507505}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &2012184303
@@ -890,11 +940,51 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2012184301}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2012184306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2012184301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e9d9a7f58345404d8bcf10d07d67583, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  moveSpeed: 5
+  rotationSpeed: 10
+  gravity: -9.81
+  cameraTransform: {fileID: 856507505}
+--- !u!143 &2012184307
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2012184301}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 856507505}
   - {fileID: 131408457}
   - {fileID: 439683910}
   - {fileID: 2012184302}

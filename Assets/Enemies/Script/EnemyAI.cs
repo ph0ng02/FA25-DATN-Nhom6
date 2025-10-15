@@ -1,10 +1,12 @@
 using UnityEngine;
 using UnityEngine.AI;
-using System.Collections;
 
 [RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(EnemyCombo))]
 public class EnemyAI : MonoBehaviour
 {
+    [Header("Detection Settings")]
     public Transform player;
     public float detectionRadius = 12f;
     public float attackRange = 2.2f;
@@ -13,18 +15,26 @@ public class EnemyAI : MonoBehaviour
     public bool useFieldOfView = true;
     [Range(0, 360)] public float viewAngle = 120f;
 
-    NavMeshAgent agent;
-    Animator anim;
-    EnemyCombo combo;
+    [Header("Animation Parameters")]
+    public string moveBool = "IsMoving";
+    public string speedFloat = "MoveSpeed";
+    public string attackTrigger = "AttackTrigger";
+    public string attackIndexInt = "attackIndex"; // khớp đúng tên trong Animator
 
-    float lostTimer = 0f;
-    bool playerInSight = false;
+    private NavMeshAgent agent;
+    private Animator anim;
+    private EnemyCombo combo;
+
+    private float lostTimer = 0f;
+    private bool playerInSight = false;
 
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         combo = GetComponent<EnemyCombo>();
+
+        // Tự động tìm player
         if (player == null)
         {
             var p = GameObject.FindGameObjectWithTag("Player");
@@ -35,64 +45,73 @@ public class EnemyAI : MonoBehaviour
     void Update()
     {
         if (player == null) return;
+
         playerInSight = CheckPlayerInSight();
 
         if (playerInSight)
         {
             lostTimer = 0f;
             float dist = Vector3.Distance(transform.position, player.position);
-            if (dist > attackRange + 0.1f)
+
+            if (dist > attackRange + 0.15f)
             {
-                // chase
+                // 🟩 Di chuyển đến Player
                 agent.isStopped = false;
                 agent.SetDestination(player.position);
-                anim.SetBool("IsMoving", true);
-                // cancel any ongoing combo if you want or let combo finish
+
+                anim.SetBool(moveBool, true);
+                anim.SetFloat(speedFloat, agent.velocity.magnitude);
             }
             else
             {
-                // in attack range
+                // 🟥 Trong tầm tấn công
                 agent.isStopped = true;
-                anim.SetBool("IsMoving", false);
-                // Face player smoothly
-                Vector3 dir = (player.position - transform.position);
+                anim.SetBool(moveBool, false);
+                anim.SetFloat(speedFloat, 0);
+
+                // Quay mặt về phía Player
+                Vector3 dir = player.position - transform.position;
                 dir.y = 0;
                 if (dir.sqrMagnitude > 0.01f)
                 {
-                    transform.rotation = Quaternion.Slerp(transform.rotation,
-                        Quaternion.LookRotation(dir.normalized),
-                        Time.deltaTime * 8f);
+                    Quaternion lookRot = Quaternion.LookRotation(dir.normalized);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 8f);
                 }
-                // start combo if not already
+
+                // Tấn công nếu chưa trong combo
                 if (!combo.IsInCombo)
                 {
-                    combo.StartComboSequence(player);
+                    int attackIndex = combo.StartComboSequence(player);
+
+                    // Đảm bảo attackIndex nằm trong 1–2
+                    attackIndex = Mathf.Clamp(attackIndex, 1, 2);
+
+                    anim.SetInteger(attackIndexInt, attackIndex);
+                    anim.SetTrigger(attackTrigger);
                 }
             }
         }
         else
         {
-            // lost sight
+            // 🟦 Mất tầm nhìn
             lostTimer += Time.deltaTime;
             if (lostTimer < loseSightTime)
             {
-                // still chase to last known position (optional)
                 agent.isStopped = false;
                 agent.SetDestination(player.position);
-                anim.SetBool("IsMoving", true);
+                anim.SetBool(moveBool, true);
+                anim.SetFloat(speedFloat, agent.velocity.magnitude);
             }
             else
             {
-                // go idle / patrol (not implemented) 
                 agent.isStopped = true;
-                anim.SetBool("IsMoving", false);
+                anim.SetBool(moveBool, false);
+                anim.SetFloat(speedFloat, 0);
             }
         }
-
-        // update animator speed param (optional)
-        anim.SetFloat("MoveSpeed", agent.velocity.magnitude);
     }
 
+    // 🔹 Kiểm tra có thấy Player không
     bool CheckPlayerInSight()
     {
         Vector3 toPlayer = player.position - transform.position;
@@ -105,28 +124,26 @@ public class EnemyAI : MonoBehaviour
             if (angle > viewAngle * 0.5f) return false;
         }
 
-        // raycast to check obstacles
+        // Raycast kiểm tra vật cản
         Vector3 origin = transform.position + Vector3.up * 1.2f;
         Vector3 dir = (player.position + Vector3.up * 1.0f) - origin;
-        RaycastHit hit;
-        if (Physics.Raycast(origin, dir.normalized, out hit, detectionRadius))
+        if (Physics.Raycast(origin, dir.normalized, out RaycastHit hit, detectionRadius, ~obstaclesMask))
         {
-            if (hit.collider.transform == player) return true;
-            // optionally check if hit something tagged "Player"
-            if (hit.collider.CompareTag("Player")) return true;
-            return false;
+            if (hit.collider.CompareTag("Player"))
+                return true;
         }
 
         return false;
     }
 
-    // debug drawing
+    // 🔹 Vẽ Gizmos trong Scene
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, detectionRadius);
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
+
         if (useFieldOfView)
         {
             Vector3 left = Quaternion.Euler(0, -viewAngle / 2f, 0) * transform.forward;
