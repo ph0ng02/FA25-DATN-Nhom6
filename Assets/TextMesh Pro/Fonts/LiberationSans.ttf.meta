@@ -1,7 +1,11 @@
 fileFormatVersion: 2
 guid: e3265ab4bf004d28a9537516768c1c75
 timeCreated: 1484171297
+<<<<<<< HEAD
 licenseType: Pro
+=======
+licenseType: Store
+>>>>>>> feature/Team06-0030
 TrueTypeFontImporter:
   serializedVersion: 2
   fontSize: 16
@@ -17,3 +21,13 @@ TrueTypeFontImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+<<<<<<< HEAD
+=======
+AssetOrigin:
+  serializedVersion: 1
+  productId: 275780
+  packageName: Free Healing Item (including C# Script)
+  packageVersion: 1.0
+  assetPath: Assets/TextMesh Pro/Fonts/LiberationSans.ttf
+  uploadId: 644048
+>>>>>>> feature/Team06-0030
