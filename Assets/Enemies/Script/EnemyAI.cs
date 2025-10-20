@@ -15,18 +15,20 @@ public class EnemyAI : MonoBehaviour
     public bool useFieldOfView = true;
     [Range(0, 360)] public float viewAngle = 120f;
 
-    [Header("Animation Parameters")]
+    [Header("Animation Settings")]
     public string moveBool = "IsMoving";
     public string speedFloat = "MoveSpeed";
     public string attackTrigger = "AttackTrigger";
-    public string attackIndexInt = "attackIndex"; // khớp đúng tên trong Animator
+    public string attackIndexInt = "AttackIndex";
 
     private NavMeshAgent agent;
     private Animator anim;
     private EnemyCombo combo;
-
     private float lostTimer = 0f;
     private bool playerInSight = false;
+
+    // Dùng để lưu vận tốc mượt
+    private float smoothSpeed;
 
     void Awake()
     {
@@ -34,7 +36,6 @@ public class EnemyAI : MonoBehaviour
         anim = GetComponent<Animator>();
         combo = GetComponent<EnemyCombo>();
 
-        // Tự động tìm player
         if (player == null)
         {
             var p = GameObject.FindGameObjectWithTag("Player");
@@ -51,41 +52,31 @@ public class EnemyAI : MonoBehaviour
         if (playerInSight)
         {
             lostTimer = 0f;
-            float dist = Vector3.Distance(transform.position, player.position);
+            float distance = Vector3.Distance(transform.position, player.position);
 
-            if (dist > attackRange + 0.15f)
+            if (distance > attackRange)
             {
-                // 🟩 Di chuyển đến Player
+                // --- DI CHUYỂN ---
                 agent.isStopped = false;
                 agent.SetDestination(player.position);
 
-                anim.SetBool(moveBool, true);
-                anim.SetFloat(speedFloat, agent.velocity.magnitude);
+                // Blend tốc độ để tránh giật
+                smoothSpeed = Mathf.Lerp(smoothSpeed, agent.velocity.magnitude, Time.deltaTime * 8f);
+                anim.SetFloat(speedFloat, smoothSpeed);
+                anim.SetBool(moveBool, smoothSpeed > 0.1f);
             }
             else
             {
-                // 🟥 Trong tầm tấn công
+                // --- TẤN CÔNG ---
                 agent.isStopped = true;
                 anim.SetBool(moveBool, false);
                 anim.SetFloat(speedFloat, 0);
 
-                // Quay mặt về phía Player
-                Vector3 dir = player.position - transform.position;
-                dir.y = 0;
-                if (dir.sqrMagnitude > 0.01f)
-                {
-                    Quaternion lookRot = Quaternion.LookRotation(dir.normalized);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 8f);
-                }
+                FacePlayer();
 
-                // Tấn công nếu chưa trong combo
                 if (!combo.IsInCombo)
                 {
                     int attackIndex = combo.StartComboSequence(player);
-
-                    // Đảm bảo attackIndex nằm trong 1–2
-                    attackIndex = Mathf.Clamp(attackIndex, 1, 2);
-
                     anim.SetInteger(attackIndexInt, attackIndex);
                     anim.SetTrigger(attackTrigger);
                 }
@@ -93,25 +84,36 @@ public class EnemyAI : MonoBehaviour
         }
         else
         {
-            // 🟦 Mất tầm nhìn
+            // --- MẤT TẦM NHÌN ---
             lostTimer += Time.deltaTime;
             if (lostTimer < loseSightTime)
             {
                 agent.isStopped = false;
                 agent.SetDestination(player.position);
-                anim.SetBool(moveBool, true);
-                anim.SetFloat(speedFloat, agent.velocity.magnitude);
             }
             else
             {
                 agent.isStopped = true;
-                anim.SetBool(moveBool, false);
-                anim.SetFloat(speedFloat, 0);
             }
+
+            // Blend Idle
+            smoothSpeed = Mathf.Lerp(smoothSpeed, agent.velocity.magnitude, Time.deltaTime * 8f);
+            anim.SetFloat(speedFloat, smoothSpeed);
+            anim.SetBool(moveBool, smoothSpeed > 0.1f);
         }
     }
 
-    // 🔹 Kiểm tra có thấy Player không
+    void FacePlayer()
+    {
+        Vector3 dir = player.position - transform.position;
+        dir.y = 0;
+        if (dir.sqrMagnitude > 0.01f)
+        {
+            Quaternion lookRot = Quaternion.LookRotation(dir);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 8f);
+        }
+    }
+
     bool CheckPlayerInSight()
     {
         Vector3 toPlayer = player.position - transform.position;
@@ -124,19 +126,17 @@ public class EnemyAI : MonoBehaviour
             if (angle > viewAngle * 0.5f) return false;
         }
 
-        // Raycast kiểm tra vật cản
         Vector3 origin = transform.position + Vector3.up * 1.2f;
-        Vector3 dir = (player.position + Vector3.up * 1.0f) - origin;
-        if (Physics.Raycast(origin, dir.normalized, out RaycastHit hit, detectionRadius, ~obstaclesMask))
+        Vector3 dir = (player.position + Vector3.up * 1f) - origin;
+        if (Physics.Raycast(origin, dir.normalized, out RaycastHit hit, detectionRadius))
         {
-            if (hit.collider.CompareTag("Player"))
+            if (hit.collider.transform == player || hit.collider.CompareTag("Player"))
                 return true;
         }
 
         return false;
     }
 
-    // 🔹 Vẽ Gizmos trong Scene
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
