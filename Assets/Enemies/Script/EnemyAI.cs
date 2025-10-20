@@ -8,10 +8,9 @@ public class EnemyAI : MonoBehaviour
 {
     [Header("Detection Settings")]
     public Transform player;
-    public float detectionRadius = 12f;
-    public float attackRange = 2.2f;
+    public float detectionRadius = 10f;
+    public float attackRange = 2.3f;
     public float loseSightTime = 3f;
-    public LayerMask obstaclesMask;
     public bool useFieldOfView = true;
     [Range(0, 360)] public float viewAngle = 120f;
 
@@ -26,9 +25,6 @@ public class EnemyAI : MonoBehaviour
     private EnemyCombo combo;
     private float lostTimer = 0f;
     private bool playerInSight = false;
-
-    // Dùng để lưu vận tốc mượt
-    private float smoothSpeed;
 
     void Awake()
     {
@@ -52,27 +48,29 @@ public class EnemyAI : MonoBehaviour
         if (playerInSight)
         {
             lostTimer = 0f;
-            float distance = Vector3.Distance(transform.position, player.position);
+            float dist = Vector3.Distance(transform.position, player.position);
 
-            if (distance > attackRange)
+            if (dist > attackRange)
             {
-                // --- DI CHUYỂN ---
+                // Chase player
                 agent.isStopped = false;
                 agent.SetDestination(player.position);
-
-                // Blend tốc độ để tránh giật
-                smoothSpeed = Mathf.Lerp(smoothSpeed, agent.velocity.magnitude, Time.deltaTime * 8f);
-                anim.SetFloat(speedFloat, smoothSpeed);
-                anim.SetBool(moveBool, smoothSpeed > 0.1f);
+                anim.SetBool(moveBool, true);
             }
             else
             {
-                // --- TẤN CÔNG ---
+                // Attack player
                 agent.isStopped = true;
                 anim.SetBool(moveBool, false);
-                anim.SetFloat(speedFloat, 0);
 
-                FacePlayer();
+                Vector3 dir = (player.position - transform.position);
+                dir.y = 0;
+                if (dir.sqrMagnitude > 0.01f)
+                {
+                    transform.rotation = Quaternion.Slerp(transform.rotation,
+                        Quaternion.LookRotation(dir.normalized),
+                        Time.deltaTime * 10f);
+                }
 
                 if (!combo.IsInCombo)
                 {
@@ -84,34 +82,21 @@ public class EnemyAI : MonoBehaviour
         }
         else
         {
-            // --- MẤT TẦM NHÌN ---
             lostTimer += Time.deltaTime;
             if (lostTimer < loseSightTime)
             {
                 agent.isStopped = false;
                 agent.SetDestination(player.position);
+                anim.SetBool(moveBool, true);
             }
             else
             {
                 agent.isStopped = true;
+                anim.SetBool(moveBool, false);
             }
-
-            // Blend Idle
-            smoothSpeed = Mathf.Lerp(smoothSpeed, agent.velocity.magnitude, Time.deltaTime * 8f);
-            anim.SetFloat(speedFloat, smoothSpeed);
-            anim.SetBool(moveBool, smoothSpeed > 0.1f);
         }
-    }
 
-    void FacePlayer()
-    {
-        Vector3 dir = player.position - transform.position;
-        dir.y = 0;
-        if (dir.sqrMagnitude > 0.01f)
-        {
-            Quaternion lookRot = Quaternion.LookRotation(dir);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 8f);
-        }
+        anim.SetFloat(speedFloat, agent.velocity.magnitude);
     }
 
     bool CheckPlayerInSight()
@@ -123,11 +108,11 @@ public class EnemyAI : MonoBehaviour
         if (useFieldOfView)
         {
             float angle = Vector3.Angle(transform.forward, toPlayer);
-            if (angle > viewAngle * 0.5f) return false;
+            if (angle > viewAngle / 2f) return false;
         }
 
         Vector3 origin = transform.position + Vector3.up * 1.2f;
-        Vector3 dir = (player.position + Vector3.up * 1f) - origin;
+        Vector3 dir = (player.position + Vector3.up * 1.0f) - origin;
         if (Physics.Raycast(origin, dir.normalized, out RaycastHit hit, detectionRadius))
         {
             if (hit.collider.transform == player || hit.collider.CompareTag("Player"))
@@ -135,22 +120,5 @@ public class EnemyAI : MonoBehaviour
         }
 
         return false;
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, detectionRadius);
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
-
-        if (useFieldOfView)
-        {
-            Vector3 left = Quaternion.Euler(0, -viewAngle / 2f, 0) * transform.forward;
-            Vector3 right = Quaternion.Euler(0, viewAngle / 2f, 0) * transform.forward;
-            Gizmos.color = Color.cyan;
-            Gizmos.DrawLine(transform.position, transform.position + left * detectionRadius);
-            Gizmos.DrawLine(transform.position, transform.position + right * detectionRadius);
-        }
     }
 }
