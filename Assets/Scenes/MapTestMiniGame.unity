@@ -543,18 +543,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyCombo
   comboAttacks:
-  - animationName: EnemiesSlash1
-    damage: 8
-    windUpTime: 0
+  - windUp: 0.2
     activeTime: 0.25
-    recoveryTime: 0
-  - animationName: EnemiesSlash2
-    damage: 10
-    windUpTime: 0
+    recovery: 0.4
+    damage: 8
+  - windUp: 0.25
     activeTime: 0.3
-    recoveryTime: 0
-  hitboxTransform: {fileID: 1981313300}
-  hitboxCollider: {fileID: 1981313298}
+    recovery: 0.4
+    damage: 10
 --- !u!95 &1099975715
 Animator:
   serializedVersion: 7
@@ -565,7 +561,7 @@ Animator:
   m_GameObject: {fileID: 1099975713}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 93ec2d5df8b55594ab604b8ddfd2521a, type: 3}
-  m_Controller: {fileID: 9100000, guid: 0d601418a8ed2d1428aa357f064b9cb0, type: 2}
+  m_Controller: {fileID: 9100000, guid: 712b3e3fd72705d4bb1495677268f120, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -593,9 +589,6 @@ MonoBehaviour:
   detectionRadius: 12
   attackRange: 2.2
   loseSightTime: 3
-  obstaclesMask:
-    serializedVersion: 2
-    m_Bits: 0
   useFieldOfView: 1
   viewAngle: 120
   moveBool: IsMoving
@@ -743,7 +736,7 @@ PrefabInstance:
     - target: {fileID: 5866666021909216657, guid: 93ec2d5df8b55594ab604b8ddfd2521a, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 0d601418a8ed2d1428aa357f064b9cb0, type: 2}
+      objectReference: {fileID: 9100000, guid: 712b3e3fd72705d4bb1495677268f120, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
