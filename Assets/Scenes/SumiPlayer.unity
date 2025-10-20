@@ -222,12 +222,12 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 186059097611452724, guid: c811635a159374b498568aa446e96c07, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 186059097611452724, guid: c811635a159374b498568aa446e96c07, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: c0cc5b9f22e704c47a1db9a14b98cd08, type: 2}
+      objectReference: {fileID: 9100000, guid: cbd1db45c75e5b948a5befe9ecb80421, type: 2}
     - target: {fileID: 868063446033579352, guid: c811635a159374b498568aa446e96c07, type: 3}
       propertyPath: m_Name
       value: Player
@@ -246,7 +246,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5804245487667503552, guid: c811635a159374b498568aa446e96c07, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.076
+      value: 0.151
       objectReference: {fileID: 0}
     - target: {fileID: 5804245487667503552, guid: c811635a159374b498568aa446e96c07, type: 3}
       propertyPath: m_LocalPosition.z
@@ -319,6 +319,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 868063446033579352, guid: c811635a159374b498568aa446e96c07, type: 3}
       insertIndex: -1
       addedObject: {fileID: 731780138}
+    - targetCorrespondingSourceObject: {fileID: 868063446033579352, guid: c811635a159374b498568aa446e96c07, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 731780139}
+    - targetCorrespondingSourceObject: {fileID: 868063446033579352, guid: c811635a159374b498568aa446e96c07, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 731780143}
+    - targetCorrespondingSourceObject: {fileID: 868063446033579352, guid: c811635a159374b498568aa446e96c07, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 731780144}
   m_SourcePrefab: {fileID: 100100000, guid: c811635a159374b498568aa446e96c07, type: 3}
 --- !u!1 &36845390
 GameObject:
@@ -744,6 +753,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bacab4eb19cc1e6428cdac466c4ae88f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Demo
+  walkSpeed: 2
+  runSpeed: 4
+  sprintSpeed: 6
+  gravity: -9.81
+  comboResetTime: 1
+  animator: {fileID: 0}
 --- !u!4 &731780131 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5804245487667503552, guid: c811635a159374b498568aa446e96c07, type: 3}
@@ -826,16 +841,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ef0728535dd5654aae2ae2c44a126c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController1
-  walkSpeed: 2
-  runSpeed: 5
-  sprintSpeed: 8
-  gravity: -9.81
-  jumpHeight: 1.5
-  animator: {fileID: 0}
-  controller: {fileID: 0}
-  velocity: {x: 0, y: 0, z: 0}
-  isGrounded: 0
-  speed: 0
 --- !u!114 &731780138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -848,6 +853,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b16a5ff84288e534b974b5cf4e405270, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimatorController
+  animator: {fileID: 0}
+--- !u!114 &731780139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 731780123}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce533944eb31e20418965a5dfa00f090, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement1
+  walkSpeed: 2
+  runSpeed: 4
+  sprintSpeed: 6
+  gravity: -9.81
+  jumpHeight: 1.5
+  animator: {fileID: 0}
+--- !u!114 &731780143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 731780123}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb48b40c7d8847641ae5a4d8ae4ee319, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
+  animator: {fileID: 0}
+  comboResetTime: 1
+--- !u!114 &731780144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 731780123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 057de811c8282dc4b9f354a50866ae2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Demo
+  walkSpeed: 2
+  runSpeed: 4
+  sprintSpeed: 6
+  gravity: -9.81
+  comboResetTime: 1
   animator: {fileID: 0}
 --- !u!1 &1046352354 stripped
 GameObject:
