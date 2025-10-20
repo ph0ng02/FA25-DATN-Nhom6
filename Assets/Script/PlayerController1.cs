@@ -2,7 +2,7 @@
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerController : MonoBehaviour
+public class PlayerController1 : MonoBehaviour
 {
     [Header("Cấu hình di chuyển")]
     public float walkSpeed = 2f;       // tốc độ đi bộ
@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Thành phần")]
     public Animator animator;          // Animator của nhân vật
-    public Transform cameraTransform;  // Gán Main Camera vào đây
+    public Transform cameraTransform;  // Gán Main Camera vào đây (hoặc tự động tìm)
 
     private CharacterController controller;
     private InputSystem_Actions inputActions;
@@ -28,6 +28,21 @@ public class PlayerController : MonoBehaviour
     {
         inputActions = new InputSystem_Actions();
         controller = GetComponent<CharacterController>();
+
+        // 🔧 Nếu quên gán camera, tự động tìm Main Camera
+        if (cameraTransform == null && Camera.main != null)
+        {
+            cameraTransform = Camera.main.transform;
+            Debug.Log("[PlayerController] Đã tự động gán Main Camera vào cameraTransform.");
+        }
+
+        // 🔧 Nếu quên gán Animator, tự động tìm trong object con
+        if (animator == null)
+        {
+            animator = GetComponentInChildren<Animator>();
+            if (animator == null)
+                Debug.LogWarning("[PlayerController] Chưa tìm thấy Animator! Hãy gán thủ công trong Inspector.");
+        }
     }
 
     void OnEnable()
@@ -57,11 +72,15 @@ public class PlayerController : MonoBehaviour
 
     void Move()
     {
+        // Nếu chưa có cameraTransform thì không xoay theo camera
         Vector3 direction = new Vector3(moveInput.x, 0, moveInput.y).normalized;
-
         if (direction.magnitude >= 0.1f)
         {
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cameraTransform.eulerAngles.y;
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+
+            if (cameraTransform != null)
+                targetAngle += cameraTransform.eulerAngles.y;
+
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, rotationSmoothTime);
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
@@ -96,7 +115,8 @@ public class PlayerController : MonoBehaviour
 
     void UpdateAnimator()
     {
-        // ⚙️ Đặt đúng tên Parameters trong Animator
+        if (animator == null) return;
+
         animator.SetFloat("Speed", speed);
         animator.SetBool("IsSprinting", isSprinting);
         animator.SetBool("IsGrounded", controller.isGrounded);
