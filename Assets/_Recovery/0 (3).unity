@@ -242,15 +242,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5804245487667503552, guid: c811635a159374b498568aa446e96c07, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 14.448168
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5804245487667503552, guid: c811635a159374b498568aa446e96c07, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.116
+      value: 0.277
       objectReference: {fileID: 0}
     - target: {fileID: 5804245487667503552, guid: c811635a159374b498568aa446e96c07, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.6899786
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5804245487667503552, guid: c811635a159374b498568aa446e96c07, type: 3}
       propertyPath: m_LocalRotation.w
@@ -280,6 +280,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5804245487667503552, guid: c811635a159374b498568aa446e96c07, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8197566778225645892, guid: c811635a159374b498568aa446e96c07, type: 3}
       propertyPath: m_Height
       value: 1.8
@@ -287,6 +291,10 @@ PrefabInstance:
     - target: {fileID: 8197566778225645892, guid: c811635a159374b498568aa446e96c07, type: 3}
       propertyPath: m_Radius
       value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8197566778225645892, guid: c811635a159374b498568aa446e96c07, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8197566778225645892, guid: c811635a159374b498568aa446e96c07, type: 3}
       propertyPath: m_Center.y
@@ -816,13 +824,13 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 1.8
-  m_Radius: 0.4
+  m_Height: 2
+  m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.9, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &731780137
 MonoBehaviour:
   m_ObjectHideFlags: 0
