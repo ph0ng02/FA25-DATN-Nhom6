@@ -1462,7 +1462,6 @@ GameObject:
   - component: {fileID: 759193595}
   - component: {fileID: 759193594}
   - component: {fileID: 759193601}
-  - component: {fileID: 759193600}
   m_Layer: 0
   m_Name: vBasicController_Maria WProp J J Ong
   m_TagString: Player
@@ -1631,24 +1630,6 @@ Transform:
   - {fileID: 1577530681}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &759193600
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 759193593}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 057de811c8282dc4b9f354a50866ae2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Demo
-  walkSpeed: 2
-  runSpeed: 4
-  sprintSpeed: 6
-  gravity: -9.81
-  comboResetTime: 1
-  animator: {fileID: 0}
 --- !u!143 &759193601
 CharacterController:
   m_ObjectHideFlags: 0
