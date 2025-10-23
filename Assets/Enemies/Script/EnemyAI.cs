@@ -1,156 +1,132 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(NavMeshAgent))]
-[RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(EnemyCombo))]
 public class EnemyAI : MonoBehaviour
 {
-    [Header("Detection Settings")]
+    [Header("References")]
     public Transform player;
-    public float detectionRadius = 12f;
-    public float attackRange = 2.2f;
-    public float loseSightTime = 3f;
-    public LayerMask obstaclesMask;
-    public bool useFieldOfView = true;
-    [Range(0, 360)] public float viewAngle = 120f;
-
-    [Header("Animation Parameters")]
-    public string moveBool = "IsMoving";
-    public string speedFloat = "MoveSpeed";
-    public string attackTrigger = "AttackTrigger";
-    public string attackIndexInt = "attackIndex"; // khớp đúng tên trong Animator
-
+    public Animator animator;
     private NavMeshAgent agent;
-    private Animator anim;
-    private EnemyCombo combo;
 
-    private float lostTimer = 0f;
-    private bool playerInSight = false;
+    [Header("Stats")]
+    public float attackRange = 2f;
+    public float attackCooldown = 1.5f;
+    private float lastAttackTime = 0f;
 
-    void Awake()
+    [Header("Combat")]
+    public int damage = 10;
+    public float health = 100f;
+    private bool isDead = false;
+
+    [Header("Vision")]
+    public bool playerInVision = false; // player đang ở trong vùng tầm nhìn
+
+    void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        anim = GetComponent<Animator>();
-        combo = GetComponent<EnemyCombo>();
 
-        // Tự động tìm player
+        // Tự tìm player nếu chưa gán
         if (player == null)
-        {
-            var p = GameObject.FindGameObjectWithTag("Player");
-            if (p) player = p.transform;
-        }
+            player = GameObject.FindGameObjectWithTag("Player")?.transform;
     }
 
     void Update()
     {
-        if (player == null) return;
+        if (isDead || player == null) return;
 
-        playerInSight = CheckPlayerInSight();
-
-        if (playerInSight)
+        // Nếu player chưa vào vùng tầm nhìn thì đứng yên
+        if (!playerInVision)
         {
-            lostTimer = 0f;
-            float dist = Vector3.Distance(transform.position, player.position);
+            agent.isStopped = true;
+            animator.SetBool("isMoving", false);
+            return;
+        }
 
-            if (dist > attackRange + 0.15f)
+        float distance = Vector3.Distance(transform.position, player.position);
+
+        // Nếu đang bị đánh hoặc đang chết thì không di chuyển
+        AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
+        if (state.IsName("Hit") || state.IsName("Die")) return;
+
+        // Tấn công nếu trong tầm
+        if (distance <= attackRange)
+        {
+            agent.isStopped = true;
+            animator.SetBool("isMoving", false);
+
+            if (Time.time - lastAttackTime >= attackCooldown)
             {
-                // 🟩 Di chuyển đến Player
-                agent.isStopped = false;
-                agent.SetDestination(player.position);
-
-                anim.SetBool(moveBool, true);
-                anim.SetFloat(speedFloat, agent.velocity.magnitude);
-            }
-            else
-            {
-                // 🟥 Trong tầm tấn công
-                agent.isStopped = true;
-                anim.SetBool(moveBool, false);
-                anim.SetFloat(speedFloat, 0);
-
-                // Quay mặt về phía Player
-                Vector3 dir = player.position - transform.position;
-                dir.y = 0;
-                if (dir.sqrMagnitude > 0.01f)
-                {
-                    Quaternion lookRot = Quaternion.LookRotation(dir.normalized);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 8f);
-                }
-
-                // Tấn công nếu chưa trong combo
-                if (!combo.IsInCombo)
-                {
-                    int attackIndex = combo.StartComboSequence(player);
-
-                    // Đảm bảo attackIndex nằm trong 1–2
-                    attackIndex = Mathf.Clamp(attackIndex, 1, 2);
-
-                    anim.SetInteger(attackIndexInt, attackIndex);
-                    anim.SetTrigger(attackTrigger);
-                }
+                animator.SetTrigger("attack");
+                lastAttackTime = Time.time;
             }
         }
+        // Nếu player ở trong vùng tầm nhìn (trigger) nhưng chưa đủ gần để đánh
         else
         {
-            // 🟦 Mất tầm nhìn
-            lostTimer += Time.deltaTime;
-            if (lostTimer < loseSightTime)
+            agent.isStopped = false;
+            agent.SetDestination(player.position);
+            animator.SetBool("isMoving", true);
+        }
+    }
+
+    // 🩸 Khi enemy bị trúng đòn
+    public void TakeDamage(float damage)
+    {
+        if (isDead) return;
+
+        health -= damage;
+        animator.SetTrigger("hit");
+
+        if (health <= 0f)
+        {
+            Die();
+        }
+    }
+
+    // ☠️ Khi enemy chết
+    private void Die()
+    {
+        if (isDead) return;
+        isDead = true;
+
+        animator.SetTrigger("die");
+        animator.SetBool("isMoving", false);
+        agent.isStopped = true;
+
+        // Xóa enemy sau 3 giây
+        Destroy(gameObject, 3f);
+    }
+
+    // 🔪 Gọi từ Animation Event trong clip Attack
+    public void DealDamage()
+    {
+        if (isDead) return;
+
+        if (Vector3.Distance(transform.position, player.position) <= attackRange)
+        {
+            PlayerHealth ph = player.GetComponent<PlayerHealth>();
+            if (ph != null)
             {
-                agent.isStopped = false;
-                agent.SetDestination(player.position);
-                anim.SetBool(moveBool, true);
-                anim.SetFloat(speedFloat, agent.velocity.magnitude);
-            }
-            else
-            {
-                agent.isStopped = true;
-                anim.SetBool(moveBool, false);
-                anim.SetFloat(speedFloat, 0);
+                ph.TakeDamage(damage);
             }
         }
     }
 
-    // 🔹 Kiểm tra có thấy Player không
-    bool CheckPlayerInSight()
+    // 👀 Khi Player đi vào vùng tầm nhìn (Sphere Collider Trigger)
+    private void OnTriggerEnter(Collider other)
     {
-        Vector3 toPlayer = player.position - transform.position;
-        float dist = toPlayer.magnitude;
-        if (dist > detectionRadius) return false;
-
-        if (useFieldOfView)
+        if (other.CompareTag("Player"))
         {
-            float angle = Vector3.Angle(transform.forward, toPlayer);
-            if (angle > viewAngle * 0.5f) return false;
+            playerInVision = true;
         }
-
-        // Raycast kiểm tra vật cản
-        Vector3 origin = transform.position + Vector3.up * 1.2f;
-        Vector3 dir = (player.position + Vector3.up * 1.0f) - origin;
-        if (Physics.Raycast(origin, dir.normalized, out RaycastHit hit, detectionRadius, ~obstaclesMask))
-        {
-            if (hit.collider.CompareTag("Player"))
-                return true;
-        }
-
-        return false;
     }
 
-    // 🔹 Vẽ Gizmos trong Scene
-    void OnDrawGizmosSelected()
+    // 👀 Khi Player rời khỏi vùng tầm nhìn
+    private void OnTriggerExit(Collider other)
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, detectionRadius);
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
-
-        if (useFieldOfView)
+        if (other.CompareTag("Player"))
         {
-            Vector3 left = Quaternion.Euler(0, -viewAngle / 2f, 0) * transform.forward;
-            Vector3 right = Quaternion.Euler(0, viewAngle / 2f, 0) * transform.forward;
-            Gizmos.color = Color.cyan;
-            Gizmos.DrawLine(transform.position, transform.position + left * detectionRadius);
-            Gizmos.DrawLine(transform.position, transform.position + right * detectionRadius);
+            playerInVision = false;
         }
     }
 }
