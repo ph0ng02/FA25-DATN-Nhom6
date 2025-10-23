@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class Demo2 : MonoBehaviour
+public class Demo22 : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float walkSpeed = 2f;
