@@ -9,7 +9,6 @@ public class EnemyAI : MonoBehaviour
     private NavMeshAgent agent;
 
     [Header("Stats")]
-    public float detectionRange = 10f;
     public float attackRange = 2f;
     public float attackCooldown = 1.5f;
     private float lastAttackTime = 0f;
@@ -17,27 +16,39 @@ public class EnemyAI : MonoBehaviour
     [Header("Combat")]
     public int damage = 10;
     public float health = 100f;
-
     private bool isDead = false;
+
+    [Header("Vision")]
+    public bool playerInVision = false; // player đang ở trong vùng tầm nhìn
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+
+        // Tự tìm player nếu chưa gán
         if (player == null)
-            player = GameObject.FindGameObjectWithTag("Player").transform;
+            player = GameObject.FindGameObjectWithTag("Player")?.transform;
     }
 
     void Update()
     {
         if (isDead || player == null) return;
 
+        // Nếu player chưa vào vùng tầm nhìn thì đứng yên
+        if (!playerInVision)
+        {
+            agent.isStopped = true;
+            animator.SetBool("isMoving", false);
+            return;
+        }
+
         float distance = Vector3.Distance(transform.position, player.position);
 
-        // Nếu enemy đang chết hoặc bị đánh thì không di chuyển
+        // Nếu đang bị đánh hoặc đang chết thì không di chuyển
         AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
         if (state.IsName("Hit") || state.IsName("Die")) return;
 
-        // Tấn công
+        // Tấn công nếu trong tầm
         if (distance <= attackRange)
         {
             agent.isStopped = true;
@@ -49,22 +60,16 @@ public class EnemyAI : MonoBehaviour
                 lastAttackTime = Time.time;
             }
         }
-        // Đuổi theo
-        else if (distance <= detectionRange)
+        // Nếu player ở trong vùng tầm nhìn (trigger) nhưng chưa đủ gần để đánh
+        else
         {
             agent.isStopped = false;
             agent.SetDestination(player.position);
             animator.SetBool("isMoving", true);
         }
-        // Đứng yên
-        else
-        {
-            agent.isStopped = true;
-            animator.SetBool("isMoving", false);
-        }
     }
 
-    // 🩸 Gọi khi enemy bị trúng đòn
+    // 🩸 Khi enemy bị trúng đòn
     public void TakeDamage(float damage)
     {
         if (isDead) return;
@@ -78,7 +83,7 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    // ☠️ Xử lý chết
+    // ☠️ Khi enemy chết
     private void Die()
     {
         if (isDead) return;
@@ -104,6 +109,24 @@ public class EnemyAI : MonoBehaviour
             {
                 ph.TakeDamage(damage);
             }
+        }
+    }
+
+    // 👀 Khi Player đi vào vùng tầm nhìn (Sphere Collider Trigger)
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerInVision = true;
+        }
+    }
+
+    // 👀 Khi Player rời khỏi vùng tầm nhìn
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerInVision = false;
         }
     }
 }
