@@ -307,7 +307,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &883341431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -339,6 +339,27 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5804245487667503552, guid: c811635a159374b498568aa446e96c07, type: 3}
   m_PrefabInstance: {fileID: 1900269773}
   m_PrefabAsset: {fileID: 0}
+--- !u!65 &883341440
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 883341427}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &975707538
 GameObject:
   m_ObjectHideFlags: 0
@@ -567,7 +588,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5804245487667503552, guid: c811635a159374b498568aa446e96c07, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.00000011920929
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5804245487667503552, guid: c811635a159374b498568aa446e96c07, type: 3}
       propertyPath: m_LocalPosition.z
@@ -622,6 +643,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 868063446033579352, guid: c811635a159374b498568aa446e96c07, type: 3}
       insertIndex: -1
       addedObject: {fileID: 883341428}
+    - targetCorrespondingSourceObject: {fileID: 868063446033579352, guid: c811635a159374b498568aa446e96c07, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 883341440}
   m_SourcePrefab: {fileID: 100100000, guid: c811635a159374b498568aa446e96c07, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
