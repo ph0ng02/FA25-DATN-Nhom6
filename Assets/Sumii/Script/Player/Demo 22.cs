@@ -20,10 +20,10 @@ public class Demo22 : MonoBehaviour
     private int currentSpecialAttack = 0;
     private float lastSpecialAttackTime;
     private bool isUsingSpecial = false;
-    private bool canCancelSpecial = false; // Cho phép hủy Q
-    private bool canCancelNormal = false;  // Cho phép hủy combo thường bằng Q
-    private float qStartTime;               // thời gian bắt đầu Q
-    public float qAutoCancelTime = 1.0f;    // thời gian tự hủy Q nếu không làm gì
+    private bool canCancelSpecial = false;
+    private bool canCancelNormal = false;
+    private float qStartTime;
+    public float qAutoCancelTime = 1.0f;
 
     [Header("References")]
     public Animator animator;
@@ -44,7 +44,15 @@ public class Demo22 : MonoBehaviour
         HandleMovement();
         HandleAttack();
         HandleSpecialAttack();
-        CheckAutoCancelQ(); // ✅ kiểm tra tự hủy Q nếu không combo
+        CheckAutoCancelQ();
+
+        // ✅ Giúp animator trở lại di chuyển sau khi đánh xong
+        if (!isAttacking && !isUsingSpecial)
+        {
+            float horizontal = Input.GetAxis("Horizontal");
+            float vertical = Input.GetAxis("Vertical");
+            animator.SetFloat("InputMagnitude", new Vector2(horizontal, vertical).magnitude);
+        }
     }
 
     // ================== MOVEMENT ==================
@@ -66,6 +74,7 @@ public class Demo22 : MonoBehaviour
         bool isSprinting = Input.GetKey(KeyCode.LeftShift);
         animator.SetBool("IsSprinting", isSprinting);
 
+        // ✅ Nếu đang đánh hay dùng chiêu thì giảm tốc
         float movementMultiplier = (isAttacking || isUsingSpecial) ? 0.4f : 1f;
 
         if (direction.magnitude >= 0.1f)
@@ -92,7 +101,6 @@ public class Demo22 : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
-        animator.SetFloat("InputMagnitude", direction.magnitude, 0.1f, Time.deltaTime);
         animator.SetFloat("Speed", speed * movementMultiplier);
     }
 
@@ -101,11 +109,9 @@ public class Demo22 : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            // ✅ Nếu đang dùng Q → hủy Q và chuyển qua Atk1
+            // ✅ Nếu đang dùng Q → hủy Q
             if (isUsingSpecial && canCancelSpecial)
-            {
                 StopSpecialImmediately();
-            }
 
             if (Time.time - lastAttackTime > comboResetTime)
                 currentAttack = 0;
@@ -120,8 +126,9 @@ public class Demo22 : MonoBehaviour
 
             isAttacking = true;
             canCancelNormal = false;
-            lastAttackTime = Time.time;
+            animator.SetBool("IsAttacking", true);
 
+            lastAttackTime = Time.time;
             CancelInvoke(nameof(EnableCancelNormal));
             CancelInvoke(nameof(ResetAttackState));
 
@@ -136,9 +143,9 @@ public class Demo22 : MonoBehaviour
     {
         isAttacking = false;
         canCancelNormal = false;
+        animator.SetBool("IsAttacking", false);
         for (int i = 1; i <= 4; i++)
             animator.ResetTrigger("Atk" + i);
-        animator.CrossFade("Free Locomotion", 0.1f);
     }
 
     // ================== SPECIAL ATTACK (Q) ==================
@@ -148,11 +155,9 @@ public class Demo22 : MonoBehaviour
         {
             // ✅ Nếu đang đánh thường → hủy đánh thường và ra chiêu Q
             if (isAttacking && canCancelNormal)
-            {
                 StopNormalAttackImmediately();
-            }
 
-            // ✅ Nếu đang Q mà nhấn Q lần nữa → hủy Q (tự cancel)
+            // ✅ Nếu đang Q và nhấn lại Q → hủy Q
             else if (isUsingSpecial && canCancelSpecial)
             {
                 StopSpecialImmediately();
@@ -173,6 +178,7 @@ public class Demo22 : MonoBehaviour
 
             isUsingSpecial = true;
             canCancelSpecial = false;
+            animator.SetBool("IsUsingSpecial", true);
             lastSpecialAttackTime = Time.time;
             qStartTime = Time.time;
 
@@ -190,18 +196,16 @@ public class Demo22 : MonoBehaviour
     {
         isUsingSpecial = false;
         canCancelSpecial = false;
+        animator.SetBool("IsUsingSpecial", false);
         for (int i = 5; i <= 8; i++)
             animator.ResetTrigger("Atk" + i);
-        animator.CrossFade("Free Locomotion", 0.1f);
     }
 
-    // ✅ Nếu đang Q mà không làm gì quá lâu thì tự hủy
+    // ✅ Tự hủy Q nếu để quá lâu không combo
     void CheckAutoCancelQ()
     {
         if (isUsingSpecial && (Time.time - qStartTime) >= qAutoCancelTime && !isAttacking)
-        {
             StopSpecialImmediately();
-        }
     }
 
     // ================== FORCE STOP HELPERS ==================
@@ -210,6 +214,7 @@ public class Demo22 : MonoBehaviour
         CancelInvoke(nameof(ResetAttackState));
         isAttacking = false;
         canCancelNormal = false;
+        animator.SetBool("IsAttacking", false);
         for (int i = 1; i <= 4; i++)
             animator.ResetTrigger("Atk" + i);
     }
@@ -219,8 +224,8 @@ public class Demo22 : MonoBehaviour
         CancelInvoke(nameof(ResetSpecialAttackState));
         isUsingSpecial = false;
         canCancelSpecial = false;
+        animator.SetBool("IsUsingSpecial", false);
         for (int i = 5; i <= 8; i++)
             animator.ResetTrigger("Atk" + i);
-        animator.CrossFade("Free Locomotion", 0.05f);
     }
 }
