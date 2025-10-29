@@ -15,7 +15,7 @@ public class LeverSwitch : MonoBehaviour
 
     void Start()
     {
-        player = GameObject.FindWithTag("Player").transform;
+        player = GameObject.FindWithTag("Player1 & Player2").transform;
     }
 
     void Update()
