@@ -629,7 +629,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SkipCutscene
   videoPlayer: {fileID: 1619726244}
-  nextSceneName: Scene11
+  nextSceneName: Scene1
 --- !u!4 &1438336927
 Transform:
   m_ObjectHideFlags: 0
