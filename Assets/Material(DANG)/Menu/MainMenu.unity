@@ -939,6 +939,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb35313a1dfe64a8d8431da0c27b4360, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PhotonConnectTest
+  sceneName: MapStart
 --- !u!1 &799746895
 GameObject:
   m_ObjectHideFlags: 0
@@ -1849,6 +1850,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb35313a1dfe64a8d8431da0c27b4360, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PhotonConnectTest
+  sceneName: MapStart
 --- !u!4 &1832126229
 Transform:
   m_ObjectHideFlags: 0
