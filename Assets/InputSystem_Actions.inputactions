@@ -95,6 +95,33 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SkillQ",
+                    "type": "Button",
+                    "id": "40bd1646-a922-46fb-b9d7-04280893e380",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SkillE",
+                    "type": "Button",
+                    "id": "43b6c299-0c76-43d9-8639-19568fcb5262",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SkillR",
+                    "type": "Button",
+                    "id": "8e172eac-b9b4-4e5b-86be-f11dfb0d2c76",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -513,6 +540,72 @@
                     "processors": "",
                     "groups": "",
                     "action": "Roll",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "056ae96b-eec8-44ce-a790-37ffce41879f",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SkillQ",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4df22d10-1c0d-41e5-8330-dac23dc5dc98",
+                    "path": "Button West (X)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SkillQ",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9dd4db3f-59ad-45cf-886f-fbd8f741d896",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SkillE",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5fee5bb5-ad38-4c67-abad-155bf260ac40",
+                    "path": "Button South (A)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SkillE",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "50289a55-e738-42f9-a6b2-a6e35bd455f4",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SkillR",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c818b8cc-89b6-406c-8e43-69263e5ee848",
+                    "path": "Button North (Y)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SkillR",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
