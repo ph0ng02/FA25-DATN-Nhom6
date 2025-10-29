@@ -6,8 +6,26 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Material(DANG)/Menu/MainMenu.unity
+    guid: 2756d98a32caa4537a11a2d78a55c066
+  - enabled: 1
+    path: Assets/Material(DANG)/Menu/GameplayScene.unity
+    guid: d872d5ce7ccdd4250894cf07a905dd5e
+  - enabled: 1
+    path: Assets/Material(DANG)/Menu/MultiplayerScene.unity
+    guid: 5dd56e867c53b448bb2a9d66ce8752dc
+  - enabled: 1
+    path: Assets/Material(DANG)/Menu/MusicScene.unity
+    guid: c29e8ff840482491e8184c6eb721afcb
+  - enabled: 1
+    path: Assets/Material(DANG)/Menu/OptionScene.unity
+    guid: 2a9009d753135441b89f4cc481a8f230
+  - enabled: 1
     path: Assets/Vinh/Map/MapStart/MapStart.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    guid: be3fddd2732517e4d907a6a56c543fee
+  - enabled: 1
+    path: Assets/Vinh/Map/Map1/Map1.unity
+    guid: cc333ca695331624ab5a738082609171
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
