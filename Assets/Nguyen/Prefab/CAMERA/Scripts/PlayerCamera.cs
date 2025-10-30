@@ -3,63 +3,36 @@ using UnityEngine;
 namespace NaughtyCharacter
 {
 	public class PlayerCamera : MonoBehaviour
-	{
-		public float ControlRotationSensitivity = 0.0f;
-		public Transform Rig; // The root transform of the camera rig
-		public Transform Pivot; // The point at which the camera pivots around
-		public Transform Target; // The point at which the camera pivots around
-		public Camera Camera;
+    {
+        [Header("Settings")]
+        public float ControlRotationSensitivity = 2f;
+        public float FollowSpeed = 10f;
+        public Vector2 PitchMinMax = new Vector2(-35, 70);
 
-		private Vector3 _cameraVelocity;
-		Vector2 controllRotation;
+        [Header("References")]
+        public Transform Rig;     
+        public Transform Pivot;   
+        public Transform Target;  
+        public Camera Camera;
 
-		private void LateUpdate() 
-		{
-			SetPosition(Target.transform.position);
-			Vector2 CameraInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
-			UpdateControlRotation();
-			
-			// Adjust the pitch angle (X Rotation)
-			float pitchAngle = controllRotation.x;
-			pitchAngle -= CameraInput.y * ControlRotationSensitivity;
+        private Vector2 controlRotation;
 
-			// Adjust the yaw angle (Y Rotation)
-			float yawAngle = controllRotation.y;
-			yawAngle += CameraInput.x * ControlRotationSensitivity;
+        private void LateUpdate()
+        {
+            if (!Target) return;
 
-			controllRotation = new Vector2(pitchAngle, yawAngle);
-			SetControlRotation(controllRotation);
-		}
+            Vector3 targetPos = Vector3.Lerp(Rig.position, Target.position, FollowSpeed * Time.deltaTime);
+            Rig.position = targetPos;
 
-		public void SetPosition(Vector3 position)
-		{
-			Rig.position = position;
-		}
+            float mouseX = Input.GetAxis("Mouse X");
+            float mouseY = Input.GetAxis("Mouse Y");
 
-		public void SetControlRotation(Vector2 controlRotation)
-		{
-			// Y Rotation (Yaw Rotation)
-			Quaternion rigTargetLocalRotation = Quaternion.Euler(0.0f, controlRotation.y, 0.0f);
+            controlRotation.y += mouseX * ControlRotationSensitivity;
+            controlRotation.x -= mouseY * ControlRotationSensitivity;
+            controlRotation.x = Mathf.Clamp(controlRotation.x, PitchMinMax.x, PitchMinMax.y);
 
-			// X Rotation (Pitch Rotation)
-			Quaternion pivotTargetLocalRotation = Quaternion.Euler(controlRotation.x, 0.0f, 0.0f);
-
-			Rig.localRotation = rigTargetLocalRotation;
-			Pivot.localRotation = pivotTargetLocalRotation;
-		}
-
-		public void UpdateControlRotation()
-		{
-			// Adjust the pitch angle (X Rotation)
-			float pitchAngle = controllRotation.x;
-			pitchAngle %= 360.0f;
-			pitchAngle = Mathf.Clamp(pitchAngle, -45, 75);
-
-			// Adjust the yaw angle (Y Rotation)
-			float yawAngle = controllRotation.y;
-			yawAngle %= 360.0f;
-
-			controllRotation = new Vector2(pitchAngle, yawAngle);
-		}
-	}
+            Rig.localRotation = Quaternion.Euler(0, controlRotation.y, 0);
+            Pivot.localRotation = Quaternion.Euler(controlRotation.x, 0, 0);
+        }
+    }
 }
