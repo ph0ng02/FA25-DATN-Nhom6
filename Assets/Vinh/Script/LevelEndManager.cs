@@ -6,7 +6,7 @@ public class LevelEndManager : MonoBehaviour
     public static LevelEndManager Instance;
 
     [Header("Tên Scene kế tiếp")]
-    public string nextSceneName = "Map2";
+    public string nextSceneName = "MapCutscreen";
 
     private bool player1Ready = false;
     private bool player2Ready = false;

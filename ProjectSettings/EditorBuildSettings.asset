@@ -21,6 +21,9 @@ EditorBuildSettings:
     path: Assets/Vinh/Map/MapStart/MapStart.unity
     guid: be3fddd2732517e4d907a6a56c543fee
   - enabled: 1
+    path: "Assets/Cutscreen3(H\xF9ng/Scenes/MapCutscreen.unity"
+    guid: 20bdff1f6ac53e54b8be8c133508c40f
+  - enabled: 1
     path: Assets/Vinh/Map/Map1/Map1.unity
     guid: cc333ca695331624ab5a738082609171
   m_configObjects:
