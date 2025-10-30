@@ -4,9 +4,9 @@ using UnityEngine.AI;
 public class EnemyAI : MonoBehaviour
 {
     [Header("References")]
-    public Transform player;
     public Animator animator;
     private NavMeshAgent agent;
+    private Rigidbody rb;
 
     [Header("Stats")]
     public float attackRange = 2f;
@@ -18,55 +18,89 @@ public class EnemyAI : MonoBehaviour
     public float health = 100f;
     private bool isDead = false;
 
+    [Header("Knockback")]
+    public float knockbackForce = 3f;
+    public float knockbackDuration = 0.2f;
+    private bool isKnockedback = false;
+
     [Header("Vision")]
-    public bool playerInVision = false; // player đang ở trong vùng tầm nhìn
+    public bool playerInVision = false;
+    private Transform currentTarget;
+
+    [Header("Optional Return")]
+    public bool returnToStart = true;
+    private Vector3 startPosition;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-
-        // Tự tìm player nếu chưa gán
-        if (player == null)
-            player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        rb = GetComponent<Rigidbody>();
+        startPosition = transform.position;
     }
 
     void Update()
     {
-        if (isDead || player == null) return;
+        if (isDead || isKnockedback) return;
 
-        // Nếu player chưa vào vùng tầm nhìn thì đứng yên
-        if (!playerInVision)
-        {
-            agent.isStopped = true;
-            animator.SetBool("isMoving", false);
-            return;
-        }
-
-        float distance = Vector3.Distance(transform.position, player.position);
-
-        // Nếu đang bị đánh hoặc đang chết thì không di chuyển
         AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
         if (state.IsName("Hit") || state.IsName("Die")) return;
 
-        // Tấn công nếu trong tầm
-        if (distance <= attackRange)
+        if (currentTarget != null)
         {
-            agent.isStopped = true;
-            animator.SetBool("isMoving", false);
+            float distance = Vector3.Distance(transform.position, currentTarget.position);
 
-            if (Time.time - lastAttackTime >= attackCooldown)
+            if (!playerInVision)
             {
-                animator.SetTrigger("attack");
-                lastAttackTime = Time.time;
+                currentTarget = null;
+                StopMoving();
+                return;
+            }
+
+            if (distance <= attackRange)
+            {
+                agent.isStopped = true;
+                animator.SetBool("isMoving", false);
+
+                if (Time.time - lastAttackTime >= attackCooldown)
+                {
+                    animator.SetTrigger("attack");
+                    lastAttackTime = Time.time;
+                }
+            }
+            else
+            {
+                agent.isStopped = false;
+                agent.SetDestination(currentTarget.position);
+                animator.SetBool("isMoving", true);
             }
         }
-        // Nếu player ở trong vùng tầm nhìn (trigger) nhưng chưa đủ gần để đánh
         else
         {
-            agent.isStopped = false;
-            agent.SetDestination(player.position);
-            animator.SetBool("isMoving", true);
+            if (returnToStart)
+            {
+                float distToStart = Vector3.Distance(transform.position, startPosition);
+                if (distToStart > 0.5f)
+                {
+                    agent.isStopped = false;
+                    agent.SetDestination(startPosition);
+                    animator.SetBool("isMoving", true);
+                }
+                else
+                {
+                    StopMoving();
+                }
+            }
+            else
+            {
+                StopMoving();
+            }
         }
+    }
+
+    private void StopMoving()
+    {
+        agent.isStopped = true;
+        animator.SetBool("isMoving", false);
     }
 
     // 🩸 Khi enemy bị trúng đòn
@@ -77,10 +111,35 @@ public class EnemyAI : MonoBehaviour
         health -= damage;
         animator.SetTrigger("hit");
 
+        if (currentTarget != null)
+        {
+            Vector3 knockDir = (transform.position - currentTarget.position).normalized;
+            StartCoroutine(ApplyKnockback(knockDir));
+        }
+
         if (health <= 0f)
         {
             Die();
         }
+    }
+
+    private System.Collections.IEnumerator ApplyKnockback(Vector3 direction)
+    {
+        if (rb == null) yield break;
+
+        isKnockedback = true;
+        agent.isStopped = true;
+
+        rb.isKinematic = false;
+        rb.AddForce(direction * knockbackForce, ForceMode.Impulse);
+
+        yield return new WaitForSeconds(knockbackDuration);
+
+        rb.linearVelocity = Vector3.zero;
+        rb.isKinematic = true;
+
+        isKnockedback = false;
+        agent.isStopped = false;
     }
 
     // ☠️ Khi enemy chết
@@ -93,18 +152,17 @@ public class EnemyAI : MonoBehaviour
         animator.SetBool("isMoving", false);
         agent.isStopped = true;
 
-        // Xóa enemy sau 3 giây
         Destroy(gameObject, 3f);
     }
 
     // 🔪 Gọi từ Animation Event trong clip Attack
     public void DealDamage()
     {
-        if (isDead) return;
+        if (isDead || currentTarget == null) return;
 
-        if (Vector3.Distance(transform.position, player.position) <= attackRange)
+        if (Vector3.Distance(transform.position, currentTarget.position) <= attackRange)
         {
-            PlayerHealth ph = player.GetComponent<PlayerHealth>();
+            PlayerHealth ph = currentTarget.GetComponent<PlayerHealth>();
             if (ph != null)
             {
                 ph.TakeDamage(damage);
@@ -112,21 +170,27 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    // 👀 Khi Player đi vào vùng tầm nhìn (Sphere Collider Trigger)
+    // 👀 Khi Player đi vào vùng tầm nhìn
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player1") || other.CompareTag("Player2"))
         {
             playerInVision = true;
+            currentTarget = other.transform;
         }
     }
 
     // 👀 Khi Player rời khỏi vùng tầm nhìn
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player1") || other.CompareTag("Player2"))
         {
-            playerInVision = false;
+            if (currentTarget == other.transform)
+            {
+                playerInVision = false;
+                currentTarget = null;
+                StopMoving();
+            }
         }
     }
 }

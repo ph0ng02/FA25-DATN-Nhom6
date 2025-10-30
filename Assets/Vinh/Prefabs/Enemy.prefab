@@ -121,13 +121,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a21207581f1fb8b4799b2064693a64d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
-  player: {fileID: 0}
   animator: {fileID: 7746514379564823824}
   attackRange: 2
   attackCooldown: 1.5
   damage: 10
   health: 100
+  knockbackForce: 3
+  knockbackDuration: 0.2
   playerInVision: 0
+  returnToStart: 1
 --- !u!135 &7731310698441163943
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -143,7 +145,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
