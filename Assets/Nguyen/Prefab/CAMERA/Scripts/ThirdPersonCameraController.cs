@@ -6,7 +6,7 @@ public class ThirdPersonCameraController : MonoBehaviour
     public Transform target;        // Player
     public Transform pivot;         // Điểm xoay camera
     public Transform cam;           // Main Camera
-    public CharacterController controller; // Thêm CharacterController của player
+    public CharacterController controller; // Thêm CharacterController củ player
 
     [Header("Settings")]
     public float sensitivity = 3f;  
