@@ -347,6 +347,9 @@ PrefabInstance:
       addedObject: {fileID: 933745021}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 300f4bf7a680d14418893e3171804691, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 933745029}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 300f4bf7a680d14418893e3171804691, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 933745020}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 300f4bf7a680d14418893e3171804691, type: 3}
       insertIndex: -1
@@ -513,6 +516,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37c3c54272e88fa4f9fe8b7a19504bd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ComboSystem
+--- !u!114 &933745029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 933745016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27494d4669418244ea35abb1472d3efb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Demo33
+  walkSpeed: 2
+  runSpeed: 4
+  sprintSpeed: 6
+  gravity: -9.81
+  jumpHeight: 5
+  comboResetTime: 1
+  specialComboResetTime: 2
+  qAutoCancelTime: 1
+  animator: {fileID: 0}
 --- !u!1 &1046352354 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3306100764376975615, guid: 80844b2319340044da27db99208a9eac, type: 3}
