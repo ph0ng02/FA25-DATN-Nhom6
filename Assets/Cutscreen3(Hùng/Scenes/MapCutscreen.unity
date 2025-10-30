@@ -167,7 +167,7 @@ Terrain:
   m_GameObject: {fileID: 203086440}
   m_Enabled: 1
   serializedVersion: 6
-  m_TerrainData: {fileID: 15600000, guid: a9b4940e4b6b80d42876c062ee1d2825, type: 2}
+  m_TerrainData: {fileID: 0}
   m_TreeDistance: 5000
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
@@ -1090,6 +1090,8 @@ PlayableDirector:
     value: {fileID: 330585548}
   - key: {fileID: 65209211189080124, guid: 13161056130346946a05386349a11348, type: 2}
     value: {fileID: 1944927705}
+  - key: {fileID: -2879033620702949820, guid: 13161056130346946a05386349a11348, type: 2}
+    value: {fileID: 0}
   m_ExposedReferences:
     m_References:
     - 83369f7a7c7da924a9f582a2e63409ae: {fileID: 286927663}
