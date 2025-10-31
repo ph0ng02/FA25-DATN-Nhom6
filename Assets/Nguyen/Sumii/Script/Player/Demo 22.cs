@@ -46,7 +46,7 @@ public class Demo22 : MonoBehaviour
         HandleSpecialAttack();
         CheckAutoCancelQ();
 
-        // ✅ Giúp animator trở lại di chuyển sau khi đánh xong
+        //  Giúp animator trở lại di chuyển sau khi đánh xong
         if (!isAttacking && !isUsingSpecial)
         {
             float horizontal = Input.GetAxis("Horizontal");
@@ -74,7 +74,7 @@ public class Demo22 : MonoBehaviour
         bool isSprinting = Input.GetKey(KeyCode.LeftShift);
         animator.SetBool("IsSprinting", isSprinting);
 
-        // ✅ Nếu đang đánh hay dùng chiêu thì giảm tốc
+        //  Nếu đang đánh hay dùng chiêu thì giảm tốc
         float movementMultiplier = (isAttacking || isUsingSpecial) ? 0.4f : 1f;
 
         if (direction.magnitude >= 0.1f)
@@ -109,7 +109,7 @@ public class Demo22 : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            // ✅ Nếu đang dùng Q → hủy Q
+            //  Nếu đang dùng Q → hủy Q
             if (isUsingSpecial && canCancelSpecial)
                 StopSpecialImmediately();
 
@@ -153,18 +153,18 @@ public class Demo22 : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            // ✅ Nếu đang đánh thường → hủy đánh thường và ra chiêu Q
+            // Nếu đang đánh thường → hủy đánh thường và ra chiêu Q
             if (isAttacking && canCancelNormal)
                 StopNormalAttackImmediately();
 
-            // ✅ Nếu đang Q và nhấn lại Q → hủy Q
+            //  Nếu đang Q và nhấn lại Q → hủy Q
             else if (isUsingSpecial && canCancelSpecial)
             {
                 StopSpecialImmediately();
                 return;
             }
 
-            // ✅ Reset combo Q nếu quá lâu
+            //  Reset combo Q nếu quá lâu
             if (Time.time - lastSpecialAttackTime > specialComboResetTime)
                 currentSpecialAttack = 4;
 
@@ -201,7 +201,7 @@ public class Demo22 : MonoBehaviour
             animator.ResetTrigger("Atk" + i);
     }
 
-    // ✅ Tự hủy Q nếu để quá lâu không combo
+    //  Tự hủy Q nếu để quá lâu không combo
     void CheckAutoCancelQ()
     {
         if (isUsingSpecial && (Time.time - qStartTime) >= qAutoCancelTime && !isAttacking)

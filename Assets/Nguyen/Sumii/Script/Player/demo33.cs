@@ -8,7 +8,7 @@ public class Demo33 : MonoBehaviour
     public float runSpeed = 4f;
     public float sprintSpeed = 6f;
     public float gravity = -9.81f;
-    public float jumpHeight = 1.5f; // ✅ độ cao khi nhảy
+    public float jumpHeight = 1.5f;
 
     [Header("Combat Settings")]
     public float comboResetTime = 1.0f;
@@ -32,6 +32,7 @@ public class Demo33 : MonoBehaviour
     private Vector3 velocity;
     private bool isGrounded;
     private float speed;
+    private bool isSprinting;
 
     void Start()
     {
@@ -43,18 +44,10 @@ public class Demo33 : MonoBehaviour
     void Update()
     {
         HandleMovement();
+        HandleJump();
         HandleAttack();
         HandleSpecialAttack();
-        HandleJump(); // ✅ Gọi hàm nhảy
         CheckAutoCancelQ();
-
-        // ✅ Giúp animator trở lại di chuyển sau khi đánh xong
-        if (!isAttacking && !isUsingSpecial)
-        {
-            float horizontal = Input.GetAxis("Horizontal");
-            float vertical = Input.GetAxis("Vertical");
-            animator.SetFloat("InputMagnitude", new Vector2(horizontal, vertical).magnitude);
-        }
     }
 
     // ================== MOVEMENT ==================
@@ -73,17 +66,19 @@ public class Demo33 : MonoBehaviour
         animator.SetFloat("InputHorizontal", horizontal);
         animator.SetFloat("InputVertical", vertical);
 
-        bool isSprinting = Input.GetKey(KeyCode.LeftShift);
+        // Nhấn Shift để chạy nhanh
+        isSprinting = Input.GetKey(KeyCode.LeftShift);
         animator.SetBool("IsSprinting", isSprinting);
 
+        // Giảm tốc nếu đang tấn công
         float movementMultiplier = (isAttacking || isUsingSpecial) ? 0.4f : 1f;
 
         if (direction.magnitude >= 0.1f)
         {
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + Camera.main.transform.eulerAngles.y;
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            moveDir.Normalize();
 
+            // Tốc độ dựa trên trạng thái
             if (isSprinting && !isAttacking && !isUsingSpecial)
                 speed = sprintSpeed;
             else if (Input.GetKey(KeyCode.LeftControl))
@@ -91,7 +86,7 @@ public class Demo33 : MonoBehaviour
             else
                 speed = runSpeed;
 
-            controller.Move(moveDir * speed * movementMultiplier * Time.deltaTime);
+            controller.Move(moveDir.normalized * speed * movementMultiplier * Time.deltaTime);
             transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
         }
         else
@@ -99,9 +94,13 @@ public class Demo33 : MonoBehaviour
             speed = 0f;
         }
 
+        // Áp lực trọng lực
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
+        // Gửi dữ liệu vào Animator
+        float inputMag = new Vector2(horizontal, vertical).magnitude;
+        animator.SetFloat("InputMagnitude", inputMag, 0.1f, Time.deltaTime);
         animator.SetFloat("Speed", speed * movementMultiplier);
     }
 
@@ -110,8 +109,8 @@ public class Demo33 : MonoBehaviour
     {
         if (isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity); // ✅ công thức nhảy vật lý
-            animator.SetTrigger("Jump"); // ✅ kích hoạt animation HumanoidIdleJumpUp
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            animator.SetTrigger("Jump");
             animator.SetBool("IsGrounded", false);
         }
     }

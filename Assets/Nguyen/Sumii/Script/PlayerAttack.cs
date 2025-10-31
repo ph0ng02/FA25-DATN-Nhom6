@@ -2,52 +2,61 @@
 
 public class PlayerAttack : MonoBehaviour
 {
-    [Header("Attack")]
-    [SerializeField] private int damage = 25;
-    [SerializeField] private float attackRadius = 1.2f;
-    [SerializeField] private Transform attackPoint; // đặt một child transform trước nhân vật
-    [SerializeField] private LayerMask enemyLayer;
+    [Header("Attack Settings")]
+    public float attackRange = 1.8f;
+    public float attackRate = 1f;
+    private float nextAttackTime = 0f;
 
-    [Header("Cooldown")]
-    [SerializeField] private float attackCooldown = 0.6f;
-    private float lastAttackTime = -999f;
+    [Header("Damage Settings")]
+    public int attackDamage = 25;
 
-    [Header("Optional")]
-    [SerializeField] private Animator animator;
+    [Header("References")]
+    public Animator animator;
+    public Transform attackPoint;
+    public LayerMask enemyLayer;
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && Time.time >= lastAttackTime + attackCooldown)
+        // Khi nhấn chuột trái để tấn công
+        if (Input.GetMouseButtonDown(0) && Time.time >= nextAttackTime)
         {
             Attack();
-            lastAttackTime = Time.time;
+            nextAttackTime = Time.time + 1f / attackRate;
         }
+    }
+    void Start()
+    {
+        if (animator == null)
+            animator = GetComponent<Animator>();
     }
 
     void Attack()
     {
-        if (animator != null) animator.SetTrigger("Attack");
+        // Gọi animation attack
+        animator.SetTrigger("attack");
+    }
 
-        // detect enemies
-        Collider[] hits = Physics.OverlapSphere(attackPoint.position, attackRadius, enemyLayer);
-        foreach (Collider c in hits)
+    // Gọi hàm này trong Animation Event của clip Attack
+    public void DealDamage()
+    {
+        // Kiểm tra kẻ địch trong vùng attack
+        Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayer);
+
+        foreach (Collider enemy in hitEnemies)
         {
-            EnemyHealth eh = c.GetComponentInParent<EnemyHealth>();
-            if (eh != null)
+            EnemyAI enemyAI = enemy.GetComponent<EnemyAI>();
+            if (enemyAI != null)
             {
-                Vector3 hitPoint = c.ClosestPoint(attackPoint.position);
-                Vector3 dir = (c.transform.position - transform.position).normalized;
-                eh.TakeDamage(damage, hitPoint, dir);
+                enemyAI.TakeDamage(attackDamage);
             }
         }
     }
 
+    // Vẽ vùng tấn công trong Scene
     void OnDrawGizmosSelected()
     {
-        if (attackPoint != null)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
-        }
+        if (attackPoint == null) return;
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 }
