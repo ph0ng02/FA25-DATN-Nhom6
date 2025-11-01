@@ -13,8 +13,8 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 
-  - 
+  - Enemy_Orc
+  - Enemy_Golem
   - 
   - 
   - 
@@ -50,4 +50,3 @@ TagManager:
   - Light Layer 4
   - Light Layer 5
   - Light Layer 6
-  - Light Layer 7
