@@ -1,27 +1,23 @@
 ﻿using UnityEngine;
-using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController_Gamepad : MonoBehaviour
 {
-    private CharacterController controller;
-    private Animator animator;
-    private Vector3 moveDirection;
-    private bool isRolling = false;
-    private bool isRunning = false;
-
     [Header("Movement Settings")]
-    public float moveSpeed = 3f;
+    public float walkSpeed = 3f;
     public float runSpeed = 6f;
-    public float rollSpeed = 8f;
+    public float rollForce = 8f;
     public float gravity = -9.81f;
 
-    private float yVelocity;
-
     [Header("Combo Settings")]
+    public float comboResetTime = 1f;
+
+    private CharacterController controller;
+    private Animator animator;
+
+    private Vector3 velocity;
     private int comboStep = 0;
     private float lastComboTime;
-    public float comboResetTime = 1f;
 
     void Start()
     {
@@ -32,114 +28,92 @@ public class PlayerController_Gamepad : MonoBehaviour
     void Update()
     {
         HandleMovement();
-        HandleComboReset();
+        HandleAttack();
+        HandleInteraction();
+        HandleCombo();
     }
 
     void HandleMovement()
     {
-        // Di chuyển bằng joystick trái
-        float h = Gamepad.current.leftStick.x.ReadValue();
-        float v = Gamepad.current.leftStick.y.ReadValue();
+        float horizontal = Input.GetAxis("Horizontal");   // Joystick trái
+        float vertical = Input.GetAxis("Vertical");
 
-        Vector3 input = new Vector3(h, 0, v);
-        input = Vector3.ClampMagnitude(input, 1f);
+        Vector3 move = new Vector3(horizontal, 0, vertical);
+        if (move.magnitude > 1f) move.Normalize();
 
-        Vector3 move = transform.TransformDirection(input);
+        bool isRunning = Input.GetButton("RB1") || Input.GetButton("RB2");
 
-        // Kiểm tra chạy (RB1 hoặc RB2)
-        if (Gamepad.current.rightShoulder.isPressed)
+        float speed = isRunning ? runSpeed : walkSpeed;
+        controller.Move(move * speed * Time.deltaTime);
+
+        // Quay theo hướng di chuyển
+        if (move != Vector3.zero)
+            transform.forward = move;
+
+        // Roll
+        if (Input.GetButtonDown("RB1") || Input.GetButtonDown("RB2"))
         {
-            isRunning = true;
-        }
-        else
-        {
-            isRunning = false;
-        }
-
-        float speed = isRunning ? runSpeed : moveSpeed;
-
-        // Lăn (roll) khi nhấn RB2
-        if (Gamepad.current.rightTrigger.wasPressedThisFrame && !isRolling)
-        {
-            StartCoroutine(Roll(move));
-            return;
+            Vector3 rollDir = transform.forward * rollForce;
+            controller.Move(rollDir * Time.deltaTime);
+            animator.SetTrigger("Roll");
         }
 
-        if (controller.isGrounded)
-        {
-            yVelocity = 0f;
-        }
+        // Gravity
+        if (controller.isGrounded && velocity.y < 0)
+            velocity.y = -2f;
+        velocity.y += gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
 
-        yVelocity += gravity * Time.deltaTime;
-        moveDirection = move * speed;
-        moveDirection.y = yVelocity;
-
-        controller.Move(moveDirection * Time.deltaTime);
-
-        // Animation di chuyển
         animator.SetFloat("Speed", move.magnitude * speed);
     }
 
-    System.Collections.IEnumerator Roll(Vector3 direction)
+    void HandleAttack()
     {
-        isRolling = true;
-        animator.SetTrigger("Roll");
-
-        float rollTime = 0.5f;
-        float elapsed = 0f;
-
-        while (elapsed < rollTime)
+        if (Input.GetButtonDown("joystick button0")) // A = Attack
         {
-            controller.Move(direction * rollSpeed * Time.deltaTime);
-            elapsed += Time.deltaTime;
-            yield return null;
+            animator.SetTrigger("Attack");
         }
-
-        isRolling = false;
     }
 
-    void HandleComboReset()
+    void HandleInteraction()
     {
+        if (Input.GetButtonDown("joystick button1")) // B = Interaction
+        {
+            Debug.Log("Tương tác với NPC hoặc vật phẩm");
+            animator.SetTrigger("Interact");
+        }
+    }
+
+    void HandleCombo()
+    {
+        if (Input.GetButtonDown("joystick button2")) // X
+        {
+            ComboAttack();
+        }
+        else if (Input.GetButtonDown("joystick button3")) // Y
+        {
+            ComboAttack();
+        }
+
         if (Time.time - lastComboTime > comboResetTime)
         {
             comboStep = 0;
         }
     }
 
-    void LateUpdate()
+    void ComboAttack()
     {
-        // Tấn công: nút A
-        if (Gamepad.current.buttonSouth.wasPressedThisFrame)
+        comboStep++;
+        lastComboTime = Time.time;
+
+        if (comboStep == 1)
+            animator.SetTrigger("Combo1");
+        else if (comboStep == 2)
+            animator.SetTrigger("Combo2");
+        else if (comboStep >= 3)
         {
-            animator.SetTrigger("Attack");
+            animator.SetTrigger("Combo3");
+            comboStep = 0;
         }
-
-        // Combo: nhấn X hoặc Y (3 lần)
-        if (Gamepad.current.buttonWest.wasPressedThisFrame || Gamepad.current.buttonNorth.wasPressedThisFrame)
-        {
-            comboStep++;
-            lastComboTime = Time.time;
-
-            if (comboStep == 1) animator.SetTrigger("Combo1");
-            else if (comboStep == 2) animator.SetTrigger("Combo2");
-            else if (comboStep == 3)
-            {
-                animator.SetTrigger("Combo3");
-                comboStep = 0;
-            }
-        }
-
-        // Tương tác: nút B
-        if (Gamepad.current.buttonEast.wasPressedThisFrame)
-        {
-            Interact();
-        }
-    }
-
-    void Interact()
-    {
-        // Giả lập tương tác (sau này bạn có thể gắn vào trigger)
-        Debug.Log("Tương tác với NPC hoặc vật phẩm!");
-        animator.SetTrigger("Interact");
     }
 }
