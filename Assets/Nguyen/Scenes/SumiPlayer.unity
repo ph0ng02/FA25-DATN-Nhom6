@@ -1077,11 +1077,76 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 6701569770987415257, guid: 491126138f0deb844ada1223ff5c8940, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8128960747679944096, guid: 491126138f0deb844ada1223ff5c8940, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4510539634321777029, guid: 491126138f0deb844ada1223ff5c8940, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7902396055522308782}
+    - targetCorrespondingSourceObject: {fileID: 4510539634321777029, guid: 491126138f0deb844ada1223ff5c8940, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7902396055522308781}
+    - targetCorrespondingSourceObject: {fileID: 4510539634321777029, guid: 491126138f0deb844ada1223ff5c8940, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7902396055522308780}
   m_SourcePrefab: {fileID: 100100000, guid: 491126138f0deb844ada1223ff5c8940, type: 3}
+--- !u!1 &7902396055522308779 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4510539634321777029, guid: 491126138f0deb844ada1223ff5c8940, type: 3}
+  m_PrefabInstance: {fileID: 7902396055522308778}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7902396055522308780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7902396055522308779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 864d5a84f05adf94f8e4cf385cac7c0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController_Gamepad
+  walkSpeed: 3
+  runSpeed: 6
+  rollForce: 8
+  gravity: -9.81
+  comboResetTime: 1
+--- !u!114 &7902396055522308781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7902396055522308779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4204ead2700eddd458160c94d1648cb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Combo_Gamepad
+  comboResetTime: 1
+  maxCombo: 4
+--- !u!114 &7902396055522308782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7902396055522308779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37c3c54272e88fa4f9fe8b7a19504bd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ComboSystem
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
