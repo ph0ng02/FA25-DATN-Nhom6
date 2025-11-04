@@ -19,21 +19,25 @@ public class LeverDoorController : MonoBehaviour
     private Vector3 doorClosedPos;
     private Vector3 doorOpenPos;
     private bool isMoving = false;
-    private Transform playerCam;
+
+    private Transform[] players; // Cả 2 người chơi
 
     void Start()
     {
         doorClosedPos = door.position;
         doorOpenPos = door.position + Vector3.up * doorOpenHeight;
 
-        // Lấy camera an toàn (kể cả khi chưa gán)
-        if (Camera.main != null)
+        // Tìm cả 2 player qua Tag
+        GameObject p1 = GameObject.FindGameObjectWithTag("Player1");
+        GameObject p2 = GameObject.FindGameObjectWithTag("Player2");
+
+        if (p1 != null && p2 != null)
         {
-            playerCam = Camera.main.transform;
+            players = new Transform[] { p1.transform, p2.transform };
         }
         else
         {
-            Debug.LogWarning("⚠ Không tìm thấy Camera có tag 'MainCamera'!");
+            Debug.LogWarning("⚠ Không tìm thấy Player1 hoặc Player2 trong scene!");
         }
 
         if (interactText != null)
@@ -42,11 +46,13 @@ public class LeverDoorController : MonoBehaviour
 
     void Update()
     {
-        if (playerCam == null) return; // Nếu chưa có camera thì dừng lại
+        if (players == null || players.Length == 0) return;
 
-        float distance = Vector3.Distance(playerCam.position, transform.position);
+        // Kiểm tra player nào đang gần nhất
+        Transform nearestPlayer = GetNearestPlayer();
+        float distance = Vector3.Distance(nearestPlayer.position, transform.position);
 
-        // Hiển thị UI khi lại gần
+        // Hiện UI nếu có người chơi gần
         if (interactText != null)
             interactText.gameObject.SetActive(distance < interactDistance && !isMoving);
 
@@ -55,9 +61,23 @@ public class LeverDoorController : MonoBehaviour
         {
             ToggleDoor();
         }
+    }
 
-        // Debug để kiểm tra
-        Debug.Log($"Lever Controller đang hoạt động. Khoảng cách: {distance}");
+    Transform GetNearestPlayer()
+    {
+        Transform nearest = players[0];
+        float minDist = Vector3.Distance(transform.position, nearest.position);
+
+        for (int i = 1; i < players.Length; i++)
+        {
+            float dist = Vector3.Distance(transform.position, players[i].position);
+            if (dist < minDist)
+            {
+                nearest = players[i];
+                minDist = dist;
+            }
+        }
+        return nearest;
     }
 
     void ToggleDoor()

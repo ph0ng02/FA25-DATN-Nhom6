@@ -12,16 +12,18 @@ public class TeleportTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Object entered: " + other.name);
+
         if (other.CompareTag(player1Tag))
         {
             player1Inside = true;
+            Debug.Log("Player 1 entered");
         }
         else if (other.CompareTag(player2Tag))
         {
             player2Inside = true;
+            Debug.Log("Player 2 entered");
         }
-
-        CheckBothPlayers();
     }
 
     private void OnTriggerExit(Collider other)
@@ -51,13 +53,30 @@ public class TeleportTrigger : MonoBehaviour
 
         if (teleportDestination != null)
         {
-            // Dịch chuyển cả hai người chơi
+            // Disable controller trước khi dịch chuyển
+            CharacterController c1 = player1.GetComponent<CharacterController>();
+            CharacterController c2 = player2.GetComponent<CharacterController>();
+            if (c1 != null) c1.enabled = false;
+            if (c2 != null) c2.enabled = false;
+
+            // Dịch chuyển
             player1.transform.position = teleportDestination.position + new Vector3(-1f, 0f, 0f);
             player2.transform.position = teleportDestination.position + new Vector3(1f, 0f, 0f);
+
+            // Bật lại controller
+            if (c1 != null) c1.enabled = true;
+            if (c2 != null) c2.enabled = true;
         }
 
-        // Sau khi dịch chuyển, có thể reset lại trạng thái
+        Debug.Log("✅ Teleported both players!");
         player1Inside = false;
         player2Inside = false;
+    }
+    void Update()
+    {
+        if (player1Inside && player2Inside)
+        {
+            TeleportPlayers();
+        }
     }
 }
