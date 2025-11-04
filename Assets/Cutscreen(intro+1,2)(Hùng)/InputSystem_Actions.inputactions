@@ -106,7 +106,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "SkillE",
+                    "name": "SkillF",
                     "type": "Button",
                     "id": "43b6c299-0c76-43d9-8639-19568fcb5262",
                     "expectedControlType": "",
@@ -118,6 +118,15 @@
                     "name": "SkillR",
                     "type": "Button",
                     "id": "8e172eac-b9b4-4e5b-86be-f11dfb0d2c76",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RB1",
+                    "type": "Button",
+                    "id": "a8a06c25-39bb-4ef4-ad70-918a2ee2347a",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -572,7 +581,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SkillE",
+                    "action": "SkillF",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -583,7 +592,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SkillE",
+                    "action": "SkillF",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -606,6 +615,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "SkillR",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ea174d4b-b5f8-4903-bfa4-9a7e385a4e16",
+                    "path": "rightshoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RB1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "793345f5-7456-40fe-95bd-306d28c1ba23",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RB1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

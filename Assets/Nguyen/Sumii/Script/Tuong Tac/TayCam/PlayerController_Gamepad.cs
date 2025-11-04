@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem; // ⚡ Bắt buộc cho New Input System
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController_Gamepad : MonoBehaviour
@@ -14,49 +15,73 @@ public class PlayerController_Gamepad : MonoBehaviour
 
     private CharacterController controller;
     private Animator animator;
+    private PlayerInputActions input;  // lớp sinh ra từ Input System
 
+    private Vector3 moveInput;
     private Vector3 velocity;
     private int comboStep = 0;
     private float lastComboTime;
 
-    void Start()
+    private void Awake()
+    {
+        input = new PlayerInputActions(); // ⚡ Tạo instance từ Input Actions
+    }
+
+    private void OnEnable()
+    {
+        input.Player.Enable();
+
+        // Đăng ký sự kiện
+        input.Player.Move.performed += OnMove;
+        input.Player.Move.canceled += ctx => moveInput = Vector3.zero;
+
+        input.Player.Attack.performed += ctx => Attack();
+        input.Player.Interact.performed += ctx => Interact();
+        input.Player.SkillQ.performed += ctx => ComboAttack();
+        input.Player.SkillF.performed += ctx => ComboAttack();
+        input.Player.Sprint.performed += ctx => Roll();
+    }
+
+    private void OnDisable()
+    {
+        input.Player.Move.performed -= OnMove;
+        input.Player.Move.canceled -= ctx => moveInput = Vector3.zero;
+
+        input.Player.Disable();
+    }
+
+    private void Start()
     {
         controller = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
     }
 
-    void Update()
+    private void Update()
     {
         HandleMovement();
-        HandleAttack();
-        HandleInteraction();
-        HandleCombo();
+        HandleComboReset();
     }
 
-    void HandleMovement()
+    // Nhận giá trị di chuyển từ joystick trái
+    private void OnMove(InputAction.CallbackContext ctx)
     {
-        float horizontal = Input.GetAxis("Horizontal");   // Joystick trái
-        float vertical = Input.GetAxis("Vertical");
+        Vector2 inputVec = ctx.ReadValue<Vector2>();
+        moveInput = new Vector3(inputVec.x, 0, inputVec.y);
+    }
 
-        Vector3 move = new Vector3(horizontal, 0, vertical);
+    private void HandleMovement()
+    {
+        Vector3 move = moveInput;
         if (move.magnitude > 1f) move.Normalize();
 
-        bool isRunning = Input.GetButton("RB1") || Input.GetButton("RB2");
-
+        bool isRunning = input.Player.Sprint.IsPressed();
         float speed = isRunning ? runSpeed : walkSpeed;
+
         controller.Move(move * speed * Time.deltaTime);
 
-        // Quay theo hướng di chuyển
+        // Quay hướng di chuyển
         if (move != Vector3.zero)
             transform.forward = move;
-
-        // Roll
-        if (Input.GetButtonDown("RB1") || Input.GetButtonDown("RB2"))
-        {
-            Vector3 rollDir = transform.forward * rollForce;
-            controller.Move(rollDir * Time.deltaTime);
-            animator.SetTrigger("Roll");
-        }
 
         // Gravity
         if (controller.isGrounded && velocity.y < 0)
@@ -67,41 +92,25 @@ public class PlayerController_Gamepad : MonoBehaviour
         animator.SetFloat("Speed", move.magnitude * speed);
     }
 
-    void HandleAttack()
+    private void Roll()
     {
-        if (Input.GetButtonDown("joystick button0")) // A = Attack
-        {
-            animator.SetTrigger("Attack");
-        }
+        Vector3 rollDir = transform.forward * rollForce;
+        controller.Move(rollDir * Time.deltaTime);
+        animator.SetTrigger("Roll");
     }
 
-    void HandleInteraction()
+    private void Attack()
     {
-        if (Input.GetButtonDown("joystick button1")) // B = Interaction
-        {
-            Debug.Log("Tương tác với NPC hoặc vật phẩm");
-            animator.SetTrigger("Interact");
-        }
+        animator.SetTrigger("Attack");
     }
 
-    void HandleCombo()
+    private void Interact()
     {
-        if (Input.GetButtonDown("joystick button2")) // X
-        {
-            ComboAttack();
-        }
-        else if (Input.GetButtonDown("joystick button3")) // Y
-        {
-            ComboAttack();
-        }
-
-        if (Time.time - lastComboTime > comboResetTime)
-        {
-            comboStep = 0;
-        }
+        Debug.Log("Tương tác với NPC hoặc vật phẩm");
+        animator.SetTrigger("Interact");
     }
 
-    void ComboAttack()
+    private void ComboAttack()
     {
         comboStep++;
         lastComboTime = Time.time;
@@ -113,6 +122,14 @@ public class PlayerController_Gamepad : MonoBehaviour
         else if (comboStep >= 3)
         {
             animator.SetTrigger("Combo3");
+            comboStep = 0;
+        }
+    }
+
+    private void HandleComboReset()
+    {
+        if (Time.time - lastComboTime > comboResetTime)
+        {
             comboStep = 0;
         }
     }
