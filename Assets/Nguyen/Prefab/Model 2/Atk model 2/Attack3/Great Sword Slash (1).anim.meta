@@ -1,9 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 <<<<<<<< HEAD:Assets/Nguyen/Prefab/Model 2/Atk model 2/Attack3/Great Sword Slash (1).anim.meta
 guid: 0bdcc18125b3c6a41990d56f45be540f
 ========
 guid: a9b4940e4b6b80d42876c062ee1d2825
 >>>>>>>> MapCutscreen:Assets/Cutscreen3(Hùng/New Terrain 1.asset.meta
+=======
+guid: 0bdcc18125b3c6a41990d56f45be540f
+>>>>>>> Sumi-0039
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 7400000

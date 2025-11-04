@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Vinh/Map/Map1/Map1/NavMesh-Map1.asset.meta
 guid: fae45e27dadea3544a00bda03aeb7947
+========
+guid: 59da0080125916b4da7192ef317d15cc
+>>>>>>>> feature/Team06--0071:Assets/Nguyen/Prefab/Model 2/Atk model 2/Attack3/NavMesh-Plane 1.asset.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 23800000

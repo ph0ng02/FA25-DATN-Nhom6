@@ -39,6 +39,13 @@ public class LeverDoorController : MonoBehaviour
         if (interactText != null)
             interactText.gameObject.SetActive(false);
     }
+    public void OnInteract()
+    {
+        if (!isMoving)
+        {
+            ToggleDoor();
+        }
+    }
 
     void Update()
     {

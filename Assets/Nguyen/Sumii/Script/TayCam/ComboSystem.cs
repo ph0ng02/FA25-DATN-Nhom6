@@ -68,7 +68,7 @@ public class ComboSystem : MonoBehaviour
         int maxCombo = skill switch
         {
             "Q" => 4,
-            "E" => 3,
+            "F" => 3,
             "R" => 2,
             _ => 1
         };
@@ -87,7 +87,7 @@ public class ComboSystem : MonoBehaviour
         int animIndex = skill switch
         {
             "Q" => 8 + comboStep,  // 9–12
-            "E" => 12 + comboStep, // 13–16
+            "F" => 12 + comboStep, // 13–16
             "R" => 16 + comboStep, // 17–18
             _ => 9
         };
