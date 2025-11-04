@@ -3,43 +3,53 @@
 public class PlayerAttack : MonoBehaviour
 {
     [Header("Attack Settings")]
-    public float attackRange = 1.8f;
-    public float attackRate = 1f;
-    private float nextAttackTime = 0f;
+    public float attackRange = 1.8f;      // Tầm tấn công
+    public float attackRate = 1f;         // Số đòn đánh mỗi giây
+    private float nextAttackTime = 0f;    // Thời gian tấn công kế tiếp
 
     [Header("Damage Settings")]
-    public int attackDamage = 25;
+    public float attackDamage = 25f;      // Sát thương gây ra (float để khớp với EnemyAI1.TakeDamage)
 
     [Header("References")]
-    public Animator animator;
-    public Transform attackPoint;
-    public LayerMask enemyLayer;
+    public Animator animator;             // Animator của Player
+    public Transform attackPoint;         // Vị trí gây sát thương
+    public LayerMask enemyLayer;          // Layer của kẻ địch
 
-    void Update()
+    private void Start()
     {
-        // Khi nhấn chuột trái để tấn công
+        if (animator == null)
+            animator = GetComponent<Animator>();
+    }
+
+    private void Update()
+    {
+        // Khi nhấn chuột trái và đủ thời gian hồi chiêu
         if (Input.GetMouseButtonDown(0) && Time.time >= nextAttackTime)
         {
             Attack();
             nextAttackTime = Time.time + 1f / attackRate;
         }
     }
-    void Start()
+
+    private void Attack()
     {
-        if (animator == null)
-            animator = GetComponent<Animator>();
+        // Gọi animation tấn công
+        if (animator != null)
+            animator.SetTrigger("attack");
+        else
+            DealDamage(); // fallback nếu chưa có animator
     }
 
-    void Attack()
-    {
-        // Gọi animation attack
-        animator.SetTrigger("attack");
-    }
-
-    // Gọi hàm này trong Animation Event của clip Attack
+    // Hàm này được gọi tại Animation Event của animation tấn công
     public void DealDamage()
     {
-        // Kiểm tra kẻ địch trong vùng attack
+        if (attackPoint == null)
+        {
+            Debug.LogWarning("⚠️ AttackPoint chưa được gán!");
+            return;
+        }
+
+        // Tìm tất cả enemy trong bán kính attackRange
         Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayer);
 
         foreach (Collider enemy in hitEnemies)
@@ -48,12 +58,13 @@ public class PlayerAttack : MonoBehaviour
             if (enemyAI != null)
             {
                 enemyAI.TakeDamage(attackDamage);
+                Debug.Log($"🗡 Gây {attackDamage} damage lên {enemy.name}");
             }
         }
     }
 
-    // Vẽ vùng tấn công trong Scene
-    void OnDrawGizmosSelected()
+    // Vẽ vùng tấn công trong Scene view để dễ chỉnh
+    private void OnDrawGizmosSelected()
     {
         if (attackPoint == null) return;
         Gizmos.color = Color.red;
