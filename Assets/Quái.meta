@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 5436b37d9d11b01489778e6d23264383
+=======
+guid: d36db79e901a4a34394abb16bfa970d3
+>>>>>>> parent of f06c691 (Hung)
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

@@ -1,4 +1,5 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 13bed160b7260834da4e83721d737790
 folderAsset: yes
 DefaultImporter:
@@ -6,3 +7,9 @@ DefaultImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+=======
+guid: 2f243ce0406bd1c40a9ff5fc2d78d905
+folderAsset: yes
+DefaultImporter:
+  userData: 
+>>>>>>> parent of f06c691 (Hung)

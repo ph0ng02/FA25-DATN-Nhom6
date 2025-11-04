@@ -1,8 +1,16 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: a2c50121a7beff242a61a59502b05fb6
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
+=======
+guid: 36ec26ab837c15349881a4c79836f2aa
+folderAsset: yes
+timeCreated: 1553510417
+licenseType: Store
+DefaultImporter:
+>>>>>>> parent of f06c691 (Hung)
   userData: 
   assetBundleName: 
   assetBundleVariant: 
