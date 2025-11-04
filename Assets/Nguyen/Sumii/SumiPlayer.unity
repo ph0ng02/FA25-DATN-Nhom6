@@ -369,6 +369,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 300f4bf7a680d14418893e3171804691, type: 3}
       insertIndex: -1
       addedObject: {fileID: 933745028}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 300f4bf7a680d14418893e3171804691, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 933745030}
   m_SourcePrefab: {fileID: 100100000, guid: 300f4bf7a680d14418893e3171804691, type: 3}
 --- !u!1 &933745016 stripped
 GameObject:
@@ -537,6 +540,24 @@ MonoBehaviour:
   specialComboResetTime: 2
   qAutoCancelTime: 1
   animator: {fileID: 0}
+--- !u!114 &933745030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 933745016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9127db65ad669a4ea67463e6855cae8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractionPlayer
+  interactDistance: 5
+  interactKey: 101
+  interactLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  interactText: {fileID: 0}
 --- !u!1 &1046352354 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3306100764376975615, guid: 80844b2319340044da27db99208a9eac, type: 3}
