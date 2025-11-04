@@ -44,7 +44,7 @@ public class PlayerAttack : MonoBehaviour
 
         foreach (Collider enemy in hitEnemies)
         {
-            EnemyAI enemyAI = enemy.GetComponent<EnemyAI>();
+            EnemyAI1 enemyAI = enemy.GetComponent<EnemyAI1>();
             if (enemyAI != null)
             {
                 enemyAI.TakeDamage(attackDamage);
