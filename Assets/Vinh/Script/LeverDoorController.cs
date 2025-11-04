@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 public class LeverDoorController : MonoBehaviour
 {
@@ -47,24 +48,16 @@ public class LeverDoorController : MonoBehaviour
         }
     }
 
+    bool isTrigger;
     void Update()
     {
-        if (playerCam == null) return; // Nếu chưa có camera thì dừng lại
-
-        float distance = Vector3.Distance(playerCam.position, transform.position);
-
-        // Hiển thị UI khi lại gần
-        if (interactText != null)
-            interactText.gameObject.SetActive(distance < interactDistance && !isMoving);
-
-        // Kiểm tra nhấn E
-        if (distance < interactDistance && Input.GetKeyDown(interactKey) && !isMoving)
+        //Kiểm tra nhấn E
+       if (isTrigger && Input.GetKeyDown(interactKey) && !isMoving)
         {
             ToggleDoor();
         }
 
-        // Debug để kiểm tra
-        Debug.Log($"Lever Controller đang hoạt động. Khoảng cách: {distance}");
+      
     }
 
     void ToggleDoor()
@@ -104,6 +97,26 @@ public class LeverDoorController : MonoBehaviour
             t += Time.deltaTime * moveSpeed;
             leverHandle.localRotation = Quaternion.Lerp(startRot, targetRot, t);
             yield return null;
+        }
+    }
+
+    private void OnTriggerEnter(Collider collider)
+    {
+        if(collider.TryGetComponent(out PlayerAnimationControl controll))
+        {
+            isTrigger = true;
+            if (interactText != null)
+                interactText.gameObject.SetActive(true && !isMoving);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.TryGetComponent(out PlayerAnimationControl controll))
+        {
+            isTrigger = false;
+            if (interactText != null)
+                interactText.gameObject.SetActive(false);
         }
     }
 }
