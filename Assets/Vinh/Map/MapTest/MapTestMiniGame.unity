@@ -883,7 +883,12 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5166005436376250102, guid: 491126138f0deb844ada1223ff5c8940, type: 3}
+    - {fileID: 5914365091543230637, guid: 491126138f0deb844ada1223ff5c8940, type: 3}
+    - {fileID: 6678673138273546864, guid: 491126138f0deb844ada1223ff5c8940, type: 3}
+    - {fileID: 8128960747679944096, guid: 491126138f0deb844ada1223ff5c8940, type: 3}
+    - {fileID: 6701569770987415257, guid: 491126138f0deb844ada1223ff5c8940, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3878574867358006079, guid: 491126138f0deb844ada1223ff5c8940, type: 3}
@@ -935,7 +940,7 @@ MonoBehaviour:
   attackPoint: {fileID: 785709319}
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 72
 --- !u!114 &1566580528
 MonoBehaviour:
   m_ObjectHideFlags: 0
