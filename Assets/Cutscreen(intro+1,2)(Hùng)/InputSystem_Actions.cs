@@ -1373,6 +1373,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""New action"",
+                    ""type"": ""Button"",
+                    ""id"": ""ab315a29-4056-4eef-882d-064ac70d6351"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1386,105 +1395,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""WASD"",
-                    ""id"": ""60bc1119-a0ed-41c2-b667-4349386a5588"",
-                    ""path"": ""Dpad"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""b1ea83eb-8dd4-4df2-a801-c6ce11f982c9"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""e585a794-287e-4092-9004-f3c690ffbb3a"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""c8df3e62-a8ad-40f6-9f10-fe2529f9d2a8"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""9c0a91f2-50ee-4984-a809-1b5d79e3dfd3"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""6ed91b5c-0f9c-45b4-bdd5-c53ce72f46cc"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""9b7b9c85-263e-4a8e-be88-de42b3e4e3f3"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""4b79e6ce-ec99-467d-ae76-0ae34867d158"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""a895c6d2-b460-47bc-baff-1f22c8bc88e6"",
-                    ""path"": ""<Keyboard>/rightArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
@@ -1881,6 +1791,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""RB1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""064b17b8-46e9-4782-a9ae-ac126132a45a"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -2013,20 +1934,18 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""New action"",
+                    ""type"": ""Button"",
+                    ""id"": ""24e8b640-c708-4f56-af40-3476adf5a2fc"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""302969c0-36b8-46b2-9612-5967b009e3a5"",
-                    ""path"": ""<Gamepad>/leftStick"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
                 {
                     ""name"": ""WASD"",
                     ""id"": ""adf7dabd-7a65-41cf-8234-73e8d820f4d5"",
@@ -2532,6 +2451,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""RB1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4f22ea2e-6d61-4544-ac78-7e304d8ef4f9"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -2643,6 +2573,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Gamepad1_SkillF = m_Player_Gamepad1.FindAction("SkillF", throwIfNotFound: true);
         m_Player_Gamepad1_SkillR = m_Player_Gamepad1.FindAction("SkillR", throwIfNotFound: true);
         m_Player_Gamepad1_RB1 = m_Player_Gamepad1.FindAction("RB1", throwIfNotFound: true);
+        m_Player_Gamepad1_Newaction = m_Player_Gamepad1.FindAction("New action", throwIfNotFound: true);
         // PlayerKeyboard
         m_PlayerKeyboard = asset.FindActionMap("PlayerKeyboard", throwIfNotFound: true);
         m_PlayerKeyboard_Move = m_PlayerKeyboard.FindAction("Move", throwIfNotFound: true);
@@ -2659,6 +2590,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_PlayerKeyboard_SkillF = m_PlayerKeyboard.FindAction("SkillF", throwIfNotFound: true);
         m_PlayerKeyboard_SkillR = m_PlayerKeyboard.FindAction("SkillR", throwIfNotFound: true);
         m_PlayerKeyboard_RB1 = m_PlayerKeyboard.FindAction("RB1", throwIfNotFound: true);
+        m_PlayerKeyboard_Newaction = m_PlayerKeyboard.FindAction("New action", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -3190,6 +3122,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Gamepad1_SkillF;
     private readonly InputAction m_Player_Gamepad1_SkillR;
     private readonly InputAction m_Player_Gamepad1_RB1;
+    private readonly InputAction m_Player_Gamepad1_Newaction;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player_Gamepad1".
     /// </summary>
@@ -3258,6 +3191,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @RB1 => m_Wrapper.m_Player_Gamepad1_RB1;
         /// <summary>
+        /// Provides access to the underlying input action "Player_Gamepad1/Newaction".
+        /// </summary>
+        public InputAction @Newaction => m_Wrapper.m_Player_Gamepad1_Newaction;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_Player_Gamepad1; }
@@ -3325,6 +3262,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @RB1.started += instance.OnRB1;
             @RB1.performed += instance.OnRB1;
             @RB1.canceled += instance.OnRB1;
+            @Newaction.started += instance.OnNewaction;
+            @Newaction.performed += instance.OnNewaction;
+            @Newaction.canceled += instance.OnNewaction;
         }
 
         /// <summary>
@@ -3378,6 +3318,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @RB1.started -= instance.OnRB1;
             @RB1.performed -= instance.OnRB1;
             @RB1.canceled -= instance.OnRB1;
+            @Newaction.started -= instance.OnNewaction;
+            @Newaction.performed -= instance.OnNewaction;
+            @Newaction.canceled -= instance.OnNewaction;
         }
 
         /// <summary>
@@ -3429,6 +3372,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerKeyboard_SkillF;
     private readonly InputAction m_PlayerKeyboard_SkillR;
     private readonly InputAction m_PlayerKeyboard_RB1;
+    private readonly InputAction m_PlayerKeyboard_Newaction;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerKeyboard".
     /// </summary>
@@ -3497,6 +3441,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @RB1 => m_Wrapper.m_PlayerKeyboard_RB1;
         /// <summary>
+        /// Provides access to the underlying input action "PlayerKeyboard/Newaction".
+        /// </summary>
+        public InputAction @Newaction => m_Wrapper.m_PlayerKeyboard_Newaction;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_PlayerKeyboard; }
@@ -3564,6 +3512,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @RB1.started += instance.OnRB1;
             @RB1.performed += instance.OnRB1;
             @RB1.canceled += instance.OnRB1;
+            @Newaction.started += instance.OnNewaction;
+            @Newaction.performed += instance.OnNewaction;
+            @Newaction.canceled += instance.OnNewaction;
         }
 
         /// <summary>
@@ -3617,6 +3568,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @RB1.started -= instance.OnRB1;
             @RB1.performed -= instance.OnRB1;
             @RB1.canceled -= instance.OnRB1;
+            @Newaction.started -= instance.OnNewaction;
+            @Newaction.performed -= instance.OnNewaction;
+            @Newaction.canceled -= instance.OnNewaction;
         }
 
         /// <summary>
@@ -4004,6 +3958,13 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRB1(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "New action" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnNewaction(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerKeyboard" which allows adding and removing callbacks.
@@ -4110,5 +4071,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRB1(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "New action" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnNewaction(InputAction.CallbackContext context);
     }
 }

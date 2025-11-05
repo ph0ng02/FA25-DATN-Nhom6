@@ -8,8 +8,6 @@ public class GameDemo1 : MonoBehaviour
     private Vector2 moveInput;
     private Rigidbody rb;
 
-    [SerializeField] private bool isGamepadPlayer = false; // chọn loại điều khiển trong Inspector
-
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -17,16 +15,16 @@ public class GameDemo1 : MonoBehaviour
 
     private void OnEnable()
     {
-        // Bật đúng Action Map cho player này
         if (playerInput != null)
         {
-            if (isGamepadPlayer)
+            if (gameObject.name.Contains("Gamepad"))
                 playerInput.SwitchCurrentActionMap("Player_Gamepad1");
             else
                 playerInput.SwitchCurrentActionMap("PlayerKeyboard");
         }
     }
 
+    // ✅ Đảm bảo có public và tham số đúng kiểu
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
