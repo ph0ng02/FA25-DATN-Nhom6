@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.InputSystem; // ✅ Dùng cho Input System mới (Keyboard, Gamepad...)
 
 public class LeverDoorController : MonoBehaviour
 {
@@ -52,14 +53,35 @@ public class LeverDoorController : MonoBehaviour
         Transform nearestPlayer = GetNearestPlayer();
         float distance = Vector3.Distance(nearestPlayer.position, transform.position);
 
-        // Hiện UI nếu có người chơi gần
+        // --- HIỂN THỊ UI ---
         if (interactText != null)
-            interactText.gameObject.SetActive(distance < interactDistance && !isMoving);
-
-        // Kiểm tra nhấn E
-        if (distance < interactDistance && Input.GetKeyDown(interactKey) && !isMoving)
         {
-            ToggleDoor();
+            if (Gamepad.current != null)
+                interactText.text = "Nhấn [A] để gạt cần";
+            else
+                interactText.text = "Nhấn [E] để gạt cần";
+
+            interactText.gameObject.SetActive(distance < interactDistance && !isMoving);
+        }
+
+        // --- KIỂM TRA TƯƠNG TÁC ---
+        if (distance < interactDistance && !isMoving)
+        {
+            bool interactPressed = false;
+
+            // ✅ Input System mới
+            if (Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
+                interactPressed = true;
+
+            if (Gamepad.current != null && Gamepad.current.buttonSouth.wasPressedThisFrame)
+                interactPressed = true;
+
+            // ✅ Input System cũ (phòng trường hợp không có Input System mới)
+            if (Input.GetKeyDown(interactKey) || Input.GetButtonDown("Submit") || Input.GetButtonDown("Fire1"))
+                interactPressed = true;
+
+            if (interactPressed)
+                ToggleDoor();
         }
     }
 
