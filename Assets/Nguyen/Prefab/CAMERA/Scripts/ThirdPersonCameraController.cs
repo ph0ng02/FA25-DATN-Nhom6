@@ -3,31 +3,44 @@ using UnityEngine;
 public class ThirdPersonCameraController : MonoBehaviour
 {
     [Header("References")]
-    public Transform target;        // Player
-    public Transform pivot;         // Điểm xoay camera
-    public Transform cam;           // Main Camera
-    public CharacterController controller; // Thêm CharacterController củ player
+    public Transform target;        
+    public Transform pivot;         
+    public Transform cam;           
+    public CharacterController controller;
 
     [Header("Settings")]
-    public float sensitivity = 3f;  
-    public float distance = 5f;     
+    public float sensitivity = 3f;
+    public float distance = 5f;
     public float pitchMin = -30f;
     public float pitchMax = 70f;
-    public float moveSpeed = 5f;    
-    public float rotateSpeed = 10f; 
+    public float moveSpeed = 5f;
+    public float rotateSpeed = 10f;
 
     private float yaw;
     private float pitch;
+    private bool menuOpen = false; // 👉 Thêm biến để biết có đang mở menu không
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        LockCursor(true); // Khóa chuột khi bắt đầu
+    }
+
+    void Update()
+    {
+        // 👉 Khi nhấn Tab, bật/tắt menu và chuột
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            menuOpen = !menuOpen;
+            LockCursor(!menuOpen);
+        }
     }
 
     void LateUpdate()
     {
         if (target == null || pivot == null || cam == null) return;
+
+        // 🚫 Khi menu đang mở thì không điều khiển camera
+        if (menuOpen) return;
 
         // --- Xử lý chuột xoay camera ---
         float mouseX = Input.GetAxis("Mouse X") * sensitivity;
@@ -66,9 +79,18 @@ public class ThirdPersonCameraController : MonoBehaviour
         }
     }
 
-    void OnDisable()
+    // 🔒 Hàm tiện ích: bật/tắt khóa chuột
+    void LockCursor(bool locked)
     {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        if (locked)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
     }
 }
