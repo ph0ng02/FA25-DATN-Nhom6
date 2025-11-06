@@ -143,7 +143,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameDemo1
   playerInput: {fileID: 0}
   moveSpeed: 5
-  isGamepadPlayer: 0
 --- !u!114 &89876274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -694,7 +693,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameDemo1
   playerInput: {fileID: 0}
   moveSpeed: 5
-  isGamepadPlayer: 0
 --- !u!54 &933745032
 Rigidbody:
   m_ObjectHideFlags: 0
