@@ -4,36 +4,46 @@ using UnityEngine;
 public class PlayerController_Gamepad : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public float moveSpeed = 5f;          // Tốc độ di chuyển
-    public float rotationSpeed = 720f;    // Tốc độ xoay nhân vật (độ/giây)
+    public float walkSpeed = 5f;         // tốc độ bình thường
+    public float runSpeed = 10f;         // tốc độ khi nhấn nút chạy
+    public float rotationSpeed = 720f;   // tốc độ xoay nhân vật
 
+    public Animator animator;            // gán Animator trong Inspector
     private CharacterController controller;
-    private Vector3 moveDirection;
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        if (animator == null)
+            animator = GetComponent<Animator>();
     }
 
     void Update()
     {
-        // Lấy input từ tay cầm (chuẩn Unity Input Manager)
-        float horizontal = Input.GetAxis("Horizontal"); // Left Stick X
-        float vertical = Input.GetAxis("Vertical");     // Left Stick Y
+        // Lấy input từ tay cầm (Left Stick)
+        float horizontal = Input.GetAxis("Horizontal2");
+        float vertical = Input.GetAxis("Vertical2");
 
         Vector3 inputDir = new Vector3(horizontal, 0, vertical);
+        Vector3 direction = inputDir.normalized;
         float magnitude = Mathf.Clamp01(inputDir.magnitude);
 
-        // Nếu có di chuyển thì xoay player theo hướng đó
-        if (magnitude > 0.1f)
-        {
-            // Xoay hướng nhân vật theo hướng input
-            Quaternion targetRotation = Quaternion.LookRotation(inputDir);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-        }
+        // Kiểm tra nút chạy (ví dụ: nút "Joystick Button 0" tương đương A trên Xbox)
+        bool isRunning = Input.GetKey(KeyCode.JoystickButton0);
+        float currentSpeed = isRunning ? runSpeed : walkSpeed;
 
-        // Di chuyển nhân vật
-        moveDirection = transform.forward * magnitude * moveSpeed;
-        controller.Move(moveDirection * Time.deltaTime);
+        // --- Set animation ---
+        animator.SetFloat("Speed", magnitude * walkSpeed, 0.1f, Time.deltaTime); // giữ Idle/Walk mượt
+        animator.SetBool("isRunning", isRunning);                                 // bật Run khi nhấn nút
+
+        if (magnitude >= 0.1f)
+        {
+            // Xoay player theo hướng cần trái
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+            // Di chuyển player
+            controller.Move(direction * currentSpeed * Time.deltaTime);
+        }
     }
 }

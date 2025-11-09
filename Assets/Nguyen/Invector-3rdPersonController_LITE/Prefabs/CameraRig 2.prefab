@@ -194,8 +194,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8051072486586519338}
-  - component: {fileID: 3894478651632731054}
-  - component: {fileID: 1286566704845230295}
+  - component: {fileID: 7347071263525357631}
   m_Layer: 0
   m_Name: CameraRig 2
   m_TagString: Untagged
@@ -211,7 +210,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6001142624516286877}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 56.358963, y: 0, z: 46.7695}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
@@ -219,44 +218,19 @@ Transform:
   - {fileID: 4436801536129479600}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3894478651632731054
+--- !u!114 &7347071263525357631
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6001142624516286877}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c13ee35010795cc40a47bd37c09f0215, type: 3}
+  m_Script: {fileID: 11500000, guid: e3ad523a63737a742b36ebcb5098e578, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NaughtyCharacter.PlayerCamera
-  ControlRotationSensitivity: 2
-  FollowSpeed: 10
-  PitchMinMax: {x: -35, y: 70}
-  Rig: {fileID: 8051072486586519338}
-  Pivot: {fileID: 4436801536129479600}
-  Target: {fileID: 0}
-  Camera: {fileID: 5687065417701487050}
---- !u!114 &1286566704845230295
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6001142624516286877}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf4e1366cff1e494e9bc90b797b23caf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ThirdPersonCameraController
-  target: {fileID: 0}
-  pivot: {fileID: 4436801536129479600}
-  cam: {fileID: 6969314937451294359}
-  controller: {fileID: 0}
-  sensitivity: 3
-  distance: 5
-  pitchMin: -30
-  pitchMax: 70
-  moveSpeed: 5
-  rotateSpeed: 10
+  m_EditorClassIdentifier: Assembly-CSharp::FollowPlayerCamera
+  player: {fileID: 0}
+  distance: 4
+  height: 2
+  smoothSpeed: 5
