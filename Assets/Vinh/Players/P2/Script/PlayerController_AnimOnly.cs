@@ -23,11 +23,11 @@ public class PlayerController_AnimOnly : MonoBehaviour
     void HandleActions()
     {
         // --- Attack thường (Fire3) ---
-        if (Input.GetButtonDown("Fire3")) // Joystick Button 2
+        if (Input.GetButtonDown("Fire-3")) // Joystick Button 2
             animator.SetTrigger("Attack");
 
         // --- Combo (Fire4) ---
-        if (Input.GetButtonDown("Fire4")) // Joystick Button 3
+        if (Input.GetButtonDown("Fire-4")) // Joystick Button 3.
             animator.SetTrigger("Attack1");
 
         // --- Jump ---
