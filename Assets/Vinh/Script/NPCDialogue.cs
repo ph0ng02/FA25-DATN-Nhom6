@@ -63,23 +63,17 @@ public class NPCDialogue : MonoBehaviour
         return closest;
     }
 
-
     void Update()
     {
+        if (player == null) return;
+
         float distance = Vector3.Distance(transform.position, player.position);
 
         if (distance <= interactionDistance)
         {
             if (Input.GetKeyDown(interactKey))
             {
-                if (!isTalking)
-                {
-                    StartDialogue();
-                }
-                else
-                {
-                    NextLine();
-                }
+                Interact(); // dùng luôn Interact
             }
         }
         else if (isTalking)
@@ -88,12 +82,24 @@ public class NPCDialogue : MonoBehaviour
         }
     }
 
+    // --- Method Interact để Player gọi ---
+    public void Interact()
+    {
+        if (!isTalking)
+            StartDialogue();
+        else
+            NextLine();
+    }
+
     void StartDialogue()
     {
         isTalking = true;
         currentLine = 0;
-        dialoguePanel.SetActive(true);
-        dialogueText.text = dialogueLines[currentLine];
+        if (dialoguePanel != null)
+        {
+            dialoguePanel.SetActive(true);
+            dialogueText.text = dialogueLines[currentLine];
+        }
     }
 
     void NextLine()
@@ -112,6 +118,7 @@ public class NPCDialogue : MonoBehaviour
     void EndDialogue()
     {
         isTalking = false;
-        dialoguePanel.SetActive(false);
+        if (dialoguePanel != null)
+            dialoguePanel.SetActive(false);
     }
 }
