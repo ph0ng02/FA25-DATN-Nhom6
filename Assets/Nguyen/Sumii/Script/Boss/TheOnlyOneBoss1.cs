@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
 
 public class TheOnlyOneBoss1 : MonoBehaviour
 {
@@ -17,8 +18,6 @@ public class TheOnlyOneBoss1 : MonoBehaviour
     public float attackRange = 2f;
     public float throwRange = 6f;
     public float skillRange = 10f;
-    public float detectionRange = 15f; // 👀 tầm nhìn phát hiện player
-    public float viewAngle = 60f;      // góc nhìn (trước mặt boss)
 
     [Header("Cooldowns")]
     public float attackCooldown = 2f;
@@ -29,7 +28,15 @@ public class TheOnlyOneBoss1 : MonoBehaviour
     private float nextThrowTime;
     private float nextSkillTime;
 
-    private bool playerDetected = false;
+    [Header("Skill 3 AOE")]
+    public GameObject chargeEffectPrefab;   // Hiệu ứng charge
+    public GameObject skillEffectPrefab;    // Hiệu ứng skill thật (AOE nổ)
+    public Transform chargePoint;           // Vị trí xuất hiện charge
+    public float skillChargeTime = 2f;      // Thời gian mém chiêu
+    public int skillDamage = 100;           // ✅ Đã đổi sang int
+    public float skillAOERadius = 5f;       // Bán kính AOE skill
+
+    private GameObject currentChargeEffect;
 
     void Start()
     {
@@ -44,21 +51,7 @@ public class TheOnlyOneBoss1 : MonoBehaviour
 
         float distance = Vector3.Distance(transform.position, player.position);
 
-        // Kiểm tra nếu thấy player
-        if (CanSeePlayer())
-        {
-            playerDetected = true;
-        }
-
-        // Nếu chưa thấy player → idle
-        if (!playerDetected)
-        {
-            agent.isStopped = true;
-            anim.SetBool("isMoving", false);
-            return;
-        }
-
-        // Nếu đã thấy player → di chuyển hoặc tấn công
+        // Di chuyển hoặc đứng yên
         if (distance > attackRange)
         {
             agent.isStopped = false;
@@ -71,35 +64,21 @@ public class TheOnlyOneBoss1 : MonoBehaviour
             anim.SetBool("isMoving", false);
         }
 
+        // Gọi hành vi theo giai đoạn máu
         HandlePhases(distance);
-    }
-
-    bool CanSeePlayer()
-    {
-        Vector3 dirToPlayer = (player.position - transform.position).normalized;
-        float distance = Vector3.Distance(transform.position, player.position);
-
-        if (distance > detectionRange) return false; // quá xa
-        if (Vector3.Angle(transform.forward, dirToPlayer) > viewAngle / 2f) return false; // ngoài góc nhìn
-
-        // Kiểm tra không bị vật cản che
-        if (Physics.Raycast(transform.position + Vector3.up, dirToPlayer, out RaycastHit hit, detectionRange))
-        {
-            return hit.transform == player;
-        }
-
-        return false;
     }
 
     void HandlePhases(float distance)
     {
         float hpPercent = (float)currentHP / maxHP * 100f;
 
+        // 🩸 Giai đoạn 1: >75% HP → chỉ Attack
         if (hpPercent > 75f)
         {
             if (distance <= attackRange && Time.time >= nextAttackTime)
                 Attack();
         }
+        // ⚔️ Giai đoạn 2: 50% < HP ≤ 75% → Attack + Throw
         else if (hpPercent > 50f)
         {
             if (distance <= attackRange && Time.time >= nextAttackTime)
@@ -107,6 +86,7 @@ public class TheOnlyOneBoss1 : MonoBehaviour
             else if (distance <= throwRange && Time.time >= nextThrowTime)
                 Throw();
         }
+        // 💀 Giai đoạn 3: HP ≤ 40% → dùng hết chiêu (Attack + Throw + Skill)
         else if (hpPercent <= 40f)
         {
             if (distance <= attackRange && Time.time >= nextAttackTime)
@@ -136,7 +116,49 @@ public class TheOnlyOneBoss1 : MonoBehaviour
     {
         anim.SetTrigger("useSkill");
         nextSkillTime = Time.time + skillCooldown;
-        Debug.Log("Boss Skill!");
+        Debug.Log("Boss starts charging AOE skill!");
+
+        // Hiện hiệu ứng charge
+        if (chargeEffectPrefab != null && chargePoint != null)
+        {
+            currentChargeEffect = Instantiate(chargeEffectPrefab, chargePoint.position, chargePoint.rotation, chargePoint);
+        }
+
+        // Bắt đầu Coroutine thực hiện skill sau khi charge
+        StartCoroutine(CastAOESkillAfterCharge());
+    }
+
+    private IEnumerator CastAOESkillAfterCharge()
+    {
+        // Boss đứng yên khi charge
+        agent.isStopped = true;
+        anim.SetBool("isMoving", false);
+
+        // Chờ thời gian charge
+        yield return new WaitForSeconds(skillChargeTime);
+
+        // Xóa hiệu ứng charge
+        if (currentChargeEffect != null)
+            Destroy(currentChargeEffect);
+
+        // Hiện hiệu ứng skill thật
+        if (skillEffectPrefab != null && chargePoint != null)
+        {
+            Instantiate(skillEffectPrefab, chargePoint.position, Quaternion.identity);
+        }
+
+        // Gây damage cho player trong bán kính AOE
+        Collider[] hits = Physics.OverlapSphere(chargePoint.position, skillAOERadius);
+        foreach (var hit in hits)
+        {
+            if (hit.CompareTag("Player"))
+            {
+                hit.GetComponent<PlayerHealth>()?.TakeDamage(skillDamage); // ✅ Ok vì skillDamage là int
+            }
+        }
+
+        // Boss có thể di chuyển lại
+        agent.isStopped = false;
     }
 
     public void TakeDamage(int dmg)
@@ -157,14 +179,25 @@ public class TheOnlyOneBoss1 : MonoBehaviour
         Destroy(gameObject, 5f);
     }
 
-    // Gọi bằng Animation Event
+    // Animation Event: DealDamage (Attack)
     public void DealDamage()
     {
         Debug.Log("Boss hits player!");
     }
 
+    // Animation Event: SpawnProjectile (Throw)
     public void SpawnProjectile()
     {
         Debug.Log("Boss throws projectile!");
+    }
+
+    // Vẽ vùng AOE trong Scene để test
+    void OnDrawGizmosSelected()
+    {
+        if (chargePoint != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(chargePoint.position, skillAOERadius);
+        }
     }
 }
