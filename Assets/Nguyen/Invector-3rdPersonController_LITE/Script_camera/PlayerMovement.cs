@@ -56,10 +56,10 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // --- Nhảy ---
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetButtonDown("Jump1") && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            animator.SetTrigger("Jump");
+            animator.SetTrigger("Jump1");
         }
 
         // --- Áp dụng trọng lực ---

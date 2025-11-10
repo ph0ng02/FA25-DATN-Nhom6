@@ -31,7 +31,7 @@ public class PlayerController_AnimOnly : MonoBehaviour
             animator.SetTrigger("Attack1");
 
         // --- Jump ---
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump-1"))
             animator.SetBool("IsJumping", true);
         else
             animator.SetBool("IsJumping", false);

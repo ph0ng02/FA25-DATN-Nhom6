@@ -431,15 +431,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1650455b3fb4ce640beebf3a9de2f75c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 23.23551
+      value: 52
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1650455b3fb4ce640beebf3a9de2f75c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00000011920929
+      value: 0.00000166893
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1650455b3fb4ce640beebf3a9de2f75c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8.82773
+      value: 53
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1650455b3fb4ce640beebf3a9de2f75c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -573,7 +573,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController_AnimOnly
   animator: {fileID: 0}
-  rollDuration: 1
+  rollDuration: 0.1
 --- !u!114 &7044542700585756805
 MonoBehaviour:
   m_ObjectHideFlags: 0
