@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[ExecuteAlways] // Cho phép hiển thị cả khi không chạy game
+[ExecuteAlways] 
 public class BossRangeVisualizer : MonoBehaviour
 {
     [Header("Tầm hoạt động của Boss")]
