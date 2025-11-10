@@ -1,29 +1,56 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public int maxHealth = 100;
-    private int currentHealth;
+    [Header("Stats")]
+    public float maxHealth = 100f;
+    private float currentHealth;
 
-    private void Start()
+    [Header("Knockback")]
+    public float knockbackDuration = 0.2f;
+    private Rigidbody rb;
+    private bool isKnockedback = false;
+
+    void Start()
     {
+        rb = GetComponent<Rigidbody>();
         currentHealth = maxHealth;
     }
 
-    public void TakeDamage(int amount)
+    public void TakeDamage(int damage, float knockbackForce, Vector3 knockbackDir)
     {
-        currentHealth -= amount;
-        Debug.Log($"Player nhận {amount} sát thương! Máu còn lại: {currentHealth}");
+        if (isKnockedback) return;
+
+        currentHealth -= damage;
+        Debug.Log($"{gameObject.name} bị đánh {damage} damage! Máu còn lại: {currentHealth}");
 
         if (currentHealth <= 0)
         {
             Die();
         }
+        else
+        {
+            StartCoroutine(ApplyKnockback(knockbackForce, knockbackDir));
+        }
     }
 
-    void Die()
+    private IEnumerator ApplyKnockback(float force, Vector3 direction)
     {
-        Debug.Log("Player đã chết!");
-        // Có thể thêm animation chết hoặc respawn
+        if (rb == null) yield break;
+
+        isKnockedback = true;
+        rb.AddForce(direction * force, ForceMode.Impulse);
+
+        yield return new WaitForSeconds(knockbackDuration);
+
+        rb.linearVelocity = Vector3.zero;
+        isKnockedback = false;
+    }
+
+    private void Die()
+    {
+        Debug.Log($"{gameObject.name} đã chết!");
+        // Bạn có thể thêm hiệu ứng, disable input, hoặc respawn tại đây
     }
 }

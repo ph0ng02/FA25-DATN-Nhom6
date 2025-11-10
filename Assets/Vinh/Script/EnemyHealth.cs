@@ -2,36 +2,22 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    [SerializeField] int maxHealth = 100;
-    int currentHealth;
+    [Header("Health Settings")]
+    public float maxHealth = 100f;
+    private float currentHealth;
 
-    [Header("Hit feedback")]
-    [SerializeField] ParticleSystem hitVFX;
-    [SerializeField] AudioClip hitSfx;
-    [SerializeField] AudioSource audioSource;
-    [SerializeField] float deathDelay = 0.5f;
+    [Header("Death Settings")]
+    public GameObject deathEffect; // hiệu ứng nổ hoặc biến mất khi chết
 
-    void Awake()
+    void Start()
     {
         currentHealth = maxHealth;
     }
 
-    public void TakeDamage(int amount, Vector3 hitPoint, Vector3 hitDirection)
+    public void TakeDamage(float damage)
     {
-        if (currentHealth <= 0) return;
-
-        currentHealth -= amount;
-        // VFX/SFX
-        if (hitVFX != null)
-        {
-            var v = Instantiate(hitVFX, hitPoint, Quaternion.LookRotation(hitDirection));
-            Destroy(v.gameObject, 2f);
-        }
-        if (audioSource != null && hitSfx != null) audioSource.PlayOneShot(hitSfx);
-
-        // TODO: trigger hurt animation here if you have animator
-        var anim = GetComponent<Animator>();
-        if (anim != null) anim.SetTrigger("Hit");
+        currentHealth -= damage;
+        Debug.Log($"{gameObject.name} nhận {damage} damage! Máu còn lại: {currentHealth}");
 
         if (currentHealth <= 0)
         {
@@ -41,21 +27,9 @@ public class EnemyHealth : MonoBehaviour
 
     void Die()
     {
-        // play death animation if any
-        var anim = GetComponent<Animator>();
-        if (anim != null) anim.SetTrigger("Die");
+        if (deathEffect != null)
+            Instantiate(deathEffect, transform.position, Quaternion.identity);
 
-        // simple destroy after delay
-        Destroy(gameObject, deathDelay);
+        Destroy(gameObject);
     }
-
-    // For debug: draw health in inspector
-    void OnGUI()
-    {
-        // optional: not recommended for production
-    }
-
-    // Optional: expose health
-    public int CurrentHealth => currentHealth;
-    public int MaxHealth => maxHealth;
 }

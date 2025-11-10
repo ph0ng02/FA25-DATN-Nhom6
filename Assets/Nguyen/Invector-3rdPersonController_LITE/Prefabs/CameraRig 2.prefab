@@ -125,7 +125,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3092385995605560374}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!114 &3057256903191930194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,6 +231,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FollowPlayerCamera
   player: {fileID: 0}
-  distance: 4
-  height: 2
-  smoothSpeed: 5
+  distance: 2
+  height: 3
+  smoothSpeed: 2

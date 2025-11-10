@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -8,13 +9,15 @@ public class EnemyAI : MonoBehaviour
     private NavMeshAgent agent;
     private Rigidbody rb;
 
-    [Header("Stats")]
+    [Header("Combat Settings")]
+    public float attackDamage = 10f;
+    public float attackRate = 1f;
+    private float nextAttackTime = 0f;
     public float attackRange = 2f;
     public float attackCooldown = 1.5f;
     private float lastAttackTime = 0f;
 
-    [Header("Combat")]
-    public int damage = 10;
+    [Header("Stats")]
     public float health = 100f;
     private bool isDead = false;
 
@@ -36,6 +39,26 @@ public class EnemyAI : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
         startPosition = transform.position;
+    }
+
+    // 🔥 Enemy gây damage liên tục khi chạm
+    private void OnTriggerStay(Collider other)
+    {
+        if (Time.time >= nextAttackTime)
+        {
+            if (other.CompareTag("Player") || other.CompareTag("Player1") || other.CompareTag("Player2"))
+            {
+                PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
+                if (playerHealth != null)
+                {
+                    // Gây damage + knockback cho Player
+                    Vector3 knockDir = (other.transform.position - transform.position).normalized;
+                    playerHealth.TakeDamage((int)attackDamage, knockbackForce, knockDir);
+                    Debug.Log("Enemy gây damage và knockback Player!");
+                }
+                nextAttackTime = Time.time + 1f / attackRate;
+            }
+        }
     }
 
     void Update()
@@ -123,7 +146,7 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    private System.Collections.IEnumerator ApplyKnockback(Vector3 direction)
+    private IEnumerator ApplyKnockback(Vector3 direction)
     {
         if (rb == null) yield break;
 
@@ -135,7 +158,7 @@ public class EnemyAI : MonoBehaviour
 
         yield return new WaitForSeconds(knockbackDuration);
 
-        rb.linearVelocity = Vector3.zero;
+        rb.linearVelocity = Vector3.zero; // sửa đúng thuộc tính
         rb.isKinematic = true;
 
         isKnockedback = false;
@@ -165,7 +188,8 @@ public class EnemyAI : MonoBehaviour
             PlayerHealth ph = currentTarget.GetComponent<PlayerHealth>();
             if (ph != null)
             {
-                ph.TakeDamage(damage);
+                Vector3 knockDir = (currentTarget.position - transform.position).normalized;
+                ph.TakeDamage((int)attackDamage, knockbackForce, knockDir);
             }
         }
     }

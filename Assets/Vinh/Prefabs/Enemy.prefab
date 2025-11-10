@@ -22,7 +22,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1d85481292d33124197faff870e9e054, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 208.88
+      value: 17.64408
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1d85481292d33124197faff870e9e054, type: 3}
       propertyPath: m_LocalPosition.y
@@ -30,7 +30,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1d85481292d33124197faff870e9e054, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 296.8873
+      value: 20.85
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1d85481292d33124197faff870e9e054, type: 3}
       propertyPath: m_LocalRotation.w
@@ -38,15 +38,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1d85481292d33124197faff870e9e054, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1d85481292d33124197faff870e9e054, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1d85481292d33124197faff870e9e054, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1d85481292d33124197faff870e9e054, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -81,6 +81,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1d85481292d33124197faff870e9e054, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7731310698441163943}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1d85481292d33124197faff870e9e054, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 594323949621479153}
   m_SourcePrefab: {fileID: 100100000, guid: 1d85481292d33124197faff870e9e054, type: 3}
 --- !u!1 &3903171381548234192 stripped
 GameObject:
@@ -122,9 +125,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
   animator: {fileID: 7746514379564823824}
+  attackDamage: 10
+  attackRate: 1
   attackRange: 2
   attackCooldown: 1.5
-  damage: 10
   health: 100
   knockbackForce: 3
   knockbackDuration: 0.2
@@ -151,6 +155,20 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &594323949621479153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3903171381548234192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac2d43d5e38d59443a1440f2465513bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
+  maxHealth: 100
+  deathEffect: {fileID: 0}
 --- !u!95 &7746514379564823824 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 1d85481292d33124197faff870e9e054, type: 3}
