@@ -431,15 +431,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1650455b3fb4ce640beebf3a9de2f75c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 52
+      value: 23.23551
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1650455b3fb4ce640beebf3a9de2f75c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00000166893
+      value: 0.00000011920929
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1650455b3fb4ce640beebf3a9de2f75c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 53
+      value: 8.82773
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1650455b3fb4ce640beebf3a9de2f75c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -556,7 +556,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController_Gamepad
   walkSpeed: 3
   runSpeed: 10
-  rotationSpeed: 720
+  rotationSpeed: 180
   gravity: -9.81
   jumpHeight: 2
   animator: {fileID: 0}
