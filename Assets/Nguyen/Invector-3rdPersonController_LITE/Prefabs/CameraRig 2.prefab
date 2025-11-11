@@ -232,5 +232,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FollowPlayerCamera
   player: {fileID: 0}
   distance: 2
-  height: 3
+  height: 1
   smoothSpeed: 2
