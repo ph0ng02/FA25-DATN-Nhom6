@@ -1242,6 +1242,10 @@ PrefabInstance:
       propertyPath: spawnPoint
       value: 
       objectReference: {fileID: 1818300367}
+    - target: {fileID: 4086370307580310415, guid: 9a41f38704cd2c04b9f9dfea126626d6, type: 3}
+      propertyPath: rotationSpeed
+      value: 360
+      objectReference: {fileID: 0}
     - target: {fileID: 4930291067678808073, guid: 9a41f38704cd2c04b9f9dfea126626d6, type: 3}
       propertyPath: m_Name
       value: Player1

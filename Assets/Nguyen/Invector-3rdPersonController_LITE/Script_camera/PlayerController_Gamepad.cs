@@ -4,17 +4,17 @@ using UnityEngine;
 public class PlayerController_Gamepad : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public float walkSpeed = 5f;          // tốc độ đi bộ
-    public float runSpeed = 10f;          // tốc độ khi nhấn nút chạy
-    public float rotationSpeed = 720f;    // tốc độ xoay nhân vật
-    public float gravity = -9.81f;        // trọng lực
-    public float jumpHeight = 2f;         // chiều cao nhảy (nếu muốn thêm)
+    public float walkSpeed = 5f;           // tốc độ đi bộ
+    public float runSpeed = 10f;           // tốc độ khi nhấn nút chạy
+    public float rotationSpeed = 90f;      // tốc độ xoay chậm hơn
+    public float gravity = -9.81f;         // trọng lực
+    public float jumpHeight = 2f;          // chiều cao nhảy
 
     private CharacterController controller;
-    private Vector3 velocity;             // vận tốc rơi
-    private bool isGrounded;              // kiểm tra đang đứng trên đất
+    private Vector3 velocity;
+    private bool isGrounded;
 
-    public Animator animator;             // gán Animator trong Inspector
+    public Animator animator;              // gán Animator trong Inspector
 
     void Start()
     {
@@ -28,35 +28,28 @@ public class PlayerController_Gamepad : MonoBehaviour
         // --- Kiểm tra chạm đất ---
         isGrounded = controller.isGrounded;
         if (isGrounded && velocity.y < 0)
-        {
-            velocity.y = -2f; // giữ player dính sát đất, tránh bị lơ lửng
-        }
+            velocity.y = -2f;
 
-        // --- Input từ tay cầm ---
-        float horizontal = Input.GetAxis("Horizontal2");
-        float vertical = Input.GetAxis("Vertical2");
+        // --- Nhận input từ tay cầm ---
+        float horizontal = Input.GetAxis("Horizontal2"); // Xoay nhân vật
+        float vertical = Input.GetAxis("Vertical2");     // Tiến/lùi
 
-        Vector3 inputDir = new Vector3(horizontal, 0, vertical);
-        Vector3 direction = inputDir.normalized;
-        float magnitude = Mathf.Clamp01(inputDir.magnitude);
+        // --- Xoay nhân vật bằng cần trái (trái/phải) ---
+        transform.Rotate(Vector3.up * horizontal * rotationSpeed * Time.deltaTime);
 
-        // --- Kiểm tra nút chạy (A hoặc B tuỳ tay cầm) ---
-        bool isRunning = Input.GetKey(KeyCode.JoystickButton0); // hoặc đổi sang JoystickButton1 nếu bạn muốn
+        // --- Kiểm tra nút chạy ---
+        bool isRunning = Input.GetKey(KeyCode.JoystickButton0); // Nút A để chạy (đổi nếu cần)
         float currentSpeed = isRunning ? runSpeed : walkSpeed;
 
-        // --- Set animation ---
-        animator.SetFloat("Speed", magnitude * currentSpeed, 0.1f, Time.deltaTime);
+        // --- Di chuyển tiến/lùi ---
+        Vector3 move = transform.forward * vertical * currentSpeed;
+        controller.Move(move * Time.deltaTime);
+
+        // --- Cập nhật Animator ---
+        animator.SetFloat("Speed", Mathf.Abs(vertical) * currentSpeed, 0.1f, Time.deltaTime);
         animator.SetBool("isRunning", isRunning);
 
-        // --- Di chuyển ngang ---
-        if (magnitude >= 0.1f)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-            controller.Move(direction * currentSpeed * Time.deltaTime);
-        }
-
-        // --- (Tuỳ chọn) Nhảy ---
+        // --- Nhảy ---
         if (Input.GetKeyDown(KeyCode.JoystickButton1) && isGrounded) // B button để nhảy
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);

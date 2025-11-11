@@ -4,17 +4,17 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public float walkSpeed = 5f;       // tốc độ đi bộ
-    public float runSpeed = 10f;       // tốc độ khi nhấn Shift
-    public float rotationSpeed = 720f; // tốc độ xoay
-    public float gravity = -9.81f;     // trọng lực
-    public float jumpHeight = 2f;      // chiều cao nhảy
+    public float walkSpeed = 5f;
+    public float runSpeed = 10f;
+    public float rotationSpeed = 40f;  // tốc độ xoay thân bằng A/D
+    public float gravity = -9.81f;
+    public float jumpHeight = 2f;
 
     private CharacterController controller;
-    private Vector3 velocity;          // lưu vận tốc rơi
-    private bool isGrounded;           // kiểm tra đang đứng trên đất
+    private Vector3 velocity;
+    private bool isGrounded;
 
-    public Animator animator;          // Animator (gán trong Inspector)
+    public Animator animator;
 
     void Start()
     {
@@ -28,32 +28,26 @@ public class PlayerMovement : MonoBehaviour
         // --- Kiểm tra chạm đất ---
         isGrounded = controller.isGrounded;
         if (isGrounded && velocity.y < 0)
-            velocity.y = -2f; // giữ player dính sát mặt đất
+            velocity.y = -2f;
 
         // --- Nhận input ---
-        float horizontal = Input.GetAxis("Horizontal1");
-        float vertical = Input.GetAxis("Vertical1");
-        Vector3 direction = new Vector3(horizontal, 0, vertical).normalized;
+        float horizontal = Input.GetAxis("Horizontal1"); // A/D để xoay
+        float vertical = Input.GetAxis("Vertical1");     // W/S để tiến lùi
+
+        // --- Xoay bằng A/D ---
+        transform.Rotate(Vector3.up * horizontal * rotationSpeed * Time.deltaTime);
 
         // --- Kiểm tra Shift để chạy ---
         bool isRunning = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
         float currentSpeed = isRunning ? runSpeed : walkSpeed;
 
+        // --- Di chuyển tiến/lùi ---
+        Vector3 move = transform.forward * vertical * currentSpeed;
+        controller.Move(move * Time.deltaTime);
+
         // --- Cập nhật Animator ---
-        animator.SetFloat("Speed", direction.magnitude * currentSpeed, 0.1f, Time.deltaTime);
+        animator.SetFloat("Speed", Mathf.Abs(vertical) * currentSpeed, 0.1f, Time.deltaTime);
         animator.SetBool("isRunning", isRunning);
-
-        // --- Di chuyển ---
-        if (direction.magnitude >= 0.1f)
-        {
-            // Xoay player theo hướng di chuyển
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-
-            // Di chuyển ngang
-            Vector3 move = transform.forward * currentSpeed * Time.deltaTime;
-            controller.Move(move);
-        }
 
         // --- Nhảy ---
         if (Input.GetButtonDown("Jump1") && isGrounded)
