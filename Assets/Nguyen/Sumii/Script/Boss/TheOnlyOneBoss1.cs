@@ -42,7 +42,14 @@ public class TheOnlyOneBoss1 : MonoBehaviour
     {
         if (anim == null) anim = GetComponent<Animator>();
         if (agent == null) agent = GetComponent<NavMeshAgent>();
+
         currentHP = maxHP;
+
+        // 🧠 Boss sẽ tự dừng cách Player một chút, không dính vào
+        agent.stoppingDistance = attackRange - 0.3f;
+        agent.updatePosition = true;
+        agent.updateRotation = true;
+        agent.avoidancePriority = 50;
     }
 
     void Update()
@@ -54,10 +61,11 @@ public class TheOnlyOneBoss1 : MonoBehaviour
         // Xoay mặt về phía player
         Vector3 lookPos = player.position - transform.position;
         lookPos.y = 0;
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookPos), 5f * Time.deltaTime);
+        if (lookPos.sqrMagnitude > 0.001f)
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookPos), 5f * Time.deltaTime);
 
-        // Di chuyển hoặc đứng yên
-        if (distance > attackRange)
+        // ✅ Dùng stoppingDistance để agent tự dừng mà không chạm player
+        if (!agent.pathPending && distance > agent.stoppingDistance)
         {
             agent.isStopped = false;
             agent.SetDestination(player.position);
@@ -76,26 +84,47 @@ public class TheOnlyOneBoss1 : MonoBehaviour
     {
         float hpPercent = (float)currentHP / maxHP * 100f;
 
+        // ⚡ Giai đoạn 1: >75% máu — chỉ đánh gần
         if (hpPercent > 75f)
         {
             if (distance <= attackRange && Time.time >= nextAttackTime)
+            {
                 Attack();
+                return;
+            }
         }
+        // ⚡ Giai đoạn 2: 50% - 75% — có thể ném xa
         else if (hpPercent > 50f)
         {
             if (distance <= attackRange && Time.time >= nextAttackTime)
+            {
                 Attack();
-            else if (distance <= throwRange && Time.time >= nextThrowTime)
+                return;
+            }
+            else if (distance > attackRange && distance <= throwRange && Time.time >= nextThrowTime)
+            {
                 Throw();
+                return;
+            }
         }
-        else if (hpPercent <= 50f)
+        // ⚡ Giai đoạn 3: <=50% — có thể dùng skill AOE
+        else
         {
             if (distance <= attackRange && Time.time >= nextAttackTime)
+            {
                 Attack();
-            else if (distance <= throwRange && Time.time >= nextThrowTime)
+                return;
+            }
+            else if (distance > attackRange && distance <= throwRange && Time.time >= nextThrowTime)
+            {
                 Throw();
-            else if (distance <= skillRange && Time.time >= nextSkillTime)
+                return;
+            }
+            else if (distance > throwRange && distance <= skillRange && Time.time >= nextSkillTime)
+            {
                 Skill();
+                return;
+            }
         }
     }
 
@@ -103,21 +132,21 @@ public class TheOnlyOneBoss1 : MonoBehaviour
     {
         anim.SetTrigger("attackTrigger");
         nextAttackTime = Time.time + attackCooldown;
-        Debug.Log("Boss Attack!");
+        Debug.Log("🗡 Boss Attack (Melee)!");
     }
 
     void Throw()
     {
         anim.SetTrigger("throwTrigger");
         nextThrowTime = Time.time + throwCooldown;
-        Debug.Log("Boss Throw!");
+        Debug.Log("🏹 Boss Throw (Ranged)!");
     }
 
     void Skill()
     {
         anim.SetTrigger("useSkill");
         nextSkillTime = Time.time + skillCooldown;
-        Debug.Log("Boss starts charging AOE skill!");
+        Debug.Log("💥 Boss starts charging AOE skill!");
         agent.isStopped = true;
 
         if (chargeEffectPrefab && chargePoint)
@@ -143,7 +172,7 @@ public class TheOnlyOneBoss1 : MonoBehaviour
                 hit.GetComponent<PlayerHealth>()?.TakeDamage(skillDamage);
         }
 
-        yield return new WaitForSeconds(0.5f); // nghỉ 0.5s
+        yield return new WaitForSeconds(0.5f);
         agent.isStopped = false;
     }
 
@@ -159,7 +188,7 @@ public class TheOnlyOneBoss1 : MonoBehaviour
         isDead = true;
         agent.isStopped = true;
         anim.SetBool("isDead", true);
-        Debug.Log("Boss Dead!");
+        Debug.Log("☠ Boss Dead!");
         Destroy(gameObject, 5f);
     }
 
