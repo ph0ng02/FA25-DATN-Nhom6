@@ -38,6 +38,17 @@ public class TheOnlyOneBoss1 : MonoBehaviour
 
     private GameObject currentChargeEffect;
 
+    [Header("FX Settings")]
+    public GameObject fxCirclePrefab;
+    public float fxRotateSpeed = 50f;     // tốc độ xoay
+    public float fxPulseSpeed = 2f;       // tốc độ phát sáng (dao động)
+    public float fxMinIntensity = 0.5f;
+    public float fxMaxIntensity = 1.2f;
+
+    private GameObject fxCircleInstance;
+    private Material fxMaterial;
+    private float fxPulseTime;
+
     void Start()
     {
         if (anim == null) anim = GetComponent<Animator>();
@@ -45,11 +56,24 @@ public class TheOnlyOneBoss1 : MonoBehaviour
 
         currentHP = maxHP;
 
-        // 🧠 Boss sẽ tự dừng cách Player một chút, không dính vào
         agent.stoppingDistance = attackRange - 0.3f;
         agent.updatePosition = true;
         agent.updateRotation = true;
         agent.avoidancePriority = 50;
+
+        // 🌀 Spawn FX dưới chân boss
+        if (fxCirclePrefab != null)
+        {
+            fxCircleInstance = Instantiate(fxCirclePrefab, transform.position, Quaternion.identity, transform);
+            fxCircleInstance.transform.localPosition = new Vector3(0, 0.01f, 0);
+            fxCircleInstance.transform.localRotation = Quaternion.identity; // giữ nguyên hướng ngang
+            fxCircleInstance.transform.localScale = new Vector3(1.3f, 1f, 1.3f);
+
+            // lấy material để phát sáng (nếu có)
+            Renderer r = fxCircleInstance.GetComponentInChildren<Renderer>();
+            if (r != null)
+                fxMaterial = r.material;
+        }
     }
 
     void Update()
@@ -64,7 +88,6 @@ public class TheOnlyOneBoss1 : MonoBehaviour
         if (lookPos.sqrMagnitude > 0.001f)
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookPos), 5f * Time.deltaTime);
 
-        // ✅ Dùng stoppingDistance để agent tự dừng mà không chạm player
         if (!agent.pathPending && distance > agent.stoppingDistance)
         {
             agent.isStopped = false;
@@ -78,13 +101,13 @@ public class TheOnlyOneBoss1 : MonoBehaviour
         }
 
         HandlePhases(distance);
+        UpdateFXCircle(); // 💫 Cập nhật hiệu ứng xoay & sáng
     }
 
     void HandlePhases(float distance)
     {
         float hpPercent = (float)currentHP / maxHP * 100f;
 
-        // ⚡ Giai đoạn 1: >75% máu — chỉ đánh gần
         if (hpPercent > 75f)
         {
             if (distance <= attackRange && Time.time >= nextAttackTime)
@@ -93,7 +116,6 @@ public class TheOnlyOneBoss1 : MonoBehaviour
                 return;
             }
         }
-        // ⚡ Giai đoạn 2: 50% - 75% — có thể ném xa
         else if (hpPercent > 50f)
         {
             if (distance <= attackRange && Time.time >= nextAttackTime)
@@ -107,7 +129,6 @@ public class TheOnlyOneBoss1 : MonoBehaviour
                 return;
             }
         }
-        // ⚡ Giai đoạn 3: <=50% — có thể dùng skill AOE
         else
         {
             if (distance <= attackRange && Time.time >= nextAttackTime)
@@ -201,6 +222,24 @@ public class TheOnlyOneBoss1 : MonoBehaviour
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(chargePoint.position, skillAOERadius);
+        }
+    }
+
+    // 💫 Xử lý hiệu ứng xoay + sáng FX Circle
+    void UpdateFXCircle()
+    {
+        if (fxCircleInstance == null) return;
+
+        // Xoay tròn
+        fxCircleInstance.transform.Rotate(Vector3.up, fxRotateSpeed * Time.deltaTime, Space.Self);
+
+        // Dao động phát sáng (nếu material có shader hỗ trợ "_EmissionColor")
+        if (fxMaterial != null && fxMaterial.HasProperty("_EmissionColor"))
+        {
+            fxPulseTime += Time.deltaTime * fxPulseSpeed;
+            float intensity = Mathf.Lerp(fxMinIntensity, fxMaxIntensity, (Mathf.Sin(fxPulseTime) + 1f) / 2f);
+            Color baseColor = Color.cyan; // bạn có thể đổi màu ở đây
+            fxMaterial.SetColor("_EmissionColor", baseColor * intensity);
         }
     }
 }
