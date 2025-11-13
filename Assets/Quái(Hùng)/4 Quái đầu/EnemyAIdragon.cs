@@ -22,7 +22,11 @@ public class EnemyAIdragon : MonoBehaviour
     public Transform player;
     private NavMeshAgent agent;
     private Animator animator;
-    private AudioSource audioSource;
+
+    // THAY ĐỔI: Phân tách 2 Audio Source
+    private AudioSource walkAudioSource; // Dùng cho tiếng bước chân (Loop)
+    public AudioSource sfxAudioSource;   // Dùng cho Attack/Roar (OneShot)
+
     // public HealthComponent healthComponent; // Thêm nếu bạn có component HP
 
     [Header("Audio Clips")]
@@ -54,12 +58,14 @@ public class EnemyAIdragon : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-        audioSource = GetComponent<AudioSource>();
-        // healthComponent = GetComponent<HealthComponent>(); // Lấy component HP
+
+        // THAY ĐỔI: Lấy Audio Source đầu tiên làm tiếng bước chân
+        walkAudioSource = GetComponent<AudioSource>();
+        // *LƯU Ý: Bạn phải kéo thả Audio Source thứ 2 vào biến sfxAudioSource trong Inspector*
 
         // Thiết lập AudioSource cho âm thanh bước chân
-        audioSource.clip = walkSound;
-        audioSource.loop = true;
+        walkAudioSource.clip = walkSound;
+        walkAudioSource.loop = true;
 
         SetNewPatrolPoint();
         currentState = EnemyState.Patrol;
@@ -78,11 +84,10 @@ public class EnemyAIdragon : MonoBehaviour
         {
             if (currentState == EnemyState.Patrol || currentState == EnemyState.Chase)
             {
-                // Kích hoạt Roar nếu đủ điều kiện
                 if (distance <= roarRange && Time.time >= lastRoarTime + roarCooldown)
                 {
                     currentState = EnemyState.Roaring;
-                    Scream(); // Bắt đầu Scream và Coroutine trễ
+                    Scream();
                 }
                 else
                 {
@@ -95,10 +100,7 @@ public class EnemyAIdragon : MonoBehaviour
             currentState = EnemyState.Patrol;
         }
 
-        // THỰC HIỆN HÀNH ĐỘNG DỰA TRÊN TRẠNG THÁI
         ExecuteState();
-
-        // CẬP NHẬT ANIMATOR VÀ ÂM THANH BƯỚC CHÂN
         UpdateAnimatorAndWalkSound();
     }
 
@@ -118,7 +120,6 @@ public class EnemyAIdragon : MonoBehaviour
                 AttackPlayer();
                 break;
             case EnemyState.Roaring:
-                // Kẻ địch đứng yên khi Roar
                 agent.isStopped = true;
                 break;
         }
@@ -128,24 +129,22 @@ public class EnemyAIdragon : MonoBehaviour
 
     void UpdateAnimatorAndWalkSound()
     {
-        // Điều khiển animation IsWalking/IsRunning
         bool isWalking = agent.velocity.magnitude > 0.1f;
         animator.SetBool("IsWalking", isWalking);
-        // animator.SetBool("IsRunning", agent.velocity.magnitude > 4f); // Thêm nếu cần
 
-        // Điều khiển âm thanh bước chân (chỉ khi không Roar)
+        // THAY ĐỔI: Điều khiển âm thanh bước chân bằng walkAudioSource
         if (isWalking && currentState != EnemyState.Roaring)
         {
-            if (!audioSource.isPlaying && audioSource.clip == walkSound)
+            if (!walkAudioSource.isPlaying && walkAudioSource.clip == walkSound)
             {
-                audioSource.Play();
+                walkAudioSource.Play();
             }
         }
         else
         {
-            if (audioSource.isPlaying && audioSource.clip == walkSound)
+            if (walkAudioSource.isPlaying && walkAudioSource.clip == walkSound)
             {
-                audioSource.Stop();
+                walkAudioSource.Stop();
             }
         }
     }
@@ -156,6 +155,14 @@ public class EnemyAIdragon : MonoBehaviour
         isWaiting = false;
         agent.isStopped = false;
         agent.SetDestination(player.position);
+
+        Vector3 direction = (player.position - transform.position).normalized;
+        direction.y = 0;
+        if (direction != Vector3.zero)
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * agent.angularSpeed);
+        }
     }
 
     // HÀM TẤN CÔNG (Sử dụng logic Tách Biệt)
@@ -170,36 +177,26 @@ public class EnemyAIdragon : MonoBehaviour
         {
             lastAttackTime = Time.time;
 
-            // --- LOGIC TÁCH BIỆT TẤN CÔNG (Sử dụng TRIGGERS) ---
             switch (enemyType)
             {
                 case EnemyType.Golem:
-                case EnemyType.Dragon: // Giả sử Dragon cũng dùng 3 đòn này
+                case EnemyType.Dragon:
                     int attackChoice = Random.Range(0, 2);
-
-                    if (attackChoice == 0) animator.SetTrigger("IsAttacking"); // Đòn 1
-                    else if (attackChoice == 1) animator.SetTrigger("IsAttack2");    // Đòn 2
-                    //else animator.SetTrigger("IsShoot");     // Đòn 3
+                    if (attackChoice == 0) animator.SetTrigger("IsAttacking");
+                    else if (attackChoice == 1) animator.SetTrigger("IsAttack2");
+                    //else animator.SetTrigger("IsShoot");     
                     break;
-
                 case EnemyType.Hobgoblin:
                 case EnemyType.Witch:
-                    // Các loại quái vật đơn giản hơn chỉ dùng 1 đòn
                     animator.SetTrigger("IsAttacking");
                     break;
             }
-            // --- KẾT THÚC LOGIC TÁCH BIỆT ---
 
-            if (attackSound != null)
+            // THAY ĐỔI: Phát âm thanh Tấn công bằng sfxAudioSource
+            if (attackSound != null && sfxAudioSource != null)
             {
-                audioSource.PlayOneShot(attackSound);
+                sfxAudioSource.PlayOneShot(attackSound);
             }
-
-            // TODO: Gây sát thương
-            // if (player.GetComponent<HealthComponent>() != null)
-            // {
-            //     player.GetComponent<HealthComponent>().TakeDamage(20);
-            // }
         }
     }
 
@@ -209,30 +206,32 @@ public class EnemyAIdragon : MonoBehaviour
         lastRoarTime = Time.time;
         agent.isStopped = true;
 
+        Vector3 direction = (player.position - transform.position).normalized;
+        direction.y = 0;
+        transform.rotation = Quaternion.LookRotation(direction);
+
         animator.SetTrigger("IsScream");
-        if (roarSound != null)
+
+        // THAY ĐỔI: Phát âm thanh Roar bằng sfxAudioSource
+        if (roarSound != null && sfxAudioSource != null)
         {
-            audioSource.PlayOneShot(roarSound);
+            sfxAudioSource.PlayOneShot(roarSound);
         }
 
-        // Bắt đầu Coroutine để đợi 1.5s rồi chuyển sang tấn công
         StartCoroutine(ScreamDelayAndAttack());
     }
 
     IEnumerator ScreamDelayAndAttack()
     {
-        // Đợi theo biến roarDelay (1.5s)
         yield return new WaitForSeconds(roarDelay);
-
-        // Nếu kẻ địch vẫn trong trạng thái Roaring (chưa bị đánh hay chết)
         if (currentState == EnemyState.Roaring)
         {
-            // Chuyển sang tấn công ngay lập tức
             currentState = EnemyState.Attacking;
         }
     }
 
-    // ... (Giữ nguyên Patrol, SetNewPatrolPoint, OnDrawGizmosSelected)
+    // ... (Giữ nguyên các hàm Patrol, SetNewPatrolPoint, OnDrawGizmosSelected) ...
+
     void Patrol()
     {
         isChasing = false;
@@ -262,7 +261,6 @@ public class EnemyAIdragon : MonoBehaviour
         agent.SetDestination(patrolTarget);
     }
 
-    // ... (Giữ nguyên OnDrawGizmosSelected)
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
