@@ -46,6 +46,7 @@ public class bosstest : MonoBehaviour
     public float beamDuration = 3f;
     public int beamDamage = 15;
     public float beamHitRadius = 1.5f;
+    public float beamRange = 12f; // phạm vi tự bắn beam
 
     [Header("FX Settings")]
     public GameObject fxCirclePrefab;
@@ -79,6 +80,7 @@ public class bosstest : MonoBehaviour
     void Update()
     {
         if (isDead) return;
+        if (player == null) return;
 
         float distance = Vector3.Distance(transform.position, player.position);
         Vector3 lookPos = player.position - transform.position;
@@ -116,7 +118,7 @@ public class bosstest : MonoBehaviour
         {
             SkillAOE();
         }
-        else if (Time.time >= nextBeamTime)
+        else if (distance <= beamRange && Time.time >= nextBeamTime)
         {
             StartCoroutine(UseBeamSkill());
         }
@@ -139,22 +141,30 @@ public class bosstest : MonoBehaviour
         anim.SetTrigger("useSkill");
         nextSkillTime = Time.time + skillCooldown;
         agent.isStopped = true;
+
         if (chargeEffectPrefab && chargePoint)
             currentChargeEffect = Instantiate(chargeEffectPrefab, chargePoint.position, chargePoint.rotation, chargePoint);
+
         StartCoroutine(CastAOEAfterCharge());
     }
 
     private IEnumerator CastAOEAfterCharge()
     {
         yield return new WaitForSeconds(skillChargeTime);
-        if (currentChargeEffect != null) Destroy(currentChargeEffect);
+
+        if (currentChargeEffect != null)
+            Destroy(currentChargeEffect);
+
         if (skillEffectPrefab && chargePoint)
             Instantiate(skillEffectPrefab, chargePoint.position, Quaternion.identity);
 
-        Collider[] hits = Physics.OverlapSphere(chargePoint.position, skillAOERadius);
-        foreach (var hit in hits)
-            if (hit.CompareTag("Player"))
-                hit.GetComponent<PlayerHealth>()?.TakeDamage(skillDamage);
+        if (chargePoint)
+        {
+            Collider[] hits = Physics.OverlapSphere(chargePoint.position, skillAOERadius);
+            foreach (var hit in hits)
+                if (hit.CompareTag("Player"))
+                    hit.GetComponent<PlayerHealth>()?.TakeDamage(skillDamage);
+        }
 
         agent.isStopped = false;
     }
@@ -180,25 +190,39 @@ public class bosstest : MonoBehaviour
     IEnumerator TrackBeamToPlayer(GameObject beam)
     {
         float elapsed = 0f;
-        while (elapsed < beamDuration && player != null)
+        float moveSpeed = 12f; // tốc độ bay của beam
+
+        while (elapsed < beamDuration && player != null && beam != null)
         {
-            // Xoay beam hướng về player
-            Vector3 dir = (player.position + Vector3.up * 1.0f) - beamFirePoint.position;
+            float dist = Vector3.Distance(transform.position, player.position);
+            if (dist > beamRange) // nếu player ra khỏi phạm vi
+                break;
+
+            // Hướng tới player
+            Vector3 targetPos = player.position + Vector3.up * 1.2f;
+            Vector3 dir = (targetPos - beam.transform.position).normalized;
+
+            // Xoay beam
             Quaternion targetRot = Quaternion.LookRotation(dir);
             beam.transform.rotation = Quaternion.Lerp(beam.transform.rotation, targetRot, Time.deltaTime * 10f);
 
-            // Kiểm tra va chạm (gây dmg liên tục)
+            // Di chuyển beam
+            beam.transform.position += dir * moveSpeed * Time.deltaTime;
+
+            // Kiểm tra trúng player
             RaycastHit hit;
-            if (Physics.SphereCast(beamFirePoint.position, beamHitRadius, beam.transform.forward, out hit, 20f))
+            if (Physics.SphereCast(beam.transform.position, beamHitRadius, dir, out hit, 0.5f))
             {
                 if (hit.collider.CompareTag("Player"))
                 {
                     hit.collider.GetComponent<PlayerHealth>()?.TakeDamage(beamDamage);
+                    Destroy(beam);
+                    yield break;
                 }
             }
 
-            elapsed += 0.2f; // kiểm tra mỗi 0.2 giây
-            yield return new WaitForSeconds(0.2f);
+            elapsed += Time.deltaTime;
+            yield return null;
         }
 
         if (beam != null) Destroy(beam);
@@ -241,5 +265,9 @@ public class bosstest : MonoBehaviour
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(chargePoint.position, skillAOERadius);
         }
+
+        // Vẽ phạm vi beam
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, beamRange);
     }
 }
