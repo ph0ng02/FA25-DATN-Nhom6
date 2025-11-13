@@ -8459,9 +8459,33 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7949938984613972903, guid: 01892c5447064124885fb949e80ee5e5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -470.59
+      objectReference: {fileID: 0}
+    - target: {fileID: 7949938984613972903, guid: 01892c5447064124885fb949e80ee5e5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.92
+      objectReference: {fileID: 0}
+    - target: {fileID: 7949938984613972903, guid: 01892c5447064124885fb949e80ee5e5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.28
+      objectReference: {fileID: 0}
     - target: {fileID: 8501672598181333645, guid: 01892c5447064124885fb949e80ee5e5, type: 3}
       propertyPath: m_Name
       value: DoorSystem
+      objectReference: {fileID: 0}
+    - target: {fileID: 8954503914292248290, guid: 01892c5447064124885fb949e80ee5e5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -501.97
+      objectReference: {fileID: 0}
+    - target: {fileID: 8954503914292248290, guid: 01892c5447064124885fb949e80ee5e5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.82
+      objectReference: {fileID: 0}
+    - target: {fileID: 8954503914292248290, guid: 01892c5447064124885fb949e80ee5e5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.02
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
