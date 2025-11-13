@@ -23,12 +23,14 @@ public class bosstest : MonoBehaviour
     public float attackCooldown = 2f;
     public float throwCooldown = 4f;
     public float skillCooldown = 8f;
+    public float beamCooldown = 10f;
 
     private float nextAttackTime;
     private float nextThrowTime;
     private float nextSkillTime;
+    private float nextBeamTime;
 
-    [Header("Skill 3 AOE")]
+    [Header("AOE Skill")]
     public GameObject chargeEffectPrefab;
     public GameObject skillEffectPrefab;
     public Transform chargePoint;
@@ -37,6 +39,13 @@ public class bosstest : MonoBehaviour
     public float skillAOERadius = 5f;
 
     private GameObject currentChargeEffect;
+
+    [Header("Beam Skill")]
+    public GameObject beamPrefab;
+    public Transform beamFirePoint;
+    public float beamDuration = 3f;
+    public int beamDamage = 15;
+    public float beamHitRadius = 1.5f;
 
     [Header("FX Settings")]
     public GameObject fxCirclePrefab;
@@ -55,25 +64,15 @@ public class bosstest : MonoBehaviour
         if (agent == null) agent = GetComponent<NavMeshAgent>();
 
         currentHP = maxHP;
-
         agent.stoppingDistance = attackRange - 0.3f;
-        agent.updatePosition = true;
-        agent.updateRotation = true;
-        agent.avoidancePriority = 50;
 
-        // 🌀 Spawn FX dưới chân boss (KHÔNG làm con của boss)
+        // Hiệu ứng vòng dưới chân
         if (fxCirclePrefab != null)
         {
-            fxCircleInstance = Instantiate(
-                fxCirclePrefab,
-                transform.position,
-                Quaternion.Euler(0, 0, 0) // Xoay ngang nằm trên mặt đất
-            );
+            fxCircleInstance = Instantiate(fxCirclePrefab, transform.position, Quaternion.identity);
             fxCircleInstance.transform.localScale = new Vector3(1.3f, 1f, 1.3f);
-
             Renderer r = fxCircleInstance.GetComponentInChildren<Renderer>();
-            if (r != null)
-                fxMaterial = r.material;
+            if (r != null) fxMaterial = r.material;
         }
     }
 
@@ -82,8 +81,6 @@ public class bosstest : MonoBehaviour
         if (isDead) return;
 
         float distance = Vector3.Distance(transform.position, player.position);
-
-        // Xoay mặt về phía player
         Vector3 lookPos = player.position - transform.position;
         lookPos.y = 0;
         if (lookPos.sqrMagnitude > 0.001f)
@@ -107,46 +104,21 @@ public class bosstest : MonoBehaviour
 
     void HandlePhases(float distance)
     {
-        float hpPercent = (float)currentHP / maxHP * 100f;
-
-        if (hpPercent > 75f)
+        if (distance <= attackRange && Time.time >= nextAttackTime)
         {
-            if (distance <= attackRange && Time.time >= nextAttackTime)
-            {
-                Attack();
-                return;
-            }
+            Attack();
         }
-        else if (hpPercent > 50f)
+        else if (distance <= throwRange && Time.time >= nextThrowTime)
         {
-            if (distance <= attackRange && Time.time >= nextAttackTime)
-            {
-                Attack();
-                return;
-            }
-            else if (distance > attackRange && distance <= throwRange && Time.time >= nextThrowTime)
-            {
-                Throw();
-                return;
-            }
+            Throw();
         }
-        else
+        else if (distance <= skillRange && Time.time >= nextSkillTime)
         {
-            if (distance <= attackRange && Time.time >= nextAttackTime)
-            {
-                Attack();
-                return;
-            }
-            else if (distance > attackRange && distance <= throwRange && Time.time >= nextThrowTime)
-            {
-                Throw();
-                return;
-            }
-            else if (distance > throwRange && distance <= skillRange && Time.time >= nextSkillTime)
-            {
-                Skill();
-                return;
-            }
+            SkillAOE();
+        }
+        else if (Time.time >= nextBeamTime)
+        {
+            StartCoroutine(UseBeamSkill());
         }
     }
 
@@ -154,48 +126,82 @@ public class bosstest : MonoBehaviour
     {
         anim.SetTrigger("attackTrigger");
         nextAttackTime = Time.time + attackCooldown;
-        Debug.Log("🗡 Boss Attack (Melee)!");
     }
 
     void Throw()
     {
         anim.SetTrigger("throwTrigger");
         nextThrowTime = Time.time + throwCooldown;
-        Debug.Log("🏹 Boss Throw (Ranged)!");
     }
 
-    void Skill()
+    void SkillAOE()
     {
         anim.SetTrigger("useSkill");
         nextSkillTime = Time.time + skillCooldown;
-        Debug.Log("💥 Boss starts charging AOE skill!");
         agent.isStopped = true;
-
         if (chargeEffectPrefab && chargePoint)
             currentChargeEffect = Instantiate(chargeEffectPrefab, chargePoint.position, chargePoint.rotation, chargePoint);
-
-        StartCoroutine(CastAOESkillAfterCharge());
+        StartCoroutine(CastAOEAfterCharge());
     }
 
-    private IEnumerator CastAOESkillAfterCharge()
+    private IEnumerator CastAOEAfterCharge()
     {
         yield return new WaitForSeconds(skillChargeTime);
-
-        if (currentChargeEffect != null)
-            Destroy(currentChargeEffect);
-
+        if (currentChargeEffect != null) Destroy(currentChargeEffect);
         if (skillEffectPrefab && chargePoint)
             Instantiate(skillEffectPrefab, chargePoint.position, Quaternion.identity);
 
         Collider[] hits = Physics.OverlapSphere(chargePoint.position, skillAOERadius);
         foreach (var hit in hits)
-        {
             if (hit.CompareTag("Player"))
                 hit.GetComponent<PlayerHealth>()?.TakeDamage(skillDamage);
+
+        agent.isStopped = false;
+    }
+
+    IEnumerator UseBeamSkill()
+    {
+        nextBeamTime = Time.time + beamCooldown;
+        anim.SetTrigger("useBeam");
+        agent.isStopped = true;
+
+        yield return new WaitForSeconds(0.5f); // delay trước khi bắn beam
+
+        if (beamPrefab && beamFirePoint)
+        {
+            GameObject beam = Instantiate(beamPrefab, beamFirePoint.position, beamFirePoint.rotation);
+            StartCoroutine(TrackBeamToPlayer(beam));
         }
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(beamDuration);
         agent.isStopped = false;
+    }
+
+    IEnumerator TrackBeamToPlayer(GameObject beam)
+    {
+        float elapsed = 0f;
+        while (elapsed < beamDuration && player != null)
+        {
+            // Xoay beam hướng về player
+            Vector3 dir = (player.position + Vector3.up * 1.0f) - beamFirePoint.position;
+            Quaternion targetRot = Quaternion.LookRotation(dir);
+            beam.transform.rotation = Quaternion.Lerp(beam.transform.rotation, targetRot, Time.deltaTime * 10f);
+
+            // Kiểm tra va chạm (gây dmg liên tục)
+            RaycastHit hit;
+            if (Physics.SphereCast(beamFirePoint.position, beamHitRadius, beam.transform.forward, out hit, 20f))
+            {
+                if (hit.collider.CompareTag("Player"))
+                {
+                    hit.collider.GetComponent<PlayerHealth>()?.TakeDamage(beamDamage);
+                }
+            }
+
+            elapsed += 0.2f; // kiểm tra mỗi 0.2 giây
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        if (beam != null) Destroy(beam);
     }
 
     public void TakeDamage(int dmg)
@@ -210,12 +216,23 @@ public class bosstest : MonoBehaviour
         isDead = true;
         agent.isStopped = true;
         anim.SetBool("isDead", true);
-        Debug.Log("☠ Boss Dead!");
         Destroy(gameObject, 5f);
     }
 
-    public void DealDamage() => Debug.Log("Boss hits player!");
-    public void SpawnProjectile() => Debug.Log("Boss throws projectile!");
+    // FX vòng dưới chân boss
+    void UpdateFXCircle()
+    {
+        if (fxCircleInstance == null) return;
+        fxCircleInstance.transform.position = new Vector3(transform.position.x, transform.position.y + 0.01f, transform.position.z);
+        fxCircleInstance.transform.Rotate(Vector3.up, fxRotateSpeed * Time.deltaTime, Space.World);
+
+        if (fxMaterial != null && fxMaterial.HasProperty("_EmissionColor"))
+        {
+            fxPulseTime += Time.deltaTime * fxPulseSpeed;
+            float intensity = Mathf.Lerp(fxMinIntensity, fxMaxIntensity, (Mathf.Sin(fxPulseTime) + 1f) / 2f);
+            fxMaterial.SetColor("_EmissionColor", Color.cyan * intensity);
+        }
+    }
 
     void OnDrawGizmosSelected()
     {
@@ -223,27 +240,6 @@ public class bosstest : MonoBehaviour
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(chargePoint.position, skillAOERadius);
-        }
-    }
-
-    // 💫 Hiệu ứng vòng dưới chân (xoay + phát sáng)
-    void UpdateFXCircle()
-    {
-        if (fxCircleInstance == null) return;
-
-        // Giữ vòng ở dưới chân boss
-        fxCircleInstance.transform.position = new Vector3(transform.position.x, transform.position.y + 0.01f, transform.position.z);
-
-        // Xoay vòng quanh trục Y trong thế giới (không xoay theo boss)
-        fxCircleInstance.transform.Rotate(Vector3.up, fxRotateSpeed * Time.deltaTime, Space.World);
-
-        // Dao động phát sáng
-        if (fxMaterial != null && fxMaterial.HasProperty("_EmissionColor"))
-        {
-            fxPulseTime += Time.deltaTime * fxPulseSpeed;
-            float intensity = Mathf.Lerp(fxMinIntensity, fxMaxIntensity, (Mathf.Sin(fxPulseTime) + 1f) / 2f);
-            Color baseColor = Color.cyan;
-            fxMaterial.SetColor("_EmissionColor", baseColor * intensity);
         }
     }
 }
