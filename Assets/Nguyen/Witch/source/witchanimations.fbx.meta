@@ -40,8 +40,8 @@ ModelImporter:
       name: Witch.Skeleton|attack
       takeName: Witch.Skeleton|attack
       internalID: 4605460503947333510
-      firstFrame: 0
-      lastFrame: 1
+      firstFrame: 1
+      lastFrame: 2
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
