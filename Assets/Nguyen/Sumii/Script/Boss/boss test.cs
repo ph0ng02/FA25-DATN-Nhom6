@@ -18,6 +18,7 @@ public class bosstest : MonoBehaviour
     public float attackRange = 2f;
     public float throwRange = 6f;
     public float skillRange = 10f;
+    public float beamRange = 12f; // phạm vi beam
 
     [Header("Cooldowns")]
     public float attackCooldown = 2f;
@@ -28,7 +29,6 @@ public class bosstest : MonoBehaviour
     private float nextAttackTime;
     private float nextThrowTime;
     private float nextSkillTime;
-    private float nextBeamTime;
 
     [Header("AOE Skill")]
     public GameObject chargeEffectPrefab;
@@ -46,7 +46,6 @@ public class bosstest : MonoBehaviour
     public float beamDuration = 3f;
     public int beamDamage = 15;
     public float beamHitRadius = 1.5f;
-    public float beamRange = 12f; // phạm vi tự bắn beam
 
     [Header("FX Settings")]
     public GameObject fxCirclePrefab;
@@ -75,6 +74,9 @@ public class bosstest : MonoBehaviour
             Renderer r = fxCircleInstance.GetComponentInChildren<Renderer>();
             if (r != null) fxMaterial = r.material;
         }
+
+        // Bắt đầu coroutine tự bắn beam mỗi 10s
+        StartCoroutine(AutoBeamRoutine());
     }
 
     void Update()
@@ -118,10 +120,7 @@ public class bosstest : MonoBehaviour
         {
             SkillAOE();
         }
-        else if (distance <= beamRange && Time.time >= nextBeamTime)
-        {
-            StartCoroutine(UseBeamSkill());
-        }
+        // Beam bây giờ được gọi tự động trong AutoBeamRoutine()
     }
 
     void Attack()
@@ -171,11 +170,18 @@ public class bosstest : MonoBehaviour
 
     IEnumerator UseBeamSkill()
     {
-        nextBeamTime = Time.time + beamCooldown;
         anim.SetTrigger("useBeam");
         agent.isStopped = true;
 
-        yield return new WaitForSeconds(0.5f); // delay trước khi bắn beam
+        // Quay mặt về player trước khi bắn
+        if (player != null)
+        {
+            Vector3 lookDir = (player.position - transform.position).normalized;
+            lookDir.y = 0;
+            transform.rotation = Quaternion.LookRotation(lookDir);
+        }
+
+        yield return new WaitForSeconds(1f); // niệm chiêu 1 giây
 
         if (beamPrefab && beamFirePoint)
         {
@@ -190,7 +196,7 @@ public class bosstest : MonoBehaviour
     IEnumerator TrackBeamToPlayer(GameObject beam)
     {
         float elapsed = 0f;
-        float moveSpeed = 12f; // tốc độ bay của beam
+        float moveSpeed = 12f; // tốc độ beam bay
 
         while (elapsed < beamDuration && player != null && beam != null)
         {
@@ -198,18 +204,15 @@ public class bosstest : MonoBehaviour
             if (dist > beamRange) // nếu player ra khỏi phạm vi
                 break;
 
-            // Hướng tới player
+            // beam tự hướng theo player
             Vector3 targetPos = player.position + Vector3.up * 1.2f;
             Vector3 dir = (targetPos - beam.transform.position).normalized;
 
-            // Xoay beam
             Quaternion targetRot = Quaternion.LookRotation(dir);
             beam.transform.rotation = Quaternion.Lerp(beam.transform.rotation, targetRot, Time.deltaTime * 10f);
-
-            // Di chuyển beam
             beam.transform.position += dir * moveSpeed * Time.deltaTime;
 
-            // Kiểm tra trúng player
+            // Kiểm tra va chạm player
             RaycastHit hit;
             if (Physics.SphereCast(beam.transform.position, beamHitRadius, dir, out hit, 0.5f))
             {
@@ -228,6 +231,22 @@ public class bosstest : MonoBehaviour
         if (beam != null) Destroy(beam);
     }
 
+    IEnumerator AutoBeamRoutine()
+    {
+        while (!isDead)
+        {
+            yield return new WaitForSeconds(beamCooldown); // 10s 1 lần
+
+            if (player == null) continue;
+            float distance = Vector3.Distance(transform.position, player.position);
+
+            if (distance <= beamRange) // chỉ bắn khi player trong phạm vi
+            {
+                StartCoroutine(UseBeamSkill());
+            }
+        }
+    }
+
     public void TakeDamage(int dmg)
     {
         if (isDead) return;
@@ -243,7 +262,6 @@ public class bosstest : MonoBehaviour
         Destroy(gameObject, 5f);
     }
 
-    // FX vòng dưới chân boss
     void UpdateFXCircle()
     {
         if (fxCircleInstance == null) return;
