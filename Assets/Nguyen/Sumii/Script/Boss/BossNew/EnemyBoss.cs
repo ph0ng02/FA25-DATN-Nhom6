@@ -3,175 +3,74 @@ using UnityEngine.AI;
 
 public class EnemyBoss : MonoBehaviour
 {
-    [Header("Components")]
+    [Header("Component")]
     public Animator anim;
     public NavMeshAgent agent;
-    public Transform player;
+    public Transform target;
 
     [Header("Stats")]
-    public float maxHP = 1000;
-    public float currentHP;
-    private bool isDead = false;
+    public float detectRange = 10f;
+    public float attackRange = 3f;
+    public bool dead = false;
 
-    [Header("Ranges")]
-    public float detectionRange = 10f;
-    public float attackRange = 4f;
-
-    [Header("Cooldowns")]
-    public float skillCD = 3f;
-    public float throwCD = 4.5f;
-    public float walkCD = 2f;
-
-    private float nextSkill;
-    private float nextThrow;
-    private float nextWalk;
-
-    private bool isAttacking = false;
+    float attackCooldown = 2f;
+    float attackTimer = 0f;
 
     void Start()
     {
-        currentHP = maxHP;
+        if (anim == null) anim = GetComponent<Animator>();
+        if (agent == null) agent = GetComponent<NavMeshAgent>();
     }
 
     void Update()
     {
-        if (isDead) return;
+        if (dead) return;
 
-        // ======= DEATH =======
-        if (currentHP <= 0 && !isDead)
+        attackTimer -= Time.deltaTime;
+
+        float dist = Vector3.Distance(transform.position, target.position);
+
+        // -------------------- DI CHUYỂN --------------------
+        if (dist > attackRange && dist < detectRange)
         {
-            isDead = true;
-            agent.isStopped = true;
-            anim.SetTrigger("Death");
-            return;
-        }
-
-        // ======= GET HP % =======
-        float hpPercent = (currentHP / maxHP) * 100f;
-        float distance = Vector3.Distance(transform.position, player.position);
-
-        // ======= OUT OF RANGE = IDLE =======
-        if (distance > detectionRange)
-        {
-            SetIdle();
-            return;
-        }
-
-        // ======= MOVEMENT =======
-        if (!isAttacking && distance > attackRange && Time.time >= nextWalk)
-        {
-            nextWalk = Time.time + walkCD;
-
-            anim.SetBool("Idle", false);
-            anim.SetTrigger("Walk");
-
             agent.isStopped = false;
-            agent.SetDestination(player.position);
-            return;
+            agent.SetDestination(target.position);
+
+            anim.SetBool("isMoving", true);
+            anim.SetFloat("speed", agent.velocity.magnitude);
+        }
+        else
+        {
+            agent.isStopped = true;
+            anim.SetBool("isMoving", false);
+            anim.SetFloat("speed", 0);
         }
 
-        // ======= STOP BEFORE ATTACK =======
+        // -------------------- TẤN CÔNG --------------------
+        if (dist <= attackRange && attackTimer <= 0)
+        {
+            attackTimer = attackCooldown;
+
+            int randAttack = Random.Range(0, 2); // 0 = Throw, 1 = Skill
+            anim.SetInteger("attackTyp", randAttack);
+
+            if (randAttack == 0)
+            {
+                anim.SetTrigger("throwTrigger");
+            }
+            else
+            {
+                anim.SetTrigger("useSkill");
+            }
+        }
+    }
+
+    // -------------------- CHẾT --------------------
+    public void Die()
+    {
+        dead = true;
         agent.isStopped = true;
 
-        // =======================================
-        //               CHỈ SKILL (HP > 75%)
-        // =======================================
-        if (hpPercent > 75f)
-        {
-            TrySkill();
-            return;
-        }
-
-        // =======================================
-        //           SKILL + THROW (50% - 75%)
-        // =======================================
-        if (hpPercent > 50f)
-        {
-            if (TryThrow()) return;
-            TrySkill();
-            return;
-        }
-
-        // =======================================
-        //       FULL COMBO (40% - 50%)
-        // =======================================
-        if (hpPercent > 40f)
-        {
-            if (TryWalkAttack()) return;
-            if (TryThrow()) return;
-            if (TrySkill()) return;
-            return;
-        }
-
-        // =======================================
-        //             BERSERK MODE (< 40%)
-        // =======================================
-        if (TrySkill(0.7f)) return;
-        TryThrow(0.8f);
-    }
-
-    // =====================================================
-    // ============= ACTION FUNCTIONS =======================
-    // =====================================================
-
-    void SetIdle()
-    {
-        agent.isStopped = true;
-        anim.SetBool("Idle", true);
-    }
-
-    bool TrySkill(float multiplier = 1f)
-    {
-        if (isAttacking) return false;
-        if (Time.time < nextSkill) return false;
-
-        nextSkill = Time.time + skillCD * multiplier;
-
-        anim.SetBool("Idle", false);
-        anim.SetTrigger("Skill");
-
-        StartCoroutine(AttackLock(1.2f)); // Lock trong 1.2s
-        return true;
-    }
-
-    bool TryThrow(float multiplier = 1f)
-    {
-        if (isAttacking) return false;
-        if (Time.time < nextThrow) return false;
-
-        nextThrow = Time.time + throwCD * multiplier;
-
-        anim.SetBool("Idle", false);
-        anim.SetTrigger("Throw");
-
-        StartCoroutine(AttackLock(1.0f));
-        return true;
-    }
-
-    bool TryWalkAttack()
-    {
-        if (isAttacking) return false;
-        if (Time.time < nextWalk) return false;
-
-        nextWalk = Time.time + walkCD;
-
-        anim.SetBool("Idle", false);
-        anim.SetTrigger("Walk");
-
-        StartCoroutine(AttackLock(0.5f));
-        return true;
-    }
-
-    // khóa animation, tránh spam
-    System.Collections.IEnumerator AttackLock(float time)
-    {
-        isAttacking = true;
-        yield return new WaitForSeconds(time);
-        isAttacking = false;
-    }
-
-    public void TakeDamage(float dmg)
-    {
-        currentHP -= dmg;
+        anim.SetBool("isDead", true);
     }
 }
