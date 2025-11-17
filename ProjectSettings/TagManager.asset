@@ -8,6 +8,10 @@ TagManager:
   - Player1
   - Player2
   - Dragon
+  - FxTemporaire
+  - Bullet
+  - Enemy
+  - EnemyDetection
   layers:
   - Default
   - TransparentFX
@@ -16,7 +20,7 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 
+  - EnemyDetection
   - 
   - 
   - 
