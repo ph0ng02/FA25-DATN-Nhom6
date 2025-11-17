@@ -1,23 +1,31 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyHealth : MonoBehaviour
 {
-    [Header("Health Settings")]
-    public float maxHealth = 100f;
-    private float currentHealth;
+    public float maxHealth = 100;
+    public float currentHealth;
 
-    [Header("Death Settings")]
-    public GameObject deathEffect; // hiệu ứng nổ hoặc biến mất khi chết
+    public Slider healthSlider; // Gán slider trong Inspector
+    public Canvas healthCanvas; // Canvas hướng về Camera
 
     void Start()
     {
         currentHealth = maxHealth;
+        healthSlider.maxValue = maxHealth;
+        healthSlider.value = maxHealth;
+    }
+
+    void Update()
+    {
+        // Cho thanh máu luôn quay về hướng Camera
+        healthCanvas.transform.LookAt(Camera.main.transform);
     }
 
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
-        Debug.Log($"{gameObject.name} nhận {damage} damage! Máu còn lại: {currentHealth}");
+        healthSlider.value = currentHealth;
 
         if (currentHealth <= 0)
         {
@@ -27,9 +35,6 @@ public class EnemyHealth : MonoBehaviour
 
     void Die()
     {
-        if (deathEffect != null)
-            Instantiate(deathEffect, transform.position, Quaternion.identity);
-
         Destroy(gameObject);
     }
 }
