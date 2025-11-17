@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ground
   - Player1
+<<<<<<< HEAD
   - Player2
   - Dragon
   - FxTemporaire
@@ -13,6 +14,9 @@ TagManager:
   - Enemy
   - EnemyDetection
   - Pushable
+=======
+  - 'Player2 '
+>>>>>>> suggest/Team06-0083enemy
   layers:
   - Default
   - TransparentFX
