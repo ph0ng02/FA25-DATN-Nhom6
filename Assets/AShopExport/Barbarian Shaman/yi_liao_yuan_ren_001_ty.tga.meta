@@ -1,5 +1,12 @@
 fileFormatVersion: 2
 guid: e48534d425899364788aae8593651a22
+AssetOrigin:
+  serializedVersion: 1
+  productId: 59073
+  packageName: MOBA Game Witch Doctor
+  packageVersion: 1.0
+  assetPath: Assets/AShopExport/Barbarian Shaman/yi_liao_yuan_ren_001_ty.tga
+  uploadId: 109275
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -141,10 +148,3 @@ TextureImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 59073
-  packageName: MOBA Game Witch Doctor
-  packageVersion: 1.0
-  assetPath: Assets/AShopExport/Barbarian Shaman/yi_liao_yuan_ren_001_ty.tga
-  uploadId: 109275
