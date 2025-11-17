@@ -544,6 +544,53 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ef79ea098effbc468c767810a21ad58, type: 3}
+--- !u!1 &923960248
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 923960250}
+  - component: {fileID: 923960249}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &923960249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 923960248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb88f9ec4053f9d44b1365473e7f7023, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PuzzleManager
+  player1Goals: []
+  player2Goals: []
+  door: {fileID: 1298437062}
+--- !u!4 &923960250
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 923960248}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 8.03956, y: 0, z: -102.7851}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1059730445
 GameObject:
   m_ObjectHideFlags: 0
@@ -1429,6 +1476,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4808075875826467166, guid: d46d0350fe64d3e4a98a1b23933e045e, type: 3}
+      propertyPath: correctGoalID
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4808075875826467166, guid: d46d0350fe64d3e4a98a1b23933e045e, type: 3}
+      propertyPath: isCorrectRock
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7348153089041041032, guid: d46d0350fe64d3e4a98a1b23933e045e, type: 3}
       propertyPath: m_Name
       value: Puzzle
@@ -1471,6 +1526,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7416888232457123768, guid: d46d0350fe64d3e4a98a1b23933e045e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8892673648867845667, guid: d46d0350fe64d3e4a98a1b23933e045e, type: 3}
+      propertyPath: goalID
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8892673648867845667, guid: d46d0350fe64d3e4a98a1b23933e045e, type: 3}
+      propertyPath: isFilledCorrectly
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8892673648867845667, guid: d46d0350fe64d3e4a98a1b23933e045e, type: 3}
@@ -1831,26 +1894,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 247816703427797543, guid: 9a41f38704cd2c04b9f9dfea126626d6, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 247816703427797543, guid: 9a41f38704cd2c04b9f9dfea126626d6, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 247816703427797543, guid: 9a41f38704cd2c04b9f9dfea126626d6, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0
-      objectReference: {fileID: 0}
     - target: {fileID: 1147422303204696639, guid: 9a41f38704cd2c04b9f9dfea126626d6, type: 3}
       propertyPath: spawnPoint
       value: 
       objectReference: {fileID: 1818300367}
-    - target: {fileID: 4491277155086582953, guid: 9a41f38704cd2c04b9f9dfea126626d6, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 465
-      objectReference: {fileID: 0}
     - target: {fileID: 4930291067678808073, guid: 9a41f38704cd2c04b9f9dfea126626d6, type: 3}
       propertyPath: m_Name
       value: Player1
@@ -1929,3 +1976,4 @@ SceneRoots:
   - {fileID: 1615234349}
   - {fileID: 1376073502}
   - {fileID: 4100438282190369980}
+  - {fileID: 923960250}
