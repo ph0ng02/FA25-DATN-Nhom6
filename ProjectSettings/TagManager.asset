@@ -12,6 +12,7 @@ TagManager:
   - Bullet
   - Enemy
   - EnemyDetection
+  - Pushable
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - UI
   - Ground
   - EnemyDetection
-  - 
+  - Pushable
   - 
   - 
   - 

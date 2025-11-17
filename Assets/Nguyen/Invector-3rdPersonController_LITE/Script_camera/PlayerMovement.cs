@@ -60,4 +60,19 @@ public class PlayerMovement : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.collider.CompareTag("Pushable"))
+        {
+            PushableRock rock = hit.collider.GetComponent<PushableRock>();
+
+            Vector3 pushDir = hit.moveDirection;
+            pushDir.y = 0;
+
+            if (pushDir.magnitude > 0.1f)
+            {
+                rock.Push(pushDir);
+            }
+        }
+    }
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Door : Interactable
+public class Door1 : Interactable
 {
     private bool isOpen = false;
     public Transform doorHinge;
