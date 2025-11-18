@@ -8960,6 +8960,19 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8268436749258368598, guid: 4f76e5ea89da8d040bd22fa0d9382467, type: 3}
   m_PrefabInstance: {fileID: 7119885458609951231}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &152603885325426535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 152603885325426534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3869dc5a0edd47429a66aa8c55cc900, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelEndManager
+  nextSceneName: Map3
 --- !u!1001 &7119885458609951231
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8968,6 +8981,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1469226774280401268, guid: 4f76e5ea89da8d040bd22fa0d9382467, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4818579592450788497, guid: 4f76e5ea89da8d040bd22fa0d9382467, type: 3}
       propertyPath: m_LocalPosition.x
       value: 440
@@ -9015,7 +9032,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8268436749258368598, guid: 4f76e5ea89da8d040bd22fa0d9382467, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 152603885325426535}
   m_SourcePrefab: {fileID: 100100000, guid: 4f76e5ea89da8d040bd22fa0d9382467, type: 3}
 --- !u!1001 &8015524619737418225
 PrefabInstance:
