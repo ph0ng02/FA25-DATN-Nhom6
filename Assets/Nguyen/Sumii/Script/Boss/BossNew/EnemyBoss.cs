@@ -1,76 +1,92 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
 
-public class EnemyBoss : MonoBehaviour
+public class Boss1 : MonoBehaviour
 {
-    [Header("Component")]
     public Animator anim;
     public NavMeshAgent agent;
-    public Transform target;
+    public Transform player;
 
-    [Header("Stats")]
-    public float detectRange = 10f;
-    public float attackRange = 3f;
-    public bool dead = false;
+    public int maxHP = 1000;
+    private int currentHP;
 
-    float attackCooldown = 2f;
-    float attackTimer = 0f;
+    private bool isAttacking = false;
+    public float attackRange = 3f;   // tầm đánh gần
 
     void Start()
     {
-        if (anim == null) anim = GetComponent<Animator>();
-        if (agent == null) agent = GetComponent<NavMeshAgent>();
+        currentHP = maxHP;
     }
 
     void Update()
     {
-        if (dead) return;
+        float dist = Vector3.Distance(transform.position, player.position);
 
-        attackTimer -= Time.deltaTime;
-
-        float dist = Vector3.Distance(transform.position, target.position);
-
-        // -------------------- DI CHUYỂN --------------------
-        if (dist > attackRange && dist < detectRange)
+        // Nếu player ở xa → chạy tới
+        if (dist > attackRange)
         {
             agent.isStopped = false;
-            agent.SetDestination(target.position);
+            agent.SetDestination(player.position);
+            anim.SetBool("Run", true);
+            return;
+        }
 
-            anim.SetBool("isMoving", true);
-            anim.SetFloat("speed", agent.velocity.magnitude);
+        // Player ở gần → tấn công
+        agent.isStopped = true;
+        anim.SetBool("Run", false);
+
+        if (!isAttacking)
+            TryAttack();
+    }
+
+    void TryAttack()
+    {
+        float hpPercent = (float)currentHP / maxHP;
+
+        // BOSS TRÊN 50% MÁU → Attack1 và Attack2
+        if (hpPercent > 0.5f)
+        {
+            int r = Random.Range(0, 2); // 0 hoặc 1
+
+            if (r == 0)
+                StartCoroutine(DoAttack1());
+            else
+                StartCoroutine(DoAttack2());
         }
         else
         {
-            agent.isStopped = true;
-            anim.SetBool("isMoving", false);
-            anim.SetFloat("speed", 0);
-        }
-
-        // -------------------- TẤN CÔNG --------------------
-        if (dist <= attackRange && attackTimer <= 0)
-        {
-            attackTimer = attackCooldown;
-
-            int randAttack = Random.Range(0, 2); // 0 = Throw, 1 = Skill
-            anim.SetInteger("attackTyp", randAttack);
-
-            if (randAttack == 0)
-            {
-                anim.SetTrigger("throwTrigger");
-            }
-            else
-            {
-                anim.SetTrigger("useSkill");
-            }
+            StartCoroutine(DoAttack3());
         }
     }
 
-    // -------------------- CHẾT --------------------
-    public void Die()
+    IEnumerator DoAttack1()
     {
-        dead = true;
-        agent.isStopped = true;
+        isAttacking = true;
+        anim.SetTrigger("Attack");
+        yield return new WaitForSeconds(1.2f);
+        isAttacking = false;
+    }
 
-        anim.SetBool("isDead", true);
+    IEnumerator DoAttack2()
+    {
+        isAttacking = true;
+        anim.SetTrigger("DoAttack2");
+        yield return new WaitForSeconds(1.2f);
+        isAttacking = false;
+    }
+
+    IEnumerator DoAttack3()
+    {
+        isAttacking = true;
+        anim.SetTrigger("DoAttack3");
+        yield return new WaitForSeconds(1.6f);
+        isAttacking = false;
+    }
+
+    public void TakeDamage(int dmg)
+    {
+        currentHP -= dmg;
+        if (currentHP < 0) currentHP = 0;
     }
 }
