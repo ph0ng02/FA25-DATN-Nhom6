@@ -32,7 +32,7 @@ public class PlayerController_Gamepad : MonoBehaviour
 
         // --- Nhận input từ tay cầm ---
         float horizontal = Input.GetAxis("Horizontal2"); // Xoay nhân vật
-        float vertical = Input.GetAxis("Vertical2");     // Tiến/lùi
+        float vertical = -Input.GetAxis("Vertical2");     // Tiến/lùi
 
         // --- Xoay nhân vật bằng cần trái (trái/phải) ---
         transform.Rotate(Vector3.up * horizontal * rotationSpeed * Time.deltaTime);

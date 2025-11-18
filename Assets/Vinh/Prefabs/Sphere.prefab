@@ -168,4 +168,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RockRoll
   rb: {fileID: 8411322297153029808}
-  pushForce: 5
+  pushForce: 10

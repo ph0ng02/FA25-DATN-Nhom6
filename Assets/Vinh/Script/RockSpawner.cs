@@ -13,7 +13,12 @@ public class RockSpawner : MonoBehaviour
 
     void SpawnRock()
     {
-        Instantiate(rockPrefab, spawnPoint.position, spawnPoint.rotation);
+        // random Z +- tùy bạn chỉnh
+        float randomZ = Random.Range(750f, 850f);
+
+        Vector3 spawnPos = new Vector3(spawnPoint.position.x, spawnPoint.position.y, randomZ);
+
+        Instantiate(rockPrefab, spawnPos, spawnPoint.rotation);
     }
 }
 
