@@ -424,6 +424,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &339463502 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5911893088733641442, guid: f6573a110c1967643a98d0efdba24be8, type: 3}
+  m_PrefabInstance: {fileID: 668482092}
+  m_PrefabAsset: {fileID: 0}
 --- !u!195 &393069082 stripped
 NavMeshAgent:
   m_CorrespondingSourceObject: {fileID: 5888482267342713103, guid: 1c63496558e731c4ca804de44765fbec, type: 3}
@@ -1123,6 +1128,10 @@ MonoBehaviour:
   beamRadius: 2.5
   beamDuration: 3
   beamRotateSpeed: 150
+  waterImpactPrefab: {fileID: 339463502}
+  waterSpawnHeight: 1
+  waterDamageRadius: 1
+  waterInterval: 15
   maxHP: 1000
   attackRange: 3
 --- !u!1001 &1505307961
@@ -1862,7 +1871,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3146711433171987099, guid: af8d0a12de7b28b41b708ac01461d7f8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.9
+      value: -5.67
       objectReference: {fileID: 0}
     - target: {fileID: 3146711433171987099, guid: af8d0a12de7b28b41b708ac01461d7f8, type: 3}
       propertyPath: m_LocalPosition.y
