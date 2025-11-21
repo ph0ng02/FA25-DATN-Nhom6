@@ -43,7 +43,7 @@ public class AttackControl : MonoBehaviour
     {
         comboStep++;
 
-        if (comboStep > 4)
+        if (comboStep > 5)
             comboStep = 1;
 
         anim.SetInteger("Combo", comboStep);
