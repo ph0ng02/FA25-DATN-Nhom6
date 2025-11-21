@@ -1144,19 +1144,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a1bfe72fbc87d04e885296b53e91c66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::vThirdPersonCamera
-  target: {fileID: 0}
+  target: {fileID: 1494376486}
   smoothCameraRotation: 12
   cullingLayer:
     serializedVersion: 2
     m_Bits: 1
   lockCamera: 0
   rightOffset: 0
-  defaultDistance: 2.5
-  height: 1.4
+  defaultDistance: 2
+  height: 1
   smoothFollow: 10
-  xMouseSensitivity: 3
-  yMouseSensitivity: 3
-  yMinLimit: -40
+  xMouseSensitivity: 1
+  yMouseSensitivity: 1
+  yMinLimit: 0
   yMaxLimit: 80
   indexList: 0
   indexLookPoint: 0

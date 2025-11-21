@@ -12,6 +12,8 @@ public class vThirdPersonCamera : MonoBehaviour
     public LayerMask cullingLayer = 1 << 0;
     [Tooltip("Debug purposes, lock the camera behind the character for better align the states")]
     public bool lockCamera;
+    private bool cursorLocked = true;
+
 
     public float rightOffset = 0f;
     public float defaultDistance = 2.5f;
@@ -82,6 +84,13 @@ public class vThirdPersonCamera : MonoBehaviour
 
         distance = defaultDistance;
         currentHeight = height;
+    }
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftAlt))
+        {
+            SetCursorState(!cursorLocked);
+        }
     }
 
     void FixedUpdate()
@@ -247,4 +256,20 @@ public class vThirdPersonCamera : MonoBehaviour
 
         return hitInfo.collider && value;
     }
+    void SetCursorState(bool locked)
+    {
+        cursorLocked = locked;
+
+        if (locked)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+    }
+
 }
