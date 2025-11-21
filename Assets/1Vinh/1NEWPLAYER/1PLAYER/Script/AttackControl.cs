@@ -31,6 +31,12 @@ public class AttackControl : MonoBehaviour
         {
             DoForwardAttack();
         }
+
+        // Heavy Attack (Right Mouse Button)
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            DoHeavyAttack();
+        }
     }
 
     void DoCombo()
@@ -51,19 +57,21 @@ public class AttackControl : MonoBehaviour
         // Reset combo để không bị lẫn
         ResetCombo();
 
-        anim.SetBool("Forward", true);   // bật Forward Attack
+        anim.SetTrigger("Forward");   // Trigger Forward Attack
+    }
+
+    void DoHeavyAttack()
+    {
+        // Reset combo để không bị lẫn
+        ResetCombo();
+
+        anim.SetTrigger("Heavy");     // Trigger Heavy Attack
     }
 
     // Gọi trong cuối animation Slash1, Slash2...
     public void EndAttack()
     {
         anim.SetBool("Attack", false);
-    }
-
-    // Gọi trong cuối animation Forward Attack
-    public void EndForward()
-    {
-        anim.SetBool("Forward", false);
     }
 
     void ResetCombo()
