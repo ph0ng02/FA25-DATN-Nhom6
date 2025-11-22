@@ -2,22 +2,23 @@ using UnityEngine;
 
 public class EndTrigger : MonoBehaviour
 {
-    [Header("ID của player (1 hoặc 2)")]
-    public int playerID;
-
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player" + playerID))
+        if (other.CompareTag("Player"))
         {
-            LevelEndManager.Instance.SetPlayerReady(playerID, true);
+            if (LevelEndManager.Instance != null)
+                LevelEndManager.Instance.SetPlayerReady(true);
+            else
+                Debug.LogError("❌ LevelEndManager.Instance bị null!");
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player" + playerID))
+        if (other.CompareTag("Player"))
         {
-            LevelEndManager.Instance.SetPlayerReady(playerID, false);
+            if (LevelEndManager.Instance != null)
+                LevelEndManager.Instance.SetPlayerReady(false);
         }
     }
 }

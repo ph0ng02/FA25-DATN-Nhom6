@@ -8,27 +8,23 @@ public class LevelEndManager : MonoBehaviour
     [Header("Tên Scene kế tiếp")]
     public string nextSceneName = "MapCutscreen";
 
-    private bool player1Ready = false;
-    private bool player2Ready = false;
+    private bool playerReady = false; // 👉 CHỈ 1 PLAYER
 
     private void Awake()
     {
         Instance = this;
     }
 
-    public void SetPlayerReady(int playerID, bool isReady)
+    // 👉 Hàm gọi từ trigger, chỉ cần 1 player là đủ
+    public void SetPlayerReady(bool isReady)
     {
-        if (playerID == 1)
-            player1Ready = isReady;
-        else if (playerID == 2)
-            player2Ready = isReady;
+        playerReady = isReady;
 
-        Debug.Log($"Player1: {player1Ready}, Player2: {player2Ready}");
+        Debug.Log($"Player Ready: {playerReady}");
 
-        // Khi cả 2 người đều trong vùng trigger
-        if (player1Ready && player2Ready)
+        if (playerReady)
         {
-            Debug.Log("Cả 2 đã sẵn sàng → Sang map 2");
+            Debug.Log("Player đã vào vùng → Chuyển sang map tiếp theo");
             SceneManager.LoadScene(nextSceneName);
         }
     }

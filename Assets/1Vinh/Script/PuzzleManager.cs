@@ -4,8 +4,8 @@ public class PuzzleManager : MonoBehaviour
 {
     public static PuzzleManager Instance;
 
-    public GoalTile[] player1Goals;
-    public GoalTile[] player2Goals;
+    [Header("Goal tiles của Player")]
+    public GoalTile[] playerGoals;   // 👉 CHỈ 1 PLAYER
 
     public Door door;
 
@@ -16,7 +16,7 @@ public class PuzzleManager : MonoBehaviour
 
     public void CheckPuzzle()
     {
-        if (AllGoalsCorrect(player1Goals) && AllGoalsCorrect(player2Goals))
+        if (AllGoalsCorrect(playerGoals))
         {
             Debug.Log("Puzzle Completed!");
             door.OpenDoor();

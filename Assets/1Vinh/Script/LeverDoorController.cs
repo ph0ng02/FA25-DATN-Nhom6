@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.InputSystem; // ✅ Dùng cho Input System mới (Keyboard, Gamepad...)
+using UnityEngine.InputSystem; // Dùng Input System mới
 
 public class LeverDoorController : MonoBehaviour
 {
@@ -21,25 +21,19 @@ public class LeverDoorController : MonoBehaviour
     private Vector3 doorOpenPos;
     private bool isMoving = false;
 
-    private Transform[] players; // Cả 2 người chơi
+    private Transform player; // 👉 CHỈ 1 PLAYER
 
     void Start()
     {
         doorClosedPos = door.position;
         doorOpenPos = door.position + Vector3.up * doorOpenHeight;
 
-        // Tìm cả 2 player qua Tag
-        GameObject p1 = GameObject.FindGameObjectWithTag("Player1");
-        GameObject p2 = GameObject.FindGameObjectWithTag("Player2");
-
-        if (p1 != null && p2 != null)
-        {
-            players = new Transform[] { p1.transform, p2.transform };
-        }
+        // 👉 Chỉ tìm 1 player
+        GameObject p = GameObject.FindGameObjectWithTag("Player");
+        if (p != null)
+            player = p.transform;
         else
-        {
-            Debug.LogWarning("⚠ Không tìm thấy Player1 hoặc Player2 trong scene!");
-        }
+            Debug.LogWarning("⚠ Không tìm thấy Player trong scene!");
 
         if (interactText != null)
             interactText.gameObject.SetActive(false);
@@ -47,13 +41,11 @@ public class LeverDoorController : MonoBehaviour
 
     void Update()
     {
-        if (players == null || players.Length == 0) return;
+        if (player == null) return;
 
-        // Kiểm tra player nào đang gần nhất
-        Transform nearestPlayer = GetNearestPlayer();
-        float distance = Vector3.Distance(nearestPlayer.position, transform.position);
+        float distance = Vector3.Distance(player.position, transform.position);
 
-        // --- HIỂN THỊ UI ---
+        // --- UI ---
         if (interactText != null)
         {
             if (Gamepad.current != null)
@@ -64,42 +56,25 @@ public class LeverDoorController : MonoBehaviour
             interactText.gameObject.SetActive(distance < interactDistance && !isMoving);
         }
 
-        // --- KIỂM TRA TƯƠNG TÁC ---
+        // --- TƯƠNG TÁC ---
         if (distance < interactDistance && !isMoving)
         {
             bool interactPressed = false;
 
-            // ✅ Input System mới
+            // Input System mới
             if (Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
                 interactPressed = true;
 
             if (Gamepad.current != null && Gamepad.current.buttonSouth.wasPressedThisFrame)
                 interactPressed = true;
 
-            // ✅ Input System cũ (phòng trường hợp không có Input System mới)
-            if (Input.GetKeyDown(interactKey) || Input.GetButtonDown("Submit") || Input.GetButtonDown("Fire1"))
+            // Input system cũ
+            if (Input.GetKeyDown(interactKey) || Input.GetButtonDown("Submit"))
                 interactPressed = true;
 
             if (interactPressed)
                 ToggleDoor();
         }
-    }
-
-    Transform GetNearestPlayer()
-    {
-        Transform nearest = players[0];
-        float minDist = Vector3.Distance(transform.position, nearest.position);
-
-        for (int i = 1; i < players.Length; i++)
-        {
-            float dist = Vector3.Distance(transform.position, players[i].position);
-            if (dist < minDist)
-            {
-                nearest = players[i];
-                minDist = dist;
-            }
-        }
-        return nearest;
     }
 
     void ToggleDoor()

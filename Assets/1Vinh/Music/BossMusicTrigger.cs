@@ -8,20 +8,27 @@ public class BossMusicTrigger : MonoBehaviour
     {
         if (hasTriggered) return;
 
-        if (other.CompareTag("Player") || other.CompareTag("Player1") || other.CompareTag("Player2"))
+        if (other.CompareTag("Player"))
         {
             hasTriggered = true;
             Debug.Log("Entered boss area - switching music!");
-            AudioManager1.Instance.PlayBossMusic();
+
+            if (AudioManager1.Instance != null)
+                AudioManager1.Instance.PlayBossMusic();
+            else
+                Debug.LogError("❌ AudioManager1.Instance is NULL!");
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player") || other.CompareTag("Player1") || other.CompareTag("Player2"))
+        if (other.CompareTag("Player"))
         {
             Debug.Log("Left boss area - back to normal music");
-            AudioManager1.Instance.PlayNormalMusic();
+
+            if (AudioManager1.Instance != null)
+                AudioManager1.Instance.PlayNormalMusic();
+
             hasTriggered = false;
         }
     }
