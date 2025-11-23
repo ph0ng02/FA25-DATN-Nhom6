@@ -1852,8 +1852,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 48.754528, y: 13.476396, z: 20.566711}
-  m_Center: {x: 18.172552, y: 6.512584, z: -1.5502625}
+  m_Size: {x: 97.58634, y: 13.476396, z: 107.628685}
+  m_Center: {x: 15.683483, y: 6.512584, z: 26.78786}
 --- !u!4 &529884031640424482
 Transform:
   m_ObjectHideFlags: 0
@@ -1872,27 +1872,6 @@ Transform:
   - {fileID: 829131066604913679}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &655017230616167669
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6667134482643627602}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 7.4138794, y: 13.794373, z: 18.068115}
-  m_Center: {x: -9.765472, y: 6.70582, z: -2.769287}
 --- !u!1 &808284379858855948
 GameObject:
   m_ObjectHideFlags: 0
@@ -2116,7 +2095,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1747236666048992216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2394,27 +2373,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!65 &2124144310396983127
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6667134482643627602}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 79.098434, y: 6.882906, z: 122.07106}
-  m_Center: {x: 3.5080948, y: 9.7319, z: 69.5644}
 --- !u!1001 &2186381439729306632
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2560,7 +2518,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 464.79272}
+  m_AnchoredPosition: {x: 0, y: -472}
   m_SizeDelta: {x: 0, y: -929.5855}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &3126535658085444806
@@ -2716,7 +2674,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!222 &3690311452517207223
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3674,8 +3632,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6124979848219482866}
   - component: {fileID: 517600501227128764}
-  - component: {fileID: 655017230616167669}
-  - component: {fileID: 2124144310396983127}
   - component: {fileID: 6667134482643627603}
   m_Layer: 0
   m_Name: Toxic
