@@ -1815,21 +1815,53 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2264829079332907460, guid: bf87fdb9b7be2294baca250392194a33, type: 3}
+      propertyPath: m_Size.x
+      value: 6.4499516
+      objectReference: {fileID: 0}
+    - target: {fileID: 2264829079332907460, guid: bf87fdb9b7be2294baca250392194a33, type: 3}
+      propertyPath: m_Size.y
+      value: 3.187317
+      objectReference: {fileID: 0}
+    - target: {fileID: 2264829079332907460, guid: bf87fdb9b7be2294baca250392194a33, type: 3}
+      propertyPath: m_Size.z
+      value: 7.0613008
+      objectReference: {fileID: 0}
+    - target: {fileID: 2264829079332907460, guid: bf87fdb9b7be2294baca250392194a33, type: 3}
+      propertyPath: m_Center.x
+      value: -0.22167954
+      objectReference: {fileID: 0}
+    - target: {fileID: 2264829079332907460, guid: bf87fdb9b7be2294baca250392194a33, type: 3}
+      propertyPath: m_Center.y
+      value: 1.7033973
+      objectReference: {fileID: 0}
     - target: {fileID: 3024720120464081414, guid: bf87fdb9b7be2294baca250392194a33, type: 3}
       propertyPath: m_Name
       value: NightmareDragon
       objectReference: {fileID: 0}
     - target: {fileID: 6448160273681760222, guid: bf87fdb9b7be2294baca250392194a33, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.649
+      objectReference: {fileID: 0}
+    - target: {fileID: 6448160273681760222, guid: bf87fdb9b7be2294baca250392194a33, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.649
+      objectReference: {fileID: 0}
+    - target: {fileID: 6448160273681760222, guid: bf87fdb9b7be2294baca250392194a33, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.649
+      objectReference: {fileID: 0}
+    - target: {fileID: 6448160273681760222, guid: bf87fdb9b7be2294baca250392194a33, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 204.69
+      value: 188.03
       objectReference: {fileID: 0}
     - target: {fileID: 6448160273681760222, guid: bf87fdb9b7be2294baca250392194a33, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.19
+      value: 0.08
       objectReference: {fileID: 0}
     - target: {fileID: 6448160273681760222, guid: bf87fdb9b7be2294baca250392194a33, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 127.2
+      value: 170.57
       objectReference: {fileID: 0}
     - target: {fileID: 6448160273681760222, guid: bf87fdb9b7be2294baca250392194a33, type: 3}
       propertyPath: m_LocalRotation.w
