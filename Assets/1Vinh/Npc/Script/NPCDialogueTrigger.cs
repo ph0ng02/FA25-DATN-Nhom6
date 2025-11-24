@@ -1,17 +1,28 @@
 using UnityEngine;
+using System.Collections;
 
 public class NPCDialogueTrigger : MonoBehaviour
 {
     public string npcName = "NPC";
-    [TextArea(3, 10)]
-    public string[] dialogueLines;   // Các câu hội thoại
 
+    [Header("Dialogue Settings")]
+    [TextArea(3, 10)]
+    public string[] dialogueLines;
+    public string[] speakerLines;
+
+    [Header("UI")]
     public GameObject dialogueUI;
     public TMPro.TextMeshProUGUI dialogueText;
+    public TMPro.TextMeshProUGUI speakerText;
+
+    [Header("Typing Effect")]
+    public float typingSpeed = 0.02f; // tốc độ đánh chữ
+    private Coroutine typingCoroutine;
 
     private int currentLine = 0;
     private bool isPlayerInside = false;
     private bool isTalking = false;
+    private bool isTyping = false; // đang chạy từng chữ
 
     void Start()
     {
@@ -22,10 +33,7 @@ public class NPCDialogueTrigger : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
-        {
             isPlayerInside = true;
-            Debug.Log("Player entered NPC zone");
-        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -47,7 +55,15 @@ public class NPCDialogueTrigger : MonoBehaviour
             }
             else
             {
-                NextLine();
+                // Nếu đang gõ chữ → skip và hiện nguyên câu
+                if (isTyping)
+                {
+                    SkipTyping();
+                }
+                else
+                {
+                    NextLine();
+                }
             }
         }
     }
@@ -57,7 +73,7 @@ public class NPCDialogueTrigger : MonoBehaviour
         isTalking = true;
         currentLine = 0;
         dialogueUI.SetActive(true);
-        dialogueText.text = dialogueLines[currentLine];
+        ShowLine();
     }
 
     void NextLine()
@@ -70,13 +86,54 @@ public class NPCDialogueTrigger : MonoBehaviour
             return;
         }
 
+        ShowLine();
+    }
+
+    void ShowLine()
+    {
+        dialogueText.text = "";
+
+        string speaker = (currentLine < speakerLines.Length) ? speakerLines[currentLine] : npcName;
+        if (speakerText != null)
+            speakerText.text = speaker;
+
+        if (typingCoroutine != null)
+            StopCoroutine(typingCoroutine);
+
+        typingCoroutine = StartCoroutine(TypeText(dialogueLines[currentLine]));
+    }
+
+    IEnumerator TypeText(string line)
+    {
+        isTyping = true;
+        dialogueText.text = "";
+
+        foreach (char c in line.ToCharArray())
+        {
+            dialogueText.text += c;
+            yield return new WaitForSeconds(typingSpeed);
+        }
+
+        isTyping = false;
+    }
+
+    void SkipTyping()
+    {
+        if (typingCoroutine != null)
+            StopCoroutine(typingCoroutine);
+
         dialogueText.text = dialogueLines[currentLine];
+        isTyping = false;
     }
 
     void EndDialogue()
     {
+        if (typingCoroutine != null)
+            StopCoroutine(typingCoroutine);
+
         dialogueUI.SetActive(false);
         isTalking = false;
         currentLine = 0;
+        isTyping = false;
     }
 }
