@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 60d2cbe438e36ea4aa299828619480bf
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 192235
+  packageName: Starter Bundle from Tafi
+  packageVersion: 1.0
+  assetPath: Assets/Tafi/Common Materials/HDRP/EyeMoisture.mat
+  uploadId: 427512

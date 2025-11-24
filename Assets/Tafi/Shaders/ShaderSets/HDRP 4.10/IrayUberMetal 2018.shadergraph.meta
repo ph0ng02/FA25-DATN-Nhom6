@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: e9793753ee9477c4bb2e37bf97e92272
+ScriptedImporter:
+  fileIDToRecycleName:
+    4800000: MainAsset
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 625f186215c104763be7675aa2d941aa, type: 3}
+AssetOrigin:
+  serializedVersion: 1
+  productId: 192235
+  packageName: Starter Bundle from Tafi
+  packageVersion: 1.0
+  assetPath: Assets/Tafi/Shaders/ShaderSets/HDRP 4.10/IrayUberMetal 2018.shadergraph
+  uploadId: 427512

@@ -4,9 +4,9 @@ public class NPCDialogueTrigger : MonoBehaviour
 {
     public string npcName = "NPC";
     [TextArea(3, 10)]
-    public string[] dialogueLines;   // Các câu hội thoại
+    public string[] dialogueLines;   // Các câu hội thoại
 
-    public GameObject dialogueUI;
+    public GameObject dialogueUI;
     public TMPro.TextMeshProUGUI dialogueText;
 
     private int currentLine = 0;

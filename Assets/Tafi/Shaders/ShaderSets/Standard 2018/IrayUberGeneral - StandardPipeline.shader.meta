@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: e0a24aab58fa0e749a6dae6b86643e51
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 192235
+  packageName: Starter Bundle from Tafi
+  packageVersion: 1.0
+  assetPath: Assets/Tafi/Shaders/ShaderSets/Standard 2018/IrayUberGeneral - StandardPipeline.shader
+  uploadId: 427512

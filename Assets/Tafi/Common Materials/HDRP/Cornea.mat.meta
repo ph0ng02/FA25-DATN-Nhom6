@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f4ce3fedaf4115645a3edf6e002ad92a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 192235
+  packageName: Starter Bundle from Tafi
+  packageVersion: 1.0
+  assetPath: Assets/Tafi/Common Materials/HDRP/Cornea.mat
+  uploadId: 427512

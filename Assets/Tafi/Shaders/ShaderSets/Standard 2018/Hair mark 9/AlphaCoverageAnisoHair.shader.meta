@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: def76a94c229c2a4dae4e0ec3bcd8cca
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 192235
+  packageName: Starter Bundle from Tafi
+  packageVersion: 1.0
+  assetPath: Assets/Tafi/Shaders/ShaderSets/Standard 2018/Hair mark 9/AlphaCoverageAnisoHair.shader
+  uploadId: 427512
