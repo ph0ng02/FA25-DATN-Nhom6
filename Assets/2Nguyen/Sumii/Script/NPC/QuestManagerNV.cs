@@ -1,16 +1,50 @@
-﻿// Trong script QuestManager.cs
+﻿using UnityEngine;
+using TMPro;
 
-// Hàm này BẮT BUỘC phải là PUBLIC
-public void StartQuestFromNPC(Quest newQuest)
+// Đảm bảo tên class là QuestManagerNV
+public class QuestManagerNV : MonoBehaviour
 {
-    // Kiểm tra tính hợp lệ của nhiệm vụ
-    if (newQuest == null) return;
+    // Cần gán các đối tượng UI này trong Inspector
+    public GameObject questLogPanel;
+    public TextMeshProUGUI questTitleText;
+    public TextMeshProUGUI questObjectiveText;
 
-    // Gán nhiệm vụ hiện tại (ví dụ)
-    // currentQuest = newQuest;
+    // Thay Quest bằng QuestNV
+    public QuestNV currentQuest;
 
-    // Cập nhật giao diện
-    // UpdateQuestLogUI(newQuest); 
+    void Start()
+    {
+        if (questLogPanel != null)
+        {
+            questLogPanel.SetActive(false);
+        }
+    }
 
-    Debug.Log("Nhiệm vụ mới đã được nhận: " + newQuest.questName);
+    // ⭐️ Sửa kiểu tham số thành QuestNV ⭐️
+    public void StartQuestFromNPC(QuestNV newQuest)
+    {
+        if (newQuest == null) return;
+
+        currentQuest = newQuest;
+        UpdateQuestLogUI(currentQuest);
+        Debug.Log("Nhiệm vụ mới đã được nhận: " + newQuest.questName);
+    }
+
+    public void UpdateQuestLogUI(QuestNV quest) // Sửa kiểu tham số
+    {
+        if (quest != null && questLogPanel != null)
+        {
+            questLogPanel.SetActive(true);
+
+            if (questTitleText != null)
+            {
+                questTitleText.text = "Quest: " + quest.questName;
+            }
+            if (questObjectiveText != null)
+            {
+                // Truy cập objectiveDescription đã được sửa trong QuestNV.cs
+                questObjectiveText.text = "Nhiệm vụ:\n\"" + quest.objectiveDescription + "\"";
+            }
+        }
+    }
 }
