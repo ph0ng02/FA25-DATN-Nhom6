@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System;
 
 public class NPCDialogue : MonoBehaviour
 {
@@ -15,8 +16,9 @@ public class NPCDialogue : MonoBehaviour
     public KeyCode interactKey = KeyCode.E;
 
     private int currentLine = 0;
-    private bool isTalking = false;
+    public bool isTalking = false;
     private Transform player;
+    public event Action OnDialogueEnd;
 
     void Start()
     {
