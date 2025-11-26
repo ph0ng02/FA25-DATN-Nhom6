@@ -670,9 +670,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   maxHealth: 100
-  currentHealth: 0
-  healthSlider: {fileID: 2772338519525812629}
-  healthCanvas: {fileID: 1393299145144150708}
+  animator: {fileID: 0}
 --- !u!4 &4093407979598004134 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 67e4d55156b4c44d3b958c52b5a14821, type: 3}
