@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 0d498a2cd0ac51b488428a5956eee76d
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 192235
+  packageName: Starter Bundle from Tafi
+  packageVersion: 1.0
+  assetPath: Assets/Tafi/Shaders/ShaderSets/HDRP 7.3/Helpers/GetLighDirection.hlsl
+  uploadId: 427512

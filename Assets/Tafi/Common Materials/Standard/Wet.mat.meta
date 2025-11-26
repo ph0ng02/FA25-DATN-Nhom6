@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d0bb11e625ac22843ab014e8dbe5ef77
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 192235
+  packageName: Starter Bundle from Tafi
+  packageVersion: 1.0
+  assetPath: Assets/Tafi/Common Materials/Standard/Wet.mat
+  uploadId: 427512

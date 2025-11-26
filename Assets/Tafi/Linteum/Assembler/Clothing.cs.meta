@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: cfa0ffbd513237f46b52655eb0be2911
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 192235
+  packageName: Starter Bundle from Tafi
+  packageVersion: 1.0
+  assetPath: Assets/Tafi/Linteum/Assembler/Clothing.cs
+  uploadId: 427512

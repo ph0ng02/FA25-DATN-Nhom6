@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4005a78a9c44dfb4db4801941bd1768a
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 192235
+  packageName: Starter Bundle from Tafi
+  packageVersion: 1.0
+  assetPath: Assets/Tafi/Shaders/ShaderSets/Standard 2018/Hair mark 9/DitherFunctions.cginc
+  uploadId: 427512

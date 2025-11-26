@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: fc2956284102cd144bfab198623d4d87
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 192235
+  packageName: Starter Bundle from Tafi
+  packageVersion: 1.0
+  assetPath: Assets/Tafi/Linteum/Assembler/LinteumClient.asmdef
+  uploadId: 427512

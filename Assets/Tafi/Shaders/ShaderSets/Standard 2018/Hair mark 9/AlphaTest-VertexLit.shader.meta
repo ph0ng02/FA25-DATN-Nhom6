@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e58e02fdda99e774fb09e5cd2ebc3a11
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 192235
+  packageName: Starter Bundle from Tafi
+  packageVersion: 1.0
+  assetPath: Assets/Tafi/Shaders/ShaderSets/Standard 2018/Hair mark 9/AlphaTest-VertexLit.shader
+  uploadId: 427512

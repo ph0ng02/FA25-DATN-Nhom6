@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 40214558ca16f5048a1d754ba06c4a2c
+ScriptedImporter:
+  fileIDToRecycleName:
+    11400000: MainAsset
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 60072b568d64c40a485e0fc55012dc9f, type: 3}
+AssetOrigin:
+  serializedVersion: 1
+  productId: 192235
+  packageName: Starter Bundle from Tafi
+  packageVersion: 1.0
+  assetPath: Assets/Tafi/Shaders/ShaderSets/HDRP 7.3/Helpers/LightDirection.shadersubgraph
+  uploadId: 427512
