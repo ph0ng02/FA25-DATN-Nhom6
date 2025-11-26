@@ -39,17 +39,17 @@ public class Nira_NPC : MonoBehaviour
         }
     }
 
+
+
     // Thay thế InteractWithNira() bằng hàm này để kiểm soát luồng thoại
     public void Interact()
     {
         if (npcDialogue.isTalking)
         {
-            // Nếu đang nói chuyện, chuyển sang dòng tiếp theo
-            npcDialogue.Interact();
+            npcDialogue.DisplayNextLine();
             return;
         }
 
-        // --- Chuẩn bị Dialogue Lines dựa trên Quest State ---
         string[] currentLines;
 
         switch (QuestManagerr.NiraQuestState)
@@ -71,11 +71,10 @@ public class Nira_NPC : MonoBehaviour
                 break;
         }
 
-        // Thiết lập Lines cho NPCDialogue và Bắt đầu
         if (currentLines.Length > 0)
         {
             npcDialogue.dialogueLines = currentLines;
-            npcDialogue.Interact();
+            npcDialogue.StartDialogue(); // gọi hàm bắt đầu hội thoại
         }
     }
 
