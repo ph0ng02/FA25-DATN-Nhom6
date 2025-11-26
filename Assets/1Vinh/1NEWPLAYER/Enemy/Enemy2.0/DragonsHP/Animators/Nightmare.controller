@@ -325,8 +325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e5df0e1c5ff5214fa2227978a10d290, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireEffectPrefab: {fileID: 4987064138910544241, guid: 4d799e7a1ae5b0a46b265f26ae870c41,
-    type: 3}
+  fireEffectPrefab: {fileID: 4987064138910544241, guid: 4d799e7a1ae5b0a46b265f26ae870c41, type: 3}
   yOffset: 0.5
   effectDuration: 5
   attackCooldown: 10

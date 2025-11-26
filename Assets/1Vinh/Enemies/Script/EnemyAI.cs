@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
+using UnityEngine.UI;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -8,213 +9,197 @@ public class EnemyAI : MonoBehaviour
     public Animator animator;
     private NavMeshAgent agent;
     private Rigidbody rb;
-
-    [Header("Combat Settings")]
-    public float attackDamage = 10f;
-    public float attackRate = 1f;
-    private float nextAttackTime = 0f;
-    public float attackRange = 2f;
-    public float attackCooldown = 1.5f;
-    private float lastAttackTime = 0f;
+    private Transform player;
 
     [Header("Stats")]
-    public float health = 100f;
+    public float maxHealth = 100f;
+    private float currentHealth;
     private bool isDead = false;
+    private bool damageBoosted = false;
 
-    [Header("Knockback")]
-    public float knockbackForce = 3f;
-    public float knockbackDuration = 0.2f;
-    private bool isKnockedback = false;
+    [Header("Damage Settings")]
+    public float baseDamage = 10f;
+    private float currentDamage;
+    public float jumpAttackForce = 7f;
+    public float jumpAttackCooldown = 3f;
+    private bool canJumpAttack = true;
 
-    [Header("Vision")]
-    public bool playerInVision = false;
-    private Transform currentTarget;
+    [Header("AI Settings")]
+    public float attackRange = 2f;
+    public float patrolWaitTime = 2f;
 
-    [Header("Optional Return")]
-    public bool returnToStart = true;
-    private Vector3 startPosition;
+    [Header("Colliders")]
+    public VisionTrigger visionTrigger;
+    public AttackTrigger attackTrigger;
+
+    [Header("Patrol Settings")]
+    public Transform[] patrolPoints;
+    private int patrolIndex = 0;
+
+    [Header("Health UI")]
+    public GameObject healthBarPrefab;
+    private EnemyHealthBar healthBar;
+
+    private bool isAttacking = false;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
-        startPosition = transform.position;
-    }
 
-    // 🔥 Enemy gây damage liên tục khi chạm
-    private void OnTriggerStay(Collider other)
-    {
-        if (Time.time >= nextAttackTime)
+        currentHealth = maxHealth;
+        currentDamage = baseDamage;
+
+        // Tạo health bar
+        if (healthBarPrefab != null)
         {
-            if (other.CompareTag("Player") || other.CompareTag("Player1") || other.CompareTag("Player2"))
-            {
-                PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
-                if (playerHealth != null)
-                {
-                    // Gây damage + knockback cho Player
-                    Vector3 knockDir = (other.transform.position - transform.position).normalized;
-                    playerHealth.TakeDamage((int)attackDamage, knockbackForce, knockDir);
-                    Debug.Log("Enemy gây damage và knockback Player!");
-                }
-                nextAttackTime = Time.time + 1f / attackRate;
-            }
+            GameObject hb = Instantiate(healthBarPrefab);
+            healthBar = hb.GetComponent<EnemyHealthBar>();
+            if (healthBar != null)
+                healthBar.SetTarget(transform);
         }
+
+        if (patrolPoints.Length > 0)
+            agent.SetDestination(patrolPoints[0].position);
     }
 
     void Update()
     {
-        if (isDead || isKnockedback) return;
-
-        AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
-        if (state.IsName("Hit") || state.IsName("Die")) return;
-
-        if (currentTarget != null)
-        {
-            float distance = Vector3.Distance(transform.position, currentTarget.position);
-
-            if (!playerInVision)
-            {
-                currentTarget = null;
-                StopMoving();
-                return;
-            }
-
-            if (distance <= attackRange)
-            {
-                agent.isStopped = true;
-                animator.SetBool("isMoving", false);
-
-                if (Time.time - lastAttackTime >= attackCooldown)
-                {
-                    animator.SetTrigger("attack");
-                    lastAttackTime = Time.time;
-                }
-            }
-            else
-            {
-                agent.isStopped = false;
-                agent.SetDestination(currentTarget.position);
-                animator.SetBool("isMoving", true);
-            }
-        }
-        else
-        {
-            if (returnToStart)
-            {
-                float distToStart = Vector3.Distance(transform.position, startPosition);
-                if (distToStart > 0.5f)
-                {
-                    agent.isStopped = false;
-                    agent.SetDestination(startPosition);
-                    animator.SetBool("isMoving", true);
-                }
-                else
-                {
-                    StopMoving();
-                }
-            }
-            else
-            {
-                StopMoving();
-            }
-        }
-    }
-
-    private void StopMoving()
-    {
-        agent.isStopped = true;
-        animator.SetBool("isMoving", false);
-    }
-
-    // 🩸 Khi enemy bị trúng đòn
-    public void TakeDamage(float damage)
-    {
         if (isDead) return;
 
-        health -= damage;
-        animator.SetTrigger("hit");
+        // --- Cập nhật tốc độ cho Animator (Cách 2) ---
+        animator.SetFloat("Speed", agent.velocity.magnitude);
 
-        if (currentTarget != null)
+        // Boost damage 50%
+        if (!damageBoosted && currentHealth <= maxHealth * 0.5f)
         {
-            Vector3 knockDir = (transform.position - currentTarget.position).normalized;
-            StartCoroutine(ApplyKnockback(knockDir));
+            currentDamage *= 1.5f;
+            damageBoosted = true;
         }
 
-        if (health <= 0f)
+        // Chưa thấy player → đi tuần
+        if (!visionTrigger.playerInVision)
         {
-            Die();
+            Patrol();
+            return;
+        }
+
+        // Đã thấy player → dí theo
+        player = visionTrigger.player;
+
+        // KHÔNG STOP AGENT
+        agent.updatePosition = true;
+        agent.updateRotation = true;
+
+        agent.SetDestination(player.position);
+        animator.SetBool("isMoving", true);
+
+        // Nếu Player trong vùng tấn công
+        if (attackTrigger.playerInAttackRange && !isAttacking)
+        {
+            StartCoroutine(AttackRoutine());
         }
     }
 
-    private IEnumerator ApplyKnockback(Vector3 direction)
+    // ─────────────────────────────────────────────── PATROL ───────────────────────────────────────────────
+    private void Patrol()
     {
-        if (rb == null) yield break;
+        if (patrolPoints.Length == 0) return;
 
-        isKnockedback = true;
-        agent.isStopped = true;
+        animator.SetBool("isMoving", true);
+
+        if (Vector3.Distance(transform.position, patrolPoints[patrolIndex].position) < 1f)
+        {
+            StartCoroutine(PatrolWait());
+        }
+    }
+
+    IEnumerator PatrolWait()
+    {
+        animator.SetBool("isMoving", false);
+        yield return new WaitForSeconds(patrolWaitTime);
+
+        patrolIndex = (patrolIndex + 1) % patrolPoints.Length;
+        agent.SetDestination(patrolPoints[patrolIndex].position);
+    }
+
+    // ─────────────────────────────────────────────── ATTACK ───────────────────────────────────────────────
+    IEnumerator AttackRoutine()
+    {
+        isAttacking = true;
+
+        // Nhảy vồ
+        if (canJumpAttack)
+        {
+            animator.SetTrigger("jumpAttack");
+            JumpAttack();
+            canJumpAttack = false;
+            yield return new WaitForSeconds(jumpAttackCooldown);
+        }
+
+        // Đánh thường
+        animator.SetTrigger("attack");
+        yield return new WaitForSeconds(3.0f); // tuỳ animation
+
+        isAttacking = false;
+    }
+
+    void JumpAttack()
+    {
+        if (player == null) return;
+
+        Vector3 dir = (player.position - transform.position).normalized;
 
         rb.isKinematic = false;
-        rb.AddForce(direction * knockbackForce, ForceMode.Impulse);
+        rb.AddForce(dir * jumpAttackForce, ForceMode.Impulse);
 
-        yield return new WaitForSeconds(knockbackDuration);
-
-        rb.linearVelocity = Vector3.zero; // sửa đúng thuộc tính
-        rb.isKinematic = true;
-
-        isKnockedback = false;
-        agent.isStopped = false;
+        StartCoroutine(StopJumpMovement());
     }
 
-    // ☠️ Khi enemy chết
-    private void Die()
+    IEnumerator StopJumpMovement()
     {
-        if (isDead) return;
-        isDead = true;
-
-        animator.SetTrigger("die");
-        animator.SetBool("isMoving", false);
-        agent.isStopped = true;
-
-        Destroy(gameObject, 3f);
+        yield return new WaitForSeconds(0.6f);
+        rb.linearVelocity = Vector3.zero;
+        rb.isKinematic = true;
     }
 
-    // 🔪 Gọi từ Animation Event trong clip Attack
+    // Animation Event
     public void DealDamage()
     {
-        if (isDead || currentTarget == null) return;
+        if (player == null) return;
 
-        if (Vector3.Distance(transform.position, currentTarget.position) <= attackRange)
+        float distance = Vector3.Distance(transform.position, player.position);
+        if (distance <= attackRange)
         {
-            PlayerHealth ph = currentTarget.GetComponent<PlayerHealth>();
+            PlayerHealth ph = player.GetComponent<PlayerHealth>();
             if (ph != null)
-            {
-                Vector3 knockDir = (currentTarget.position - transform.position).normalized;
-                ph.TakeDamage((int)attackDamage, knockbackForce, knockDir);
-            }
+                ph.TakeDamage((int)currentDamage, 0, Vector3.zero);
         }
     }
 
-    // 👀 Khi Player đi vào vùng tầm nhìn
-    private void OnTriggerEnter(Collider other)
+    public void TakeDamage(float dmg)
     {
-        if (other.CompareTag("Player1") || other.CompareTag("Player2"))
-        {
-            playerInVision = true;
-            currentTarget = other.transform;
-        }
+        if (isDead) return;
+
+        currentHealth -= dmg;
+        animator.SetTrigger("hit");
+
+        // Cập nhật health bar
+        if (healthBar != null)
+            healthBar.SetHealth(currentHealth, maxHealth);
+
+        if (currentHealth <= 0) Die();
     }
 
-    // 👀 Khi Player rời khỏi vùng tầm nhìn
-    private void OnTriggerExit(Collider other)
+    void Die()
     {
-        if (other.CompareTag("Player1") || other.CompareTag("Player2"))
-        {
-            if (currentTarget == other.transform)
-            {
-                playerInVision = false;
-                currentTarget = null;
-                StopMoving();
-            }
-        }
+        isDead = true;
+        animator.SetTrigger("die");
+        agent.isStopped = true;
+
+        if (healthBar != null)
+            Destroy(healthBar.gameObject);
+
+        Destroy(gameObject, 3f);
     }
 }

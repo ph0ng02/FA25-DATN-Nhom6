@@ -1,31 +1,29 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class EnemyHealth : MonoBehaviour
 {
-    public float maxHealth = 100;
-    public float currentHealth;
+    [Header("Health Settings")]
+    public int maxHealth = 100;
+    private int currentHealth;
 
-    public Slider healthSlider; // Gán slider trong Inspector
-    public Canvas healthCanvas; // Canvas hướng về Camera
+    [Header("References")]
+    public Animator animator;
+
+    private bool isDead = false;
 
     void Start()
     {
         currentHealth = maxHealth;
-        healthSlider.maxValue = maxHealth;
-        healthSlider.value = maxHealth;
     }
 
-    void Update()
+    public void TakeDamage(int damage)
     {
-        // Cho thanh máu luôn quay về hướng Camera
-        healthCanvas.transform.LookAt(Camera.main.transform);
-    }
+        if (isDead) return;
 
-    public void TakeDamage(float damage)
-    {
         currentHealth -= damage;
-        healthSlider.value = currentHealth;
+
+        // Animation trúng đòn (nếu có)
+        animator.SetTrigger("Hit");
 
         if (currentHealth <= 0)
         {
@@ -35,6 +33,15 @@ public class EnemyHealth : MonoBehaviour
 
     void Die()
     {
-        Destroy(gameObject);
+        isDead = true;
+
+        // Animation chết
+        animator.SetTrigger("Die");
+
+        // Tắt collider sau 1 tí
+        GetComponent<Collider>().enabled = false;
+
+        // Destroy enemy sau 3s
+        Destroy(gameObject, 3f);
     }
 }
