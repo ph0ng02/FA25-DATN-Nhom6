@@ -1,223 +1,185 @@
 using UnityEngine;
-using UnityEngine.AI; 
+using UnityEngine.AI;
 
-[RequireComponent(typeof(CharacterController))]
 public class AdvancedEnemy : MonoBehaviour
 {
     [Header("1. References")]
     public Transform player;
-    private CharacterController characterController;
-    private Animator animator; 
+    private NavMeshAgent agent;
+    private Animator animator;
 
-    [Header("2. Health & State")]
+    [Header("2. Health")]
     public float maxHealth = 150f;
     private float currentHealth;
-    private bool isEnraged = false; 
+    private bool isEnraged = false;
 
-    [Header("3. Movement Settings")]
-    public float slowChaseSpeed = 1.0f; 
-    public float fastChaseSpeed = 3.5f; 
-    public float rotationSpeed = 5f; 
-    private float currentSpeed;
+    [Header("3. Movement")]
+    public float slowChaseSpeed = 1.5f;
+    public float fastChaseSpeed = 3.5f;
+    public float rotationSpeed = 8f;
 
-    [Header("4. Combat Settings")]
-    public float attackRange = 2.0f; 
-    public float attackCooldown = 2.5f; 
+    [Header("4. Combat")]
+    public float attackRange = 2f;
+    public float attackCooldown = 2.5f;
     private float attackTimer;
 
-    [Header("5. Physics Settings")]
-    public float gravity = 20.0f; 
-    private Vector3 horizontalVelocity; 
-    
-    private float forcedYPosition; // Vị trí Y cố định để BUỘC Enemy đứng thẳng
+    [Header("5. Teleport Skill")]
+    public float teleportRange = 10f;
+    public float teleportCooldown = 5f;
+    private float teleportTimer;
 
-    [Header("Attack Damage")]
-    public float normalDamage = 10f; 
-    public float enragedDamage = 25f; 
-    
-    [Header("6. Teleport Skill")]
-    public float teleportRange = 10f;       
-    public float teleportCooldown = 5f;     
-    private float teleportTimer;            
-
-    // Trạng thái hành vi
     private bool isChasing = false;
     private bool isAttacking = false;
-    
-    // --- SETUP START & UPDATE ---
-    private void Start()
+
+    void Start()
     {
-        characterController = GetComponent<CharacterController>();
-        animator = GetComponent<Animator>(); 
+        agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
 
         currentHealth = maxHealth;
-        currentSpeed = slowChaseSpeed;
         attackTimer = attackCooldown;
-        
-        forcedYPosition = transform.position.y;
-        
-        teleportTimer = teleportCooldown;
+
+        agent.stoppingDistance = attackRange - 0.1f;
+        agent.updateRotation = false; // tự xoay mượt hơn
     }
 
-    private void Update()
+    void Update()
     {
-        if (player == null) return; 
-        
-        // BỎ QUA LOGIC TRỌNG LỰC GÂY LỖI isGrounded CỨNG ĐẦU
-        Vector3 verticalVelocity = Vector3.down * 0.5f; 
+        if (player == null) return;
 
-        if (isChasing)
+        // Nếu không đuổi
+        if (!isChasing)
         {
-            float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-            
-            if (distanceToPlayer <= attackRange)
-            {
-                HandleAttack();
-                horizontalVelocity = Vector3.zero;
-            }
-            else
-            {
-                ChasePlayer();
-            }
+            agent.isStopped = true;
+            if (animator) animator.SetFloat("Speed", 0f);
+            return;
+        }
+
+        float distance = Vector3.Distance(transform.position, player.position);
+
+        // Nếu trong tầm đánh
+        if (distance <= attackRange)
+        {
+            AttackPlayer();
         }
         else
         {
-            horizontalVelocity = Vector3.zero;
-            if (animator != null) animator.SetFloat("Speed", 0f);
+            ChasePlayer();
         }
 
-        // 3. TỔNG HỢP VẬN TỐC
-        Vector3 finalVelocity = horizontalVelocity + verticalVelocity;
-
-        // 4. DI CHUYỂN CUỐI CÙNG
-        characterController.Move(finalVelocity * Time.deltaTime);
-
-        // LỆNH BẮT BUỘC ĐỨNG THẲNG TRÊN MẶT ĐẤT
-        if (transform.position.y != forcedYPosition)
-        {
-            transform.position = new Vector3(transform.position.x, forcedYPosition, transform.position.z);
-        }
-
-        // Đếm ngược Attack Cooldown
+        // Cooldown attack
         if (attackTimer < attackCooldown)
-        {
             attackTimer += Time.deltaTime;
-        }
-        
-        // LOGIC DỊCH CHUYỂN NGẪU NHIÊN (Kỹ năng ẩn)
-        if (isChasing)
+
+        // Cooldown teleport
+        teleportTimer += Time.deltaTime;
+
+        if (teleportTimer >= teleportCooldown)
         {
-            if (teleportTimer >= teleportCooldown)
-            {
-                TeleportRandomly();
-                teleportTimer = 0f; // Reset thời gian hồi chiêu
-            }
-            else
-            {
-                teleportTimer += Time.deltaTime; 
-            }
+            TeleportRandomly();
+            teleportTimer = 0f;
         }
     }
 
-    // --- CÁC HÀM HÀNH VI ---
+    // -----------------------------
+    // MOVEMENT
+    // -----------------------------
 
     void ChasePlayer()
     {
         if (isAttacking) return;
 
-        // 1. Quay đầu về Player
-        Vector3 direction = (player.position - transform.position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
-        
-        // 2. TÍNH TOÁN VẬN TỐC NGANG (X và Z)
-        horizontalVelocity = transform.forward * currentSpeed;
+        agent.isStopped = false;
+        agent.speed = isEnraged ? fastChaseSpeed : slowChaseSpeed;
+        agent.SetDestination(player.position);
 
-        // 3. Animation
-        if (animator != null) 
+        // Tự xoay mượt
+        Vector3 dir = agent.velocity.normalized;
+        if (dir.magnitude > 0.1f)
         {
-            animator.SetFloat("Speed", currentSpeed); 
+            Quaternion rot = Quaternion.LookRotation(dir, Vector3.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * rotationSpeed);
         }
+
+        if (animator) animator.SetFloat("Speed", agent.speed);
     }
 
-    void HandleAttack()
+    // -----------------------------
+    // ATTACK
+    // -----------------------------
+
+    void AttackPlayer()
     {
-        transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
+        agent.isStopped = true;
+
+        // Nhìn vào player
+        Vector3 targetPos = new Vector3(player.position.x, transform.position.y, player.position.z);
+        transform.LookAt(targetPos);
+
+        if (animator) animator.SetFloat("Speed", 0f);
 
         if (attackTimer >= attackCooldown)
         {
-            isAttacking = true;
-            attackTimer = 0f; 
+            attackTimer = 0f;
 
-            // if (animator != null) animator.SetTrigger("Attack");
+            // if (animator) animator.SetTrigger("Attack");
 
-            Debug.Log($"Enemy tấn công! Sát thương: {GetDamage()}");
-            
-            isAttacking = false; 
-        }
-        else
-        {
-            isAttacking = false;
+            Debug.Log("Enemy Attack! Damage = " + GetDamage());
         }
     }
+
+    // -----------------------------
+    // TELEPORT
+    // -----------------------------
 
     void TeleportRandomly()
     {
-        Vector3 randomDirection = Random.insideUnitSphere * teleportRange;
-        randomDirection += transform.position;
+        Vector3 randomPos = transform.position + Random.insideUnitSphere * teleportRange;
+        randomPos.y = transform.position.y;
 
-        Vector3 finalPosition = new Vector3(
-            randomDirection.x,
-            forcedYPosition, 
-            randomDirection.z
-        );
-        
-        // if (animator != null) animator.SetTrigger("Teleport"); 
-        
-        transform.position = finalPosition;
-        
-        Debug.Log("Enemy đã dịch chuyển ngẫu nhiên!");
+        agent.Warp(randomPos); // Teleport CHUẨN CHO NAVMESH
+
+        Debug.Log("Enemy Teleported!");
     }
 
-    // --- CÁC HÀM TRẠNG THÁI ---
-    
-    void CheckEnrageState()
-    {
-        if (!isEnraged && currentHealth <= maxHealth * 0.5f)
-        {
-            isEnraged = true;
-            currentSpeed = fastChaseSpeed;
-            Debug.Log("CUỒNG NỘ! Tốc độ dí và sát thương tăng mạnh!");
-        }
-    }
+    // -----------------------------
+    // HEALTH
+    // -----------------------------
 
     public void TakeDamage(float amount)
     {
         currentHealth -= amount;
-        
-        if (currentHealth <= 0)
+        if (!isEnraged && currentHealth <= maxHealth * 0.5f)
         {
-            Die();
+            isEnraged = true;
+            Debug.Log("ENRAGED MODE!");
         }
+
+        if (currentHealth <= 0)
+            Die();
     }
 
     void Die()
     {
-        Debug.Log("BOSS đã bị tiêu diệt!");
+        Debug.Log("Enemy Dead");
         Destroy(gameObject);
     }
 
     public float GetDamage()
     {
-        return isEnraged ? enragedDamage : normalDamage;
+        return isEnraged ? 25f : 10f;
     }
+
+    // -----------------------------
+    // TRIGGER
+    // -----------------------------
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             isChasing = true;
-            Debug.Log("Player vào vùng, bắt đầu truy đuổi");
+            Debug.Log("Start Chasing!");
         }
     }
 
@@ -226,8 +188,7 @@ public class AdvancedEnemy : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isChasing = false;
-            if (animator != null) animator.SetFloat("Speed", 0f);
-            Debug.Log("Player ra khỏi vùng, ngừng truy đuổi");
+            Debug.Log("Stop Chasing");
         }
     }
 }
