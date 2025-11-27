@@ -11,4 +11,8 @@ public class QuestNV : ScriptableObject
     public string objectiveDescription = "Mục tiêu: Hoàn thành nhiệm vụ.";
 
     public bool isCompleted = false;
+
+    public bool requiresPickupObject = false;
+    public string objectID = "";
+
 }

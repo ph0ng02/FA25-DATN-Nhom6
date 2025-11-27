@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+
 
 public class NPC_Dialogue : MonoBehaviour
 {
@@ -7,7 +9,7 @@ public class NPC_Dialogue : MonoBehaviour
     public string[] dialogues;
 
     public GameObject dialogueUI;
-    public Text dialogueText;
+    public TextMeshProUGUI dialogueText;
 
     private int index = 0;
     private bool playerNear = false;

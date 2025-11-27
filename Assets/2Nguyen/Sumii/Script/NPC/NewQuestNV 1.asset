@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 48fe0623c5d4a424ebf60683d1d6cbc8, type: 3}
-  m_Name: NewQuestNV
+  m_Name: NewQuestNV 1
   m_EditorClassIdentifier: Assembly-CSharp::QuestNV
   questName: "Nira \u2013 C\xF4ng Ch\xFAa"
-  objectiveDescription: "M\u1EE5c ti\xEAu:  \u0110\u1EBFn khu su\u1ED1i nh\u1ECF,
+  objectiveDescription: "M\u1EE5c ti\xEAu: \u0110\u1EBFn khu su\u1ED1i nh\u1ECF,
     nh\u1EB7t M\u1EA3nh Tinh Th\u1EC3 \xC1nh S\xE1ng..."
-  isCompleted: 1
+  isCompleted: 0
   requiresPickupObject: 1
   objectID: ItemA
