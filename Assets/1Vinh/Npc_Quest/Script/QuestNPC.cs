@@ -65,11 +65,10 @@ public class QuestNPC : MonoBehaviour
         if (quest.isCompleted)
         {
             uiText.text =
-                $"🎉 Hoàn thành nhiệm vụ!\nBạn đã tiêu diệt đủ quái.\n\nNhấn E để nhận thưởng";
+                $"🎉 Hoàn thành nhiệm vụ!\nBạn đã tiêu diệt đủ quái.\n\nNhấn E để nhận thưởng (Học skill mới: Circle Slash!)";
 
-            // Ở đây có thể thêm thưởng tiền, exp, mở cửa, trigger sự kiện...
-            // Ví dụ mở cửa:
-            // door.Open();
+            // Khi nhấn E -> học skill
+            SkillManager.Instance.UnlockCircleSlash();
 
             return;
         }
