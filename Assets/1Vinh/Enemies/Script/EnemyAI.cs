@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
-using UnityEngine.UI;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -11,15 +10,10 @@ public class EnemyAI : MonoBehaviour
     private Rigidbody rb;
     private Transform player;
 
-    [Header("Stats")]
-    public float maxHealth = 100f;
-    private float currentHealth;
-    private bool isDead = false;
-    private bool damageBoosted = false;
+    private EnemyHealth health;
 
     [Header("Damage Settings")]
     public float baseDamage = 10f;
-    private float currentDamage;
     public float jumpAttackForce = 7f;
     public float jumpAttackCooldown = 3f;
     private bool canJumpAttack = true;
@@ -36,28 +30,13 @@ public class EnemyAI : MonoBehaviour
     public Transform[] patrolPoints;
     private int patrolIndex = 0;
 
-    [Header("Health UI")]
-    public GameObject healthBarPrefab;
-    private EnemyHealthBar healthBar;
-
     private bool isAttacking = false;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
-
-        currentHealth = maxHealth;
-        currentDamage = baseDamage;
-
-        // Tạo health bar
-        if (healthBarPrefab != null)
-        {
-            GameObject hb = Instantiate(healthBarPrefab);
-            healthBar = hb.GetComponent<EnemyHealthBar>();
-            if (healthBar != null)
-                healthBar.SetTarget(transform);
-        }
+        health = GetComponent<EnemyHealth>();
 
         if (patrolPoints.Length > 0)
             agent.SetDestination(patrolPoints[0].position);
@@ -65,43 +44,30 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
-        if (isDead) return;
+        if (health.IsDead) return;
 
-        // --- Cập nhật tốc độ cho Animator (Cách 2) ---
         animator.SetFloat("Speed", agent.velocity.magnitude);
 
-        // Boost damage 50%
-        if (!damageBoosted && currentHealth <= maxHealth * 0.5f)
-        {
-            currentDamage *= 1.5f;
-            damageBoosted = true;
-        }
-
-        // Chưa thấy player → đi tuần
         if (!visionTrigger.playerInVision)
         {
             Patrol();
             return;
         }
 
-        // Đã thấy player → dí theo
         player = visionTrigger.player;
 
-        // KHÔNG STOP AGENT
         agent.updatePosition = true;
         agent.updateRotation = true;
 
         agent.SetDestination(player.position);
         animator.SetBool("isMoving", true);
 
-        // Nếu Player trong vùng tấn công
         if (attackTrigger.playerInAttackRange && !isAttacking)
         {
             StartCoroutine(AttackRoutine());
         }
     }
 
-    // ─────────────────────────────────────────────── PATROL ───────────────────────────────────────────────
     private void Patrol()
     {
         if (patrolPoints.Length == 0) return;
@@ -123,12 +89,10 @@ public class EnemyAI : MonoBehaviour
         agent.SetDestination(patrolPoints[patrolIndex].position);
     }
 
-    // ─────────────────────────────────────────────── ATTACK ───────────────────────────────────────────────
     IEnumerator AttackRoutine()
     {
         isAttacking = true;
 
-        // Nhảy vồ
         if (canJumpAttack)
         {
             animator.SetTrigger("jumpAttack");
@@ -137,9 +101,8 @@ public class EnemyAI : MonoBehaviour
             yield return new WaitForSeconds(jumpAttackCooldown);
         }
 
-        // Đánh thường
         animator.SetTrigger("attack");
-        yield return new WaitForSeconds(3.0f); // tuỳ animation
+        yield return new WaitForSeconds(3f);
 
         isAttacking = false;
     }
@@ -171,35 +134,12 @@ public class EnemyAI : MonoBehaviour
         float distance = Vector3.Distance(transform.position, player.position);
         if (distance <= attackRange)
         {
-            PlayerHealth ph = player.GetComponent<PlayerHealth>();
-            if (ph != null)
-                ph.TakeDamage((int)currentDamage, 0, Vector3.zero);
+            // Player sử dụng HealthManagement, không phải PlayerHealth
+            HealthManagement pm = player.GetComponent<HealthManagement>();
+            if (pm != null)
+            {
+                pm.TakeDamage(baseDamage);
+            }
         }
-    }
-
-    public void TakeDamage(float dmg)
-    {
-        if (isDead) return;
-
-        currentHealth -= dmg;
-        animator.SetTrigger("hit");
-
-        // Cập nhật health bar
-        if (healthBar != null)
-            healthBar.SetHealth(currentHealth, maxHealth);
-
-        if (currentHealth <= 0) Die();
-    }
-
-    void Die()
-    {
-        isDead = true;
-        animator.SetTrigger("die");
-        agent.isStopped = true;
-
-        if (healthBar != null)
-            Destroy(healthBar.gameObject);
-
-        Destroy(gameObject, 3f);
     }
 }
