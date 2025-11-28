@@ -76,4 +76,5 @@ public class QuestManagerNV : MonoBehaviour
         Debug.Log("[QuestManagerNV] StartQuestFromNPC called for quest: " + (quest != null ? quest.questName : "null"));
     }
 
+
 }

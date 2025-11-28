@@ -64,4 +64,13 @@ public class QuestPanelController : MonoBehaviour
         onClosed?.Invoke();
         Hide();
     }
+    public void AcceptQuestButton()
+    {
+        OnAcceptPressed();
+    }
+
+    public void CloseQuestButton()
+    {
+        OnClosePressed();
+    }
 }
