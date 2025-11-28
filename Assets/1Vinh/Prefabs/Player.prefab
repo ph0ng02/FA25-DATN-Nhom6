@@ -835,6 +835,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 676c21eb4eb1f3e459be5e069f0a08fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackControl
+  circleSlashCooldown: 5
+  circleSlashDamage: 20
+  circleSlashRange: 3
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &4038893147100357366
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -850,6 +856,9 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 0
   healthSlider: {fileID: 0}
+  dieCanvasController: {fileID: 0}
+  damageEffectImage: {fileID: 0}
+  damageEffectTime: 0.5
 --- !u!114 &293258045144981611
 MonoBehaviour:
   m_ObjectHideFlags: 0

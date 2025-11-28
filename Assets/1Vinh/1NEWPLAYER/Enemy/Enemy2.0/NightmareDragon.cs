@@ -23,23 +23,30 @@ public class NightmareDragon : MonoBehaviour, IDamageable
     }
 
     public void TakeDamage(float amount)
+{
+    if (isDead) return;
+
+    HP -= Mathf.RoundToInt(amount);
+    if (HP <= 0)
     {
-        if (isDead) return;
+        isDead = true;
+        animator.SetBool("IsDie", true); // ✅ play animation die
+        Debug.Log("▶️ Enemy chết, play animation die");
 
-        HP -= Mathf.RoundToInt(amount);
-        if (HP <= 0)
-        {
-            isDead = true;
-            animator.SetBool("IsDie", true);
-            Debug.Log("▶️ Enemy chết, play animation die");
+        // ✅ Thêm kill vào QuestManager
+        QuestManager.Instance.AddKill();
 
-            StartCoroutine(WaitAndDestroy());
-        }
-        else
-        {
-            animator.SetTrigger("damage");
-        }
+        // ✅ Cập nhật UI nếu đang hiển thị
+        if (QuestUI.Instance != null)
+            QuestUI.Instance.UpdateUI();
+
+        StartCoroutine(WaitAndDestroy());
     }
+    else
+    {
+        animator.SetTrigger("damage");
+    }
+}
 
     private void OnTriggerEnter(Collider other)
     {
@@ -65,17 +72,6 @@ public class NightmareDragon : MonoBehaviour, IDamageable
         yield return new WaitForSeconds(animTime);
 
         Debug.Log("⏳ Animation die xong, chờ thêm 10s...");
-
-        // ❗❗ BƯỚC 3 — Tăng kill count
-        QuestData.instance.killCount++;
-        Debug.Log("Kill Count: " + QuestData.instance.killCount);
-
-        if (QuestData.instance.killCount >= QuestData.instance.killTarget)
-        {
-            QuestData.instance.state = QuestState.Completed;
-            Debug.Log("🎉 Nhiệm vụ đã hoàn thành!");
-        }
-
         yield return new WaitForSeconds(10f);
 
         Debug.Log("💥 Destroy enemy sau 10s");

@@ -146,11 +146,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestNPC
   quest:
-    questName: "Ti\xEAu di\u1EC7t 3 qu\xE1i"
-    description: "H\xE3y ti\xEAu di\u1EC7t 3 qu\xE1i"
+    questName: "Ti\xEAu di\u1EC7t 1 qu\xE1i"
+    description: "H\xE3y ti\xEAu di\u1EC7t 1 qu\xE1i"
     isAccepted: 0
     isCompleted: 0
-    requiredKillCount: 3
+    requiredKillCount: 1
     currentKillCount: 0
   uiPanel: {fileID: 6536606580464843138}
   uiText: {fileID: 3888658832727147460}

@@ -722,7 +722,7 @@ GameObject:
   - component: {fileID: 314457294054500024}
   m_Layer: 0
   m_Name: NightmareDragon
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -802,7 +802,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HP: 100
   animator: {fileID: 89785391200003141}
-  attackDamage: 20
+  attackDamage: 5
   attackCooldown: 2
 --- !u!65 &2264829079332907460
 BoxCollider:
