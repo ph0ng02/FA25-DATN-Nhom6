@@ -30,7 +30,7 @@ public class NightmareDragon : MonoBehaviour, IDamageable
         if (HP <= 0)
         {
             isDead = true;
-            animator.SetBool("IsDie", true); // ✅ match với Animator
+            animator.SetBool("IsDie", true);
             Debug.Log("▶️ Enemy chết, play animation die");
 
             StartCoroutine(WaitAndDestroy());
@@ -65,6 +65,17 @@ public class NightmareDragon : MonoBehaviour, IDamageable
         yield return new WaitForSeconds(animTime);
 
         Debug.Log("⏳ Animation die xong, chờ thêm 10s...");
+
+        // ❗❗ BƯỚC 3 — Tăng kill count
+        QuestData.instance.killCount++;
+        Debug.Log("Kill Count: " + QuestData.instance.killCount);
+
+        if (QuestData.instance.killCount >= QuestData.instance.killTarget)
+        {
+            QuestData.instance.state = QuestState.Completed;
+            Debug.Log("🎉 Nhiệm vụ đã hoàn thành!");
+        }
+
         yield return new WaitForSeconds(10f);
 
         Debug.Log("💥 Destroy enemy sau 10s");
