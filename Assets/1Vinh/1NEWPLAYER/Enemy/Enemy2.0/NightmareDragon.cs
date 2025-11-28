@@ -10,7 +10,7 @@ public class NightmareDragon : MonoBehaviour, IDamageable
     public Animator animator;   
 
     [Header("Tấn công")]
-    [SerializeField] private float attackDamage = 30f;
+    [SerializeField] private float attackDamage = 5f;
     [SerializeField] private float attackCooldown = 0.5f;
     private float lastAttackTime = 0f;
 
