@@ -9,6 +9,12 @@ EditorBuildSettings:
     path: Assets/4Material(DANG)/Menu/MainMenu.unity
     guid: 2756d98a32caa4537a11a2d78a55c066
   - enabled: 1
+    path: "Assets/5Cutscreen(intro+1,2)(H\xF9ng)/Cutscreen(H\xF9ng)/Scene1.unity"
+    guid: 38c7bbe4f4d0d3b46a616053c0c6c847
+  - enabled: 1
+    path: "Assets/5Cutscreen(intro+1,2)(H\xF9ng)/Cutscreen(H\xF9ng)/Scene2.unity"
+    guid: dfd773e24616a0340bf9ffb6020fec1d
+  - enabled: 1
     path: Assets/1Vinh/1NEWPLAYER/SCENE/MapStart.unity
     guid: b641442504398d441b712d07e076c8e6
   - enabled: 1
