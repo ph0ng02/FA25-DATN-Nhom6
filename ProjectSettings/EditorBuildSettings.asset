@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/4Material(DANG)/Menu/MainMenu.unity
     guid: 2756d98a32caa4537a11a2d78a55c066
   - enabled: 1
+    path: Assets/CutSceneOpening/CutSceneOpening.unity
+    guid: d638810e7e6fed349be10fb003f7f926
+  - enabled: 1
     path: Assets/1Vinh/1NEWPLAYER/SCENE/MapStart.unity
     guid: b641442504398d441b712d07e076c8e6
   - enabled: 1
