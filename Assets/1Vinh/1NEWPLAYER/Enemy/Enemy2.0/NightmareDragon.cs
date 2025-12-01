@@ -14,6 +14,10 @@ public class NightmareDragon : MonoBehaviour, IDamageable
     [SerializeField] private float attackCooldown = 0.5f;
     private float lastAttackTime = 0f;
 
+    [Header("Item Drop")]
+    public GameObject healthPickupPrefab;   // prefab máu rơi ra
+    public float dropForce = 3f;            // lực nảy lên nhẹ
+
     private bool isDead = false;
 
     private void Awake()
@@ -64,15 +68,24 @@ public class NightmareDragon : MonoBehaviour, IDamageable
 
     private IEnumerator WaitAndDestroy()
     {
-        // Lấy thời lượng animation die
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         float animTime = stateInfo.length;
 
-        // Đợi animation chết chạy xong
         yield return new WaitForSeconds(animTime);
 
         Debug.Log("⏳ Animation die xong, chờ thêm 10s...");
         yield return new WaitForSeconds(10f);
+
+        // 🎁 DROP MÁU
+        if (healthPickupPrefab != null)
+        {
+            GameObject drop = Instantiate(healthPickupPrefab, transform.position + Vector3.up * 1f, Quaternion.identity);
+
+            if (drop.TryGetComponent<Rigidbody>(out Rigidbody rb))
+            {
+                rb.AddForce(Vector3.up * dropForce, ForceMode.Impulse);
+            }
+        }
 
         Debug.Log("💥 Destroy enemy sau 10s");
         Destroy(gameObject);

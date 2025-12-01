@@ -800,10 +800,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a77616e237130db4d8cd0c94fbacbe00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 100
+  HP: 50
   animator: {fileID: 89785391200003141}
   attackDamage: 5
   attackCooldown: 2
+  healthPickupPrefab: {fileID: 6837640880549395162, guid: ee932b64c10dc924281e31ac3ad9dac8, type: 3}
+  dropForce: 3
 --- !u!65 &2264829079332907460
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -46,7 +46,7 @@ public class AttackControl : MonoBehaviour
         }
 
         // Circle Slash Skill (F)
-        if (SkillManager.Instance.circleSlashUnlocked &&
+        if (SkillManager.Instance.hasCircleSlash &&
             Input.GetKeyDown(KeyCode.F) &&
             circleSlashTimer <= 0)
         {

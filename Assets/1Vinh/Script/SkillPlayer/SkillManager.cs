@@ -4,7 +4,7 @@ public class SkillManager : MonoBehaviour
 {
     public static SkillManager Instance;
 
-    public bool circleSlashUnlocked = false;
+    public bool hasCircleSlash = false;
 
     private void Awake()
     {
@@ -13,7 +13,7 @@ public class SkillManager : MonoBehaviour
 
     public void UnlockCircleSlash()
     {
-        circleSlashUnlocked = true;
-        Debug.Log("Đã học skill Circle Slash!");
+        hasCircleSlash = true;
+        Debug.Log("Đã mở skill Circle Slash!");
     }
 }

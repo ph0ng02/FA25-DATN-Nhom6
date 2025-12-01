@@ -91,4 +91,5 @@ public class HealthManagement : MonoBehaviour, IDamageable
         currentHealth = Mathf.Clamp(health, 0, maxHealth);
         UpdateHealthUI();
     }
+
 }
