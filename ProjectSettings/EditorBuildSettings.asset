@@ -21,7 +21,7 @@ EditorBuildSettings:
     path: Assets/1Vinh/Map/Map1/Map2.unity
     guid: cc333ca695331624ab5a738082609171
   - enabled: 1
-    path: Assets/1Vinh/Map/Map2/Map3.unity
+    path: Assets/1Vinh/Map/Map2/Minigame.unity
     guid: 5fa8cba6417dce64f8f0828ce6965d37
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
