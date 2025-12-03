@@ -20,7 +20,7 @@ public class DialogueQuestNPC : MonoBehaviour
     private bool playerInside = false;
     private bool isTalking = false;
 
-    private bool hasTalked = false;   // <--- THÊM DÒNG NÀY
+    private bool hasTalked = false;
 
     void Start()
     {
@@ -37,7 +37,7 @@ public class DialogueQuestNPC : MonoBehaviour
             if (!hasTalked)
                 uiText.text = "Nhấn E để trò chuyện";
             else
-                uiText.text = "Nhấn E để xem nhiệm vụ";  // <--- LẦN SAU KHÔNG THOẠI
+                uiText.text = "Nhấn E để xem nhiệm vụ";
         }
     }
 
@@ -56,14 +56,12 @@ public class DialogueQuestNPC : MonoBehaviour
     {
         if (playerInside && Input.GetKeyDown(KeyCode.E))
         {
-            // Nếu đã trò chuyện rồi -> vào thẳng phần nhiệm vụ
             if (hasTalked)
             {
                 HandleQuest();
                 return;
             }
 
-            // Chưa nói -> hiển thị thoại lần đầu
             if (!isTalking)
                 StartDialogue();
             else
@@ -88,8 +86,7 @@ public class DialogueQuestNPC : MonoBehaviour
         }
         else
         {
-            // kết thúc thoại
-            hasTalked = true;   // <--- ĐÁNH DẤU LÀ ĐÃ THOẠI 1 LẦN
+            hasTalked = true;
             HandleQuest();
         }
     }
@@ -115,22 +112,36 @@ public class DialogueQuestNPC : MonoBehaviour
             return;
         }
 
-        // 2. Đang làm
+        // 2. Đang làm nhiệm vụ
         if (!quest.isCompleted)
         {
-            uiText.text =
-                $"Tiến độ: {quest.currentKillCount}/{quest.requiredKillCount}\nHãy đi tiêu diệt đủ quái!";
+            if (quest.questType == QuestType.Kill)
+            {
+                uiText.text =
+                    $"Tiến độ: {quest.currentKillCount}/{quest.requiredKillCount}\nHãy tiêu diệt đủ quái!";
+            }
+            else if (quest.questType == QuestType.CollectItem)
+            {
+                uiText.text =
+                    quest.hasCollectedItem
+                        ? "Bạn đã nhặt được vật phẩm, quay lại đưa cho tôi!"
+                        : $"Hãy tìm và nhặt vật phẩm: {quest.requiredItemName}";
+            }
+
             return;
         }
 
-        // 3. Hoàn thành nhiệm vụ
-        if (quest.isCompleted)
+        // 3. Đã hoàn thành nhiệm vụ
+        if (quest.questType == QuestType.Kill)
         {
             uiText.text =
-                $"🎉 Bạn đã hoàn thành nhiệm vụ!\nĐã mở khóa skill Circle Slash!";
-
+                $"🎉 Bạn đã hoàn thành nhiệm vụ tiêu diệt quái!\nĐã mở khóa skill Circle Slash!";
             SkillManager.Instance.UnlockCircleSlash();
-            return;
+        }
+        else if (quest.questType == QuestType.CollectItem)
+        {
+            uiText.text =
+                $"🎉 Bạn đã giao vật phẩm thành công!\nCổng dịch chuyển đã xuất hiện!";
         }
     }
 }

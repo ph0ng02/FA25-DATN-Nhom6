@@ -1,7 +1,8 @@
 fileFormatVersion: 2
-guid: 9fc0d4010bbf28b4594072e72b8655ab
-DefaultImporter:
+guid: 33a49b85130ec4b7b8d7a771d70ebc3e
+NativeFormatImporter:
   externalObjects: {}
+  mainObjectFileID: 9100000
   userData: 
   assetBundleName: 
   assetBundleVariant: 
@@ -10,5 +11,5 @@ AssetOrigin:
   productId: 281631
   packageName: 5 STYLIZED CHARACTERS
   packageVersion: 1.0
-  assetPath: Assets/1Vinh/Charttyp/Stylized fantasy pagan village/Scenes/SampleScene.unity
+  assetPath: Assets/STYLIZED CHARACTERS/MESHES/character 1.controller
   uploadId: 716602

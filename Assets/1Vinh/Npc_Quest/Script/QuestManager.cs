@@ -18,4 +18,11 @@ public class QuestManager : MonoBehaviour
             currentQuest.AddKill();
         }
     }
+    public void AddCollectedItem(string itemName)
+    {
+        if (currentQuest != null)
+        {
+            currentQuest.CollectItem(itemName);
+        }
+    }
 }
