@@ -16563,17 +16563,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 293258045144981611, guid: 8e018a4397eabb74db8d690826d54fdd, type: 3}
-      propertyPath: damage
-      value: 50
-      objectReference: {fileID: 0}
     - target: {fileID: 2712316914296128882, guid: 8e018a4397eabb74db8d690826d54fdd, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 4038893147100357366, guid: 8e018a4397eabb74db8d690826d54fdd, type: 3}
-      propertyPath: maxHealth
-      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 4038893147100357366, guid: 8e018a4397eabb74db8d690826d54fdd, type: 3}
       propertyPath: healthSlider
@@ -16626,10 +16618,6 @@ PrefabInstance:
     - target: {fileID: 4319761168301399954, guid: 8e018a4397eabb74db8d690826d54fdd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6104843505773239791, guid: 8e018a4397eabb74db8d690826d54fdd, type: 3}
-      propertyPath: circleSlashDamage
-      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -36095,14 +36083,20 @@ MonoBehaviour:
   - Lorin
   - Lorin
   - Kael
+  postQuestDialogue: []
+  postQuestSpeaker: []
   quest:
     questName: "Gi\xFAp Lorin Ti\xEAu di\u1EC7t qu\xE1i v\u1EADt \u0111ang \u0111\u1EBFn
       l\xE0ng"
     description: "Ti\xEAu di\u1EC7t 5 con qu\xE1i v\u1EADt"
+    questType: 0
     isAccepted: 0
     isCompleted: 0
     requiredKillCount: 5
     currentKillCount: 0
+    requiredItemName: 
+    hasCollectedItem: 0
+    portalToActivate: {fileID: 0}
   uiPanel: {fileID: 1878931463}
   uiText: {fileID: 149604685}
   speakerText: {fileID: 1089392564}

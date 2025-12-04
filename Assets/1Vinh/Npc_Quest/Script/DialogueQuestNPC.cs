@@ -3,10 +3,16 @@ using TMPro;
 
 public class DialogueQuestNPC : MonoBehaviour
 {
-    [Header("Dialogue")]
+    [Header("Dialogue (Before Quest)")]
     [TextArea(3, 10)]
     public string[] dialogueLines;
     public string[] speakerLines;
+
+    [Header("Dialogue After Completing Quest")]
+    [TextArea(3, 10)]
+    public string[] postQuestDialogue;
+    public string[] postQuestSpeaker;
+
     private int dialogueIndex = 0;
 
     [Header("Quest")]
@@ -19,8 +25,9 @@ public class DialogueQuestNPC : MonoBehaviour
 
     private bool playerInside = false;
     private bool isTalking = false;
-
     private bool hasTalked = false;
+
+    private bool isPostQuestTalking = false;   // <--- trạng thái nói thoại sau khi hoàn thành
 
     void Start()
     {
@@ -47,6 +54,7 @@ public class DialogueQuestNPC : MonoBehaviour
         {
             playerInside = false;
             isTalking = false;
+            isPostQuestTalking = false;
             dialogueIndex = 0;
             uiPanel.SetActive(false);
         }
@@ -56,12 +64,21 @@ public class DialogueQuestNPC : MonoBehaviour
     {
         if (playerInside && Input.GetKeyDown(KeyCode.E))
         {
+            // Nếu đã hoàn thành nhiệm vụ → vào chế độ thoại hậu nhiệm vụ
+            if (quest.isCompleted)
+            {
+                HandlePostQuestDialogue();
+                return;
+            }
+
+            // Nếu đã nói thoại đầu rồi → vào nhiệm vụ
             if (hasTalked)
             {
                 HandleQuest();
                 return;
             }
 
+            // Chưa nói -> nói thoại đầu
             if (!isTalking)
                 StartDialogue();
             else
@@ -69,6 +86,7 @@ public class DialogueQuestNPC : MonoBehaviour
         }
     }
 
+    // ========== THOẠI TRƯỚC NHIỆM VỤ ==========
     void StartDialogue()
     {
         isTalking = true;
@@ -97,11 +115,11 @@ public class DialogueQuestNPC : MonoBehaviour
         speakerText.text = speakerLines[dialogueIndex];
     }
 
+    // ========== NHIỆM VỤ ==========
     void HandleQuest()
     {
         speakerText.text = "NPC";
 
-        // 1. Chưa nhận nhiệm vụ
         if (!quest.isAccepted)
         {
             uiText.text =
@@ -112,7 +130,6 @@ public class DialogueQuestNPC : MonoBehaviour
             return;
         }
 
-        // 2. Đang làm nhiệm vụ
         if (!quest.isCompleted)
         {
             if (quest.questType == QuestType.Kill)
@@ -127,11 +144,49 @@ public class DialogueQuestNPC : MonoBehaviour
                         ? "Bạn đã nhặt được vật phẩm, quay lại đưa cho tôi!"
                         : $"Hãy tìm và nhặt vật phẩm: {quest.requiredItemName}";
             }
-
             return;
         }
 
-        // 3. Đã hoàn thành nhiệm vụ
+        // Khi vừa hoàn thành → kích hoạt thoại hậu nhiệm vụ
+        dialogueIndex = 0;
+        isPostQuestTalking = true;
+    }
+
+    // ========== THOẠI SAU KHI HOÀN THÀNH NHIỆM VỤ ==========
+    void HandlePostQuestDialogue()
+    {
+        if (!isPostQuestTalking)
+        {
+            // Bắt đầu thoại sau nhiệm vụ
+            isPostQuestTalking = true;
+            dialogueIndex = 0;
+            ShowPostQuestDialogue();
+            return;
+        }
+
+        // Next line
+        dialogueIndex++;
+        if (dialogueIndex < postQuestDialogue.Length)
+        {
+            ShowPostQuestDialogue();
+        }
+        else
+        {
+            // kết thúc thoại hậu nhiệm vụ
+            EndPostQuestEffect();
+        }
+    }
+
+    void ShowPostQuestDialogue()
+    {
+        uiText.text = postQuestDialogue[dialogueIndex];
+        speakerText.text = postQuestSpeaker[dialogueIndex];
+    }
+
+    void EndPostQuestEffect()
+    {
+        speakerText.text = "NPC";
+
         if (quest.questType == QuestType.Kill)
         {
             uiText.text =
@@ -143,5 +198,7 @@ public class DialogueQuestNPC : MonoBehaviour
             uiText.text =
                 $"🎉 Bạn đã giao vật phẩm thành công!\nCổng dịch chuyển đã xuất hiện!";
         }
+
+        isPostQuestTalking = false;
     }
 }
