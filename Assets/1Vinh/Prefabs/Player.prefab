@@ -836,7 +836,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackControl
   circleSlashCooldown: 5
-  circleSlashDamage: 20
+  circleSlashDamage: 50
   circleSlashRange: 3
   enemyLayer:
     serializedVersion: 2
@@ -853,7 +853,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 144090cf5b6973c4d8ded2627aa07768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthManagement
-  maxHealth: 100
+  maxHealth: 200
   currentHealth: 0
   healthSlider: {fileID: 0}
   dieCanvasController: {fileID: 0}
@@ -871,7 +871,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efaa5b1fabbd6bc4d95cc906842a289f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SwordDamage
-  damage: 20
+  damage: 50
 --- !u!1 &2772299432078239959
 GameObject:
   m_ObjectHideFlags: 0

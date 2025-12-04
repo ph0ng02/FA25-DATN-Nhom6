@@ -1,61 +1,34 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class DieCanvasController : MonoBehaviour
 {
     [Header("UI Elements")]
-    [SerializeField] private GameObject dieCanvas; // Tham chiếu đến CanvasGameover
-    [SerializeField] private Button resetButton; // Tham chiếu đến nút ResetButton
+    [SerializeField] private GameObject dieCanvas; // Canvas chết (tùy chọn)
 
-    private void Start()
-    {
-        if (dieCanvas != null)
-        {
-            dieCanvas.SetActive(false);
-            Debug.Log("Die Canvas initialized and set to inactive at " + System.DateTime.Now);
-        }
-        else
-        {
-            Debug.LogError("Die Canvas is not assigned in Inspector!");
-        }
-
-        if (resetButton != null)
-        {
-            // Gán sự kiện thủ công trong Start (tùy chọn, có thể bỏ nếu dùng Inspector)
-            resetButton.onClick.AddListener(ReloadScene);
-            Debug.Log("Reset Button assigned at " + System.DateTime.Now);
-        }
-        else
-        {
-            Debug.LogError("Reset Button is not assigned in Inspector!");
-        }
-    }
+    private bool isDead = false;
 
     public void ShowDieCanvas()
     {
+        if (isDead) return;
+        isDead = true;
+
         if (dieCanvas != null)
-        {
             dieCanvas.SetActive(true);
-            Debug.Log("Die Canvas activated at " + System.DateTime.Now);
-            Time.timeScale = 0f;
-        }
-        else
-        {
-            Debug.LogError("Cannot show Die Canvas: not assigned!");
-        }
+
+        Time.timeScale = 0f; // Tạm dừng game (nếu bạn muốn)
+
+        // Bắt đầu chuyển scene sau 3 giây thời gian thực
+        StartCoroutine(ReturnToMenuAfterDelay());
     }
 
-    // Thay đổi thành public để hiển thị trong Inspector
-    public void ReloadScene()
+    private System.Collections.IEnumerator ReturnToMenuAfterDelay()
     {
-        Time.timeScale = 1f;
+        // Chờ 3 giây trong thời gian thực (không bị ảnh hưởng bởi Time.timeScale = 0)
+        yield return new WaitForSecondsRealtime(3f);
 
-        // Lấy tên scene hiện tại và load lại
-        string currentSceneName = SceneManager.GetActiveScene().name;
-        SceneManager.LoadScene(currentSceneName);
+        Time.timeScale = 1f; // Bật lại timeScale trước khi load scene
 
-        Debug.Log("Scene " + currentSceneName + " reloaded at " + System.DateTime.Now);
+        SceneManager.LoadScene("MainMenu"); // ← Đổi "Menu" thành tên scene Menu của bạn
     }
-
 }
