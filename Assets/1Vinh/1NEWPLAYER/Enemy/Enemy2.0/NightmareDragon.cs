@@ -7,50 +7,98 @@ public class NightmareDragon : MonoBehaviour, IDamageable
     public int HP = 100;
 
     [Header("Animator")]
-    public Animator animator;   
+    public Animator animator;
 
     [Header("Tấn công")]
     [SerializeField] private float attackDamage = 5f;
     [SerializeField] private float attackCooldown = 0.5f;
     private float lastAttackTime = 0f;
+    private Transform detectedPlayer;   // player được phát hiện từ vùng tầm nhìn
+    private bool playerInVision = false;
 
     [Header("Item Drop")]
-    public GameObject healthPickupPrefab;   // prefab máu rơi ra
-    public float dropForce = 3f;            // lực nảy lên nhẹ
+    public GameObject healthPickupPrefab;
+    public float dropForce = 3f;
 
     private bool isDead = false;
+
+    // ---------- NEW: AI FOLLOW PLAYER ----------
+    [Header("AI Follow Player")]
+    public float viewRange = 10f;      // tầm nhìn
+    public float moveSpeed = 3f;       // tốc độ dí
+    private Transform player;          // lưu player
+    private Rigidbody rb;              // di chuyển vật lý
+    // ------------------------------------------
 
     private void Awake()
     {
         if (animator == null)
             animator = GetComponent<Animator>();
+
+        rb = GetComponent<Rigidbody>();
+    }
+
+    private void Start()
+    {
+        player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     public void TakeDamage(float amount)
-{
-    if (isDead) return;
-
-    HP -= Mathf.RoundToInt(amount);
-    if (HP <= 0)
     {
-        isDead = true;
-        animator.SetBool("IsDie", true); // ✅ play animation die
-        Debug.Log("▶️ Enemy chết, play animation die");
+        if (isDead) return;
 
-        // ✅ Thêm kill vào QuestManager
-        QuestManager.Instance.AddKill();
+        HP -= Mathf.RoundToInt(amount);
+        if (HP <= 0)
+        {
+            isDead = true;
+            animator.SetBool("IsDie", true);
 
-        // ✅ Cập nhật UI nếu đang hiển thị
-        if (QuestUI.Instance != null)
-            QuestUI.Instance.UpdateUI();
+            QuestManager.Instance.AddKill();
+            if (QuestUI.Instance != null)
+                QuestUI.Instance.UpdateUI();
 
-        StartCoroutine(WaitAndDestroy());
+            StartCoroutine(WaitAndDestroy());
+        }
+        else
+        {
+            animator.SetTrigger("damage");
+        }
     }
-    else
+
+    public void PlayerDetected(Transform player)
     {
-        animator.SetTrigger("damage");
+        detectedPlayer = player;
+        playerInVision = true;
     }
-}
+
+    public void LosePlayer()
+    {
+        playerInVision = false;
+        detectedPlayer = null;
+
+        animator.SetBool("isRunning", false); // dừng animation chạy
+    }
+
+    private void FixedUpdate()
+    {
+        if (isDead) return;
+
+        if (!playerInVision || detectedPlayer == null)
+        {
+            animator.SetBool("isRunning", false);
+            return;
+        }
+
+        // rồng dí theo player detected
+        Vector3 dir = (detectedPlayer.position - transform.position).normalized;
+
+        Quaternion look = Quaternion.LookRotation(dir);
+        transform.rotation = Quaternion.Slerp(transform.rotation, look, 5f * Time.deltaTime);
+
+        rb.MovePosition(transform.position + dir * moveSpeed * Time.deltaTime);
+
+        animator.SetBool("isRunning", true);
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -72,11 +120,9 @@ public class NightmareDragon : MonoBehaviour, IDamageable
         float animTime = stateInfo.length;
 
         yield return new WaitForSeconds(animTime);
+        yield return new WaitForSeconds(3f);
 
-        Debug.Log("⏳ Animation die xong, chờ thêm 10s...");
-        yield return new WaitForSeconds(10f);
-
-        // 🎁 DROP MÁU
+        // DROP ITEM
         if (healthPickupPrefab != null)
         {
             GameObject drop = Instantiate(healthPickupPrefab, transform.position + Vector3.up * 1f, Quaternion.identity);
@@ -87,7 +133,6 @@ public class NightmareDragon : MonoBehaviour, IDamageable
             }
         }
 
-        Debug.Log("💥 Destroy enemy sau 10s");
         Destroy(gameObject);
     }
 }

@@ -4,7 +4,6 @@ public class GoalTile : MonoBehaviour
 {
     public int goalID = 0;
     public bool isFilledCorrectly = false;
-    public GameObject slightGlow;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -15,10 +14,6 @@ public class GoalTile : MonoBehaviour
             if (rock != null && rock.isCorrectRock && rock.correctGoalID == goalID)
             {
                 isFilledCorrectly = true;
-            }
-            if (rock != null && rock.correctGoalID == goalID)
-            { 
-                slightGlow.SetActive(true); 
             }
             else
             {
