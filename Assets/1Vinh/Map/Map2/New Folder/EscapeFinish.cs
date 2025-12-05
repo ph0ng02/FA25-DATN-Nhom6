@@ -7,7 +7,7 @@ public class EscapeFinish : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            SceneManager.LoadScene("Map1");
+            SceneManager.LoadScene("Map3");
         }
     }
 }

@@ -8820,6 +8820,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4938685659100756305, guid: 40062f416c4f83845a51c1ff1a0f24ef, type: 3}
+      propertyPath: targetSceneName
+      value: Minigame1
+      objectReference: {fileID: 0}
     - target: {fileID: 8123891817823813046, guid: 40062f416c4f83845a51c1ff1a0f24ef, type: 3}
       propertyPath: m_LocalPosition.x
       value: 947.4138
