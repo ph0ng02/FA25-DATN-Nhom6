@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
 
 public class DialogueQuestNPC : MonoBehaviour
 {
@@ -26,8 +27,13 @@ public class DialogueQuestNPC : MonoBehaviour
     private bool playerInside = false;
     private bool isTalking = false;
     private bool hasTalked = false;
+    private bool isPostQuestTalking = false;
 
-    private bool isPostQuestTalking = false;   // <--- trạng thái nói thoại sau khi hoàn thành
+    private Coroutine typingCoroutine;
+
+    // --- Typing effect flags ---
+    private bool isTyping = false;
+    private string currentFullText = "";
 
     void Start()
     {
@@ -41,10 +47,7 @@ public class DialogueQuestNPC : MonoBehaviour
             playerInside = true;
             uiPanel.SetActive(true);
 
-            if (!hasTalked)
-                uiText.text = "Nhấn E để trò chuyện";
-            else
-                uiText.text = "Nhấn E để xem nhiệm vụ";
+            ShowTyping(!hasTalked ? "Nhấn E để trò chuyện" : "Nhấn E để xem nhiệm vụ");
         }
     }
 
@@ -64,21 +67,27 @@ public class DialogueQuestNPC : MonoBehaviour
     {
         if (playerInside && Input.GetKeyDown(KeyCode.E))
         {
-            // Nếu đã hoàn thành nhiệm vụ → vào chế độ thoại hậu nhiệm vụ
+            // Nếu đang gõ chữ → skip chữ, KHÔNG qua câu mới
+            if (isTyping)
+            {
+                isTyping = false;
+                uiText.text = currentFullText;
+                return;
+            }
+
+            // Sau khi chữ gõ xong mới xử lý logic thoại/nhiệm vụ
             if (quest.isCompleted)
             {
                 HandlePostQuestDialogue();
                 return;
             }
 
-            // Nếu đã nói thoại đầu rồi → vào nhiệm vụ
             if (hasTalked)
             {
                 HandleQuest();
                 return;
             }
 
-            // Chưa nói -> nói thoại đầu
             if (!isTalking)
                 StartDialogue();
             else
@@ -86,7 +95,50 @@ public class DialogueQuestNPC : MonoBehaviour
         }
     }
 
-    // ========== THOẠI TRƯỚC NHIỆM VỤ ==========
+    // =====================
+    // TYPING EFFECT
+    // =====================
+    IEnumerator TypeText(string text)
+    {
+        isTyping = true;
+        currentFullText = text;
+        uiText.text = "";
+
+        foreach (char c in text)
+        {
+            if (!isTyping)
+            {
+                uiText.text = currentFullText;
+                yield break;
+            }
+
+            uiText.text += c;
+            yield return new WaitForSeconds(0.02f);
+        }
+
+        isTyping = false;
+    }
+
+    void ShowTyping(string text)
+    {
+        // Nếu đang gõ chữ và nhấn E → skip
+        if (isTyping)
+        {
+            isTyping = false;
+            uiText.text = currentFullText;
+            return;
+        }
+
+        // Nếu không gõ → bắt đầu gõ câu mới
+        if (typingCoroutine != null)
+            StopCoroutine(typingCoroutine);
+
+        typingCoroutine = StartCoroutine(TypeText(text));
+    }
+
+    // =====================
+    // THOẠI TRƯỚC NHIỆM VỤ
+    // =====================
     void StartDialogue()
     {
         isTalking = true;
@@ -111,20 +163,20 @@ public class DialogueQuestNPC : MonoBehaviour
 
     void ShowDialogue()
     {
-        uiText.text = dialogueLines[dialogueIndex];
         speakerText.text = speakerLines[dialogueIndex];
+        ShowTyping(dialogueLines[dialogueIndex]);
     }
 
-    // ========== NHIỆM VỤ ==========
+    // =====================
+    // XỬ LÝ NHIỆM VỤ
+    // =====================
     void HandleQuest()
     {
         speakerText.text = "NPC";
 
         if (!quest.isAccepted)
         {
-            uiText.text =
-                $"Nhiệm vụ: {quest.questName}\n\n{quest.description}\n\nNhấn E để nhận nhiệm vụ";
-
+            ShowTyping($"Nhiệm vụ: {quest.questName}\n\n{quest.description}\n\nNhấn E để nhận nhiệm vụ");
             quest.isAccepted = true;
             QuestManager.Instance.currentQuest = quest;
             return;
@@ -134,53 +186,53 @@ public class DialogueQuestNPC : MonoBehaviour
         {
             if (quest.questType == QuestType.Kill)
             {
-                uiText.text =
-                    $"Tiến độ: {quest.currentKillCount}/{quest.requiredKillCount}\nHãy tiêu diệt đủ quái!";
+                ShowTyping($"Tiến độ: {quest.currentKillCount}/{quest.requiredKillCount}\nHãy tiêu diệt đủ quái!");
             }
             else if (quest.questType == QuestType.CollectItem)
             {
-                uiText.text =
+                ShowTyping(
                     quest.hasCollectedItem
-                        ? "Bạn đã nhặt được vật phẩm, quay lại đưa cho tôi!"
-                        : $"Hãy tìm và nhặt vật phẩm: {quest.requiredItemName}";
+                    ? "Bạn đã nhặt được vật phẩm, quay lại đưa cho tôi!"
+                    : $"Hãy tìm và nhặt vật phẩm: {quest.requiredItemName}"
+                );
             }
             return;
         }
 
-        // Khi vừa hoàn thành → kích hoạt thoại hậu nhiệm vụ
+        // Bắt đầu thoại hậu nhiệm vụ
         dialogueIndex = 0;
         isPostQuestTalking = true;
     }
 
-    // ========== THOẠI SAU KHI HOÀN THÀNH NHIỆM VỤ ==========
+    // =====================
+    // THOẠI SAU KHI HOÀN THÀNH
+    // =====================
     void HandlePostQuestDialogue()
     {
         if (!isPostQuestTalking)
         {
-            // Bắt đầu thoại sau nhiệm vụ
             isPostQuestTalking = true;
             dialogueIndex = 0;
             ShowPostQuestDialogue();
             return;
         }
 
-        // Next line
         dialogueIndex++;
+
         if (dialogueIndex < postQuestDialogue.Length)
         {
             ShowPostQuestDialogue();
         }
         else
         {
-            // kết thúc thoại hậu nhiệm vụ
             EndPostQuestEffect();
         }
     }
 
     void ShowPostQuestDialogue()
     {
-        uiText.text = postQuestDialogue[dialogueIndex];
         speakerText.text = postQuestSpeaker[dialogueIndex];
+        ShowTyping(postQuestDialogue[dialogueIndex]);
     }
 
     void EndPostQuestEffect()
@@ -189,14 +241,12 @@ public class DialogueQuestNPC : MonoBehaviour
 
         if (quest.questType == QuestType.Kill)
         {
-            uiText.text =
-                $"🎉 Bạn đã hoàn thành nhiệm vụ tiêu diệt quái!\nĐã mở khóa skill Circle Slash!";
+            ShowTyping("🎉 Bạn đã hoàn thành nhiệm vụ tiêu diệt quái!\nĐã mở khóa skill Circle Slash!");
             SkillManager.Instance.UnlockCircleSlash();
         }
         else if (quest.questType == QuestType.CollectItem)
         {
-            uiText.text =
-                $"🎉 Bạn đã giao vật phẩm thành công!\nCổng dịch chuyển đã xuất hiện!";
+            ShowTyping("🎉 Bạn đã giao vật phẩm thành công!\nCổng dịch chuyển đã xuất hiện!");
         }
 
         isPostQuestTalking = false;
