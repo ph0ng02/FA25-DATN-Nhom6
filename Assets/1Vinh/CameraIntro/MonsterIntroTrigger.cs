@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic;
 
 public class MonsterIntroTrigger : MonoBehaviour
 {
@@ -11,8 +12,15 @@ public class MonsterIntroTrigger : MonoBehaviour
     [Header("Monster")]
     public GameObject monsterPrefab;
     public Transform spawnPoint;
-    private GameObject spawnedMonster;
-    private Animator monsterAnimator;
+
+    [Header("Monster Spawn Settings")]
+    public int spawnCount = 3;
+
+    [Header("Random Spawn Settings")]
+    public float spawnRadius = 5f;   // ✔ Spawn random trong bán kính này
+
+    private List<GameObject> spawnedMonsters = new List<GameObject>();
+    private Animator firstMonsterAnimator;
 
     [Header("Camera Follow Settings")]
     public Vector3 cameraOffset = new Vector3(0, 3, -5);
@@ -31,7 +39,6 @@ public class MonsterIntroTrigger : MonoBehaviour
 
     private void Start()
     {
-        // ✔ Đặt alpha = 0 để chắc chắn text ẩn từ đầu
         if (monsterIntroText != null)
         {
             Color c = monsterIntroText.color;
@@ -54,56 +61,57 @@ public class MonsterIntroTrigger : MonoBehaviour
     {
         hasPlayed = true;
 
-        // Spawn quái
-        spawnedMonster = Instantiate(monsterPrefab, spawnPoint.position, spawnPoint.rotation);
-        monsterAnimator = spawnedMonster.GetComponent<Animator>();
+        // ✔ Spawn nhiều quái ngẫu nhiên
+        for (int i = 0; i < spawnCount; i++)
+        {
+            Vector2 randomPos = Random.insideUnitCircle * spawnRadius;
 
-        if (monsterAnimator != null)
-            monsterAnimator.SetTrigger("Intro");
+            Vector3 spawnPos = new Vector3(
+                spawnPoint.position.x + randomPos.x,
+                spawnPoint.position.y,
+                spawnPoint.position.z + randomPos.y
+            );
 
-        // Chuyển camera
+            GameObject m = Instantiate(monsterPrefab, spawnPos, spawnPoint.rotation);
+            spawnedMonsters.Add(m);
+        }
+
+        // Chọn con đầu tiên cho intro
+        firstMonsterAnimator = spawnedMonsters[0].GetComponent<Animator>();
+        if (firstMonsterAnimator != null)
+            firstMonsterAnimator.SetTrigger("Intro");
+
+        // Camera switch
         playerCamera.gameObject.SetActive(false);
         introCamera.gameObject.SetActive(true);
 
-        // ➤ Hiện chữ
+        // Hiện chữ
         monsterIntroText.text = monsterName;
         StartCoroutine(FadeTextIn(monsterIntroText));
 
         float timer = 0f;
+        GameObject targetMonster = spawnedMonsters[0];
+
         while (timer < introDuration)
         {
-            if (spawnedMonster != null)
+            if (targetMonster != null)
             {
-                Vector3 targetPos = spawnedMonster.transform.position + cameraOffset;
+                Vector3 targetPos = targetMonster.transform.position + cameraOffset;
+                introCamera.transform.position = Vector3.Lerp(introCamera.transform.position, targetPos, Time.deltaTime * followSpeed);
 
-                introCamera.transform.position = Vector3.Lerp(
-                    introCamera.transform.position,
-                    targetPos,
-                    Time.deltaTime * followSpeed
-                );
-
-                Quaternion lookRot = Quaternion.LookRotation(
-                    spawnedMonster.transform.position - introCamera.transform.position
-                );
-
-                introCamera.transform.rotation = Quaternion.Slerp(
-                    introCamera.transform.rotation,
-                    lookRot,
-                    Time.deltaTime * rotateSpeed
-                );
+                Quaternion lookRot = Quaternion.LookRotation(targetMonster.transform.position - introCamera.transform.position);
+                introCamera.transform.rotation = Quaternion.Slerp(introCamera.transform.rotation, lookRot, Time.deltaTime * rotateSpeed);
             }
 
             timer += Time.deltaTime;
             yield return null;
         }
 
-        // Ẩn chữ bằng fade-out
+        // Ẩn chữ
         yield return StartCoroutine(FadeTextOut(monsterIntroText));
-
-        // ✔ Tắt hẳn chữ để không bao giờ hiện lại
         monsterIntroText.gameObject.SetActive(false);
 
-        // Trả lại camera player
+        // Trả camera
         introCamera.gameObject.SetActive(false);
         playerCamera.gameObject.SetActive(true);
 

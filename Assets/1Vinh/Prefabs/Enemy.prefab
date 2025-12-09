@@ -64,7 +64,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 10
+  m_Radius: 30
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6950606721311886217
 GameObject:
@@ -143,15 +143,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 1d85481292d33124197faff870e9e054, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 217.32872
+      value: 43.680103
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1d85481292d33124197faff870e9e054, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.000020742416
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1d85481292d33124197faff870e9e054, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 901.9632
+      value: 237.2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1d85481292d33124197faff870e9e054, type: 3}
       propertyPath: m_LocalRotation.w
@@ -159,15 +159,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1d85481292d33124197faff870e9e054, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1d85481292d33124197faff870e9e054, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1d85481292d33124197faff870e9e054, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1d85481292d33124197faff870e9e054, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

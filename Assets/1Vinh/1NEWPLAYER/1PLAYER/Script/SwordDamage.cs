@@ -3,6 +3,7 @@ using UnityEngine;
 public class SwordDamage : MonoBehaviour
 {
     [SerializeField] private float damage = 20f;
+
     private bool canDamage = false;  // chỉ gây damage khi hoạt ảnh chém đang active
 
     public void EnableDamage()  // gọi từ Animation Event
@@ -15,14 +16,15 @@ public class SwordDamage : MonoBehaviour
         canDamage = false;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
         if (!canDamage) return;
 
-        IDamageable target = other.GetComponent<IDamageable>();
+        // Lấy component có IDamageable
+        IDamageable target = collision.collider.GetComponent<IDamageable>();
         if (target != null)
         {
-            Debug.Log("⚔ Kiếm hit enemy!");
+            Debug.Log("⚔ Kiếm va chạm và gây damage!");
             target.TakeDamage(damage);
         }
     }
