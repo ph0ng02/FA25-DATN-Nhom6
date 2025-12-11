@@ -13,15 +13,12 @@ MonoBehaviour:
   m_Name: SD_Arcane_Explosion
   m_EditorClassIdentifier: 
   spellName: Arcane Explosion
-  incantationPrefab: {fileID: 3993457813523650357, guid: 3b5c58a4954847748b248bb1cb55132b,
-    type: 3}
-  spellBurstPrefab: {fileID: 696709159327299983, guid: 345a7000797345899cfc3701ac5969b9,
-    type: 3}
-  mainSpellPrefab: {fileID: 3809998876931629212, guid: f7807026e75c48dda4c9c2adb803c304,
-    type: 3}
+  incantationPrefab: {fileID: 3993457813523650357, guid: 3b5c58a4954847748b248bb1cb55132b, type: 3}
+  spellBurstPrefab: {fileID: 696709159327299983, guid: 345a7000797345899cfc3701ac5969b9, type: 3}
+  mainSpellPrefab: {fileID: 3809998876931629212, guid: f7807026e75c48dda4c9c2adb803c304, type: 3}
   castTime: 1
   cooldown: 1
-  activationKey: 101
+  activationKey: 120
   shakeEnabled: 1
   shakeStrengthIncantation: 0.01
   shakeStrengthBurst: 0.02
