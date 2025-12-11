@@ -2,94 +2,75 @@
 
 public class SkillZ : MonoBehaviour
 {
-    [Header("Shield Prefabs")]
-    public GameObject shieldPrefab;          // VFX khiên
-    public GameObject breakEffectPrefab;     // VFX nổ khi bị phá
-    public GameObject expireEffectPrefab;    // VFX nổ khi hết thời gian
+    [Header("Shield Prefab")]
+    public GameObject shieldPrefab;
 
     [Header("Settings")]
-    public Transform attachPoint;            // nơi gắn khiên (Player)
-    public float duration = 5f;              // thời gian tồn tại
-    public float cooldown = 8f;              // hồi chiêu
-    public float shieldMaxHP = 100f;         // máu khiên
-    public float damageReduction = 0.5f;     // giảm 50% sát thương
+    public Transform attachPoint;
+    public float duration = 5f;
+    public float cooldown = 8f;
+    public float shieldHP = 50f; // máu khiên
+    public float damageReduction = 0.5f;
 
     private GameObject currentShield;
-    private float shieldHP;
-    private float nextCastTime = 0f;
-    private bool isActive = false;
+    private float currentHP;
     private float timer;
+    private float nextCastTime;
+    private bool isActive;
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Z))
-        {
             ActivateShield();
-        }
 
         if (isActive)
         {
             timer -= Time.deltaTime;
             if (timer <= 0)
-            {
-                ExpireShield();
-            }
+                RemoveShield();
         }
     }
 
+    // Gọi khi nhấn Z
     public void ActivateShield()
     {
         if (Time.time < nextCastTime) return;
-        if (isActive) return;
 
-        // khởi tạo khiên
-        currentShield = Instantiate(shieldPrefab, attachPoint.position, attachPoint.rotation);
-        currentShield.transform.SetParent(attachPoint);
+        RemoveShield(); // luôn xóa sạch shield cũ trước
 
-        shieldHP = shieldMaxHP;
+        currentShield = Instantiate(shieldPrefab, attachPoint);
+        currentShield.transform.localPosition = Vector3.zero;
+        currentShield.transform.localRotation = Quaternion.identity;
+
+        currentHP = shieldHP;
         timer = duration;
         isActive = true;
 
         nextCastTime = Time.time + cooldown;
     }
 
-    // hàm player gọi khi nhận damage
+    // Gọi từ Player khi nhận damage
     public float AbsorbDamage(float incomingDamage)
     {
         if (!isActive) return incomingDamage;
 
-        float reducedDamage = incomingDamage * (1f - damageReduction);
+        float reduced = incomingDamage * (1f - damageReduction);
+        currentHP -= reduced;
 
-        shieldHP -= reducedDamage;
+        if (currentHP <= 0)
+            RemoveShield();
 
-        if (shieldHP <= 0)
+        return incomingDamage - reduced; // damage player nhận
+    }
+
+    // Bỏ khiên
+    private void RemoveShield()
+    {
+        if (currentShield != null)
         {
-            BreakShield();
-        }
-
-        return incomingDamage - reducedDamage; // phần damage còn lại Player nhận
-    }
-
-    void BreakShield()
-    {
-        if (breakEffectPrefab)
-            Instantiate(breakEffectPrefab, attachPoint.position, Quaternion.identity);
-
-        DisableShield();
-    }
-
-    void ExpireShield()
-    {
-        if (expireEffectPrefab)
-            Instantiate(expireEffectPrefab, attachPoint.position, Quaternion.identity);
-
-        DisableShield();
-    }
-
-    void DisableShield()
-    {
-        if (currentShield)
             Destroy(currentShield);
+            currentShield = null;
+        }
 
         isActive = false;
     }
