@@ -20,7 +20,7 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 0.46226418, g: 0.46226418, b: 0.46226418, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
@@ -37201,8 +37201,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
-  m_fontSizeBase: 25
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -60692,6 +60692,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC_Eria
       objectReference: {fileID: 0}
+    - target: {fileID: 3011269754463201863, guid: ee330022feba12243a37f96de06d1d6a, type: 3}
+      propertyPath: m_fontSize
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3011269754463201863, guid: ee330022feba12243a37f96de06d1d6a, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 3892646524460733686, guid: ee330022feba12243a37f96de06d1d6a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 44.97376
@@ -60731,6 +60739,14 @@ PrefabInstance:
     - target: {fileID: 3892646524460733686, guid: ee330022feba12243a37f96de06d1d6a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6035345251476228927, guid: ee330022feba12243a37f96de06d1d6a, type: 3}
+      propertyPath: m_fontSize
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 6035345251476228927, guid: ee330022feba12243a37f96de06d1d6a, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 7602717141132632255, guid: ee330022feba12243a37f96de06d1d6a, type: 3}
       propertyPath: speakerLines.Array.size
@@ -65213,6 +65229,14 @@ PrefabInstance:
         r\u1ED3i ch\u1EE9.\n...L\u1EA1i l\xE0 h\u1ED3n ma khi n\xE3y. M\xECnh ph\u1EA3i
         l\u1EA1i h\u1ECFi cho k\u1EF9 ch\u1ED7 n\xE0y h\u01A1n m\u1EDBi \u0111\u01B0\u1EE3c\""
       objectReference: {fileID: 0}
+    - target: {fileID: 8603675565335309203, guid: 0b24a2e6028f45e4ba58eacfec72b62f, type: 3}
+      propertyPath: m_fontSize
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 8603675565335309203, guid: 0b24a2e6028f45e4ba58eacfec72b62f, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 30
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -68281,6 +68305,14 @@ PrefabInstance:
     - target: {fileID: 1332697215829149222, guid: c3aa11d238c3f0041a79b32762f00789, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2873789984110428002, guid: c3aa11d238c3f0041a79b32762f00789, type: 3}
+      propertyPath: m_fontSize
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 2873789984110428002, guid: c3aa11d238c3f0041a79b32762f00789, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 3571418622731894281, guid: c3aa11d238c3f0041a79b32762f00789, type: 3}
       propertyPath: m_Name

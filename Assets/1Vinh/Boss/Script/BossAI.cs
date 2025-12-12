@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
 
 public class BossAI : MonoBehaviour
 {
@@ -9,156 +10,211 @@ public class BossAI : MonoBehaviour
     public NavMeshAgent agent;
 
     [Header("Stats")]
-    public float maxHP = 500;
-    public float currentHP;
+    public float maxHP = 500f;
+    private float currentHP;
 
-    [Header("Combat Settings")]
+    [Header("Ranges")]
     public float detectRange = 15f;
     public float attackRange = 3f;
-    public float skill1Range = 10f;
-    public float skill2Range = 12f;
 
-    public float attackCooldown = 2f;
-    public float skill1Cooldown = 5f;
-    public float skill2Cooldown = 8f;
+    [Header("Damage")]
+    public float attackDamage = 20f;
+    public float skill1Damage = 35f;
+    public float skill2Damage = 50f;
 
-    private float nextAttackTime;
-    private float nextSkill1Time;
-    private float nextSkill2Time;
+    [Header("Cooldowns")]
+    public float attackCooldown = 1f;
+
+    public float skill1Start = 10f;
+    public float skill1Cooldown = 20f;
+
+    public float skill2Start = 30f;
+    public float skill2Cooldown = 30f;
+
+    float lastAttack = -999f;
+    float lastSkill1 = -999f;
+    float lastSkill2 = -999f;
+
+    bool isAction = false;
+    bool isDead = false;
 
     [Header("VFX")]
-    public GameObject attackVFX;
-    public Transform attackPoint;
-
     public GameObject skill1VFX;
     public Transform skill1Point;
 
     public GameObject skill2VFX;
     public Transform skill2Point;
 
-    private bool isDead = false;
-
-    void Start()
+    private void Start()
     {
         currentHP = maxHP;
+
+        if (player == null)
+            player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
-    void Update()
+    private void Update()
     {
         if (isDead) return;
         if (player == null) return;
 
-        float distance = Vector3.Distance(transform.position, player.position);
+        float dist = Vector3.Distance(transform.position, player.position);
 
-        // ---- DIE CHECK ----
-        if (currentHP <= 0)
-        {
-            Die();
-            return;
-        }
-
-        // ---- PLAYER OUT OF RANGE → IDLE ----
-        if (distance > detectRange)
-        {
-            animator.SetBool("isWalking", false);
-            agent.isStopped = true;
-            return;
-        }
-
-        // ---- MOVE TỚI PLAYER ----
-        if (distance > attackRange)
+        // Di chuyển theo player nếu không đang cast
+        if (!isAction && dist <= detectRange && dist > attackRange)
         {
             agent.isStopped = false;
             agent.SetDestination(player.position);
-
-            animator.SetBool("isWalking", true);
+            animator.SetFloat("Speed", agent.velocity.magnitude);
         }
         else
         {
-            animator.SetBool("isWalking", false);
             agent.isStopped = true;
-
-            TryAttack();
-            TrySkill1(distance);
-            TrySkill2(distance);
+            animator.SetFloat("Speed", 0);
         }
 
-        FacePlayer();
-    }
-
-    void TryAttack()
-    {
-        if (Time.time >= nextAttackTime)
+        // Trong tầm đánh
+        if (dist <= attackRange)
         {
-            nextAttackTime = Time.time + attackCooldown;
-            animator.SetBool("isAttacking", true);
+            FacePlayer();
+
+            if (!isAction)
+                CombatLogic();
         }
     }
 
-    void TrySkill1(float dist)
+    private void FacePlayer()
     {
-        if (dist <= skill1Range && Time.time >= nextSkill1Time)
+        Vector3 dir = player.position - transform.position;
+        dir.y = 0;
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            Quaternion.LookRotation(dir),
+            Time.deltaTime * 10f
+        );
+    }
+
+    private void CombatLogic()
+    {
+        float t = Time.time;
+
+        // Skill 2 — Ưu tiên cao nhất
+        if (t >= skill2Start && t - lastSkill2 >= skill2Cooldown)
         {
-            nextSkill1Time = Time.time + skill1Cooldown;
-            animator.SetBool("isCasting1", true);
+            StartCoroutine(DoSkill2());
+            return;
         }
-    }
 
-    void TrySkill2(float dist)
-    {
-        if (dist <= skill2Range && Time.time >= nextSkill2Time)
+        // Skill 1
+        if (t >= skill1Start && t - lastSkill1 >= skill1Cooldown)
         {
-            nextSkill2Time = Time.time + skill2Cooldown;
-            animator.SetBool("isCasting2", true);
+            StartCoroutine(DoSkill1());
+            return;
+        }
+
+        // Đánh thường
+        if (t - lastAttack >= attackCooldown)
+        {
+            StartCoroutine(DoAttack());
+            return;
         }
     }
 
-    void FacePlayer()
+    // ===========================
+    // ACTIONS
+    // ===========================
+
+    IEnumerator DoAttack()
     {
-        Vector3 lookPos = player.position - transform.position;
-        lookPos.y = 0;
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookPos), 10f * Time.deltaTime);
+        isAction = true;
+        animator.SetTrigger("Attack");
+
+        yield return new WaitForSeconds(0.7f);
+
+        lastAttack = Time.time;   // cooldown đặt SAU khi đánh xong
+        isAction = false;
     }
 
-    // ---------------------------------------------------------
-    //  CALLED BY ANIMATION EVENT
-    // ---------------------------------------------------------
-    public void SpawnAttackVFX()
+    IEnumerator DoSkill1()
     {
-        Instantiate(attackVFX, attackPoint.position, attackPoint.rotation);
-        animator.SetBool("isAttacking", false);
+        isAction = true;
+        animator.SetTrigger("Skill1");
+
+        yield return new WaitForSeconds(1.2f);
+
+        lastSkill1 = Time.time;   // cooldown đặt SAU khi skill xong
+        isAction = false;
     }
 
-    public void CastSkill1()
+    IEnumerator DoSkill2()
     {
-        Instantiate(skill1VFX, skill1Point.position, skill1Point.rotation);
-        animator.SetBool("isCasting1", false);
+        isAction = true;
+        animator.SetTrigger("Skill2");
+
+        yield return new WaitForSeconds(1.5f);
+
+        lastSkill2 = Time.time;   // cooldown đặt SAU khi skill xong
+        isAction = false;
     }
 
-    public void CastSkill2()
+    // ===========================
+    // ANIMATION EVENTS
+    // ===========================
+
+    public void NormalAttack()
     {
-        Instantiate(skill2VFX, skill2Point.position, skill2Point.rotation);
-        animator.SetBool("isCasting2", false);
+        DealDamage(attackDamage);
     }
 
-    // ---------------------------------------------------------
-    //  DAMAGE & DIE
-    // ---------------------------------------------------------
+    public void Skill1Hit()
+    {
+        DealDamage(skill1Damage);
+        if (skill1VFX != null)
+            Instantiate(skill1VFX, skill1Point.position, skill1Point.rotation);
+    }
+
+    public void Skill2Hit()
+    {
+        DealDamage(skill2Damage);
+        if (skill2VFX != null)
+            Instantiate(skill2VFX, skill2Point.position, skill2Point.rotation);
+    }
+
+    // ===========================
+    // DAMAGE
+    // ===========================
+
+    void DealDamage(float dmg)
+    {
+        if (player == null) return;
+
+        float dist = Vector3.Distance(transform.position, player.position);
+        if (dist <= attackRange + 0.5f)
+        {
+            HealthManagement hp = player.GetComponent<HealthManagement>();
+            if (hp != null)
+                hp.TakeDamage(dmg);
+        }
+    }
+
+    // ===========================
+    // BOSS TAKE DAMAGE
+    // ===========================
     public void TakeDamage(float dmg)
     {
         if (isDead) return;
 
         currentHP -= dmg;
 
-        if (currentHP <= 0) Die();
+        if (currentHP <= 0)
+            Die();
     }
 
     void Die()
     {
         isDead = true;
-        animator.SetBool("isDead", true);
         agent.isStopped = true;
-
-        Destroy(gameObject, 5f);  // Xóa sau 5s
+        animator.SetTrigger("Die");
+        Destroy(gameObject, 5f);
     }
 }

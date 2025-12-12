@@ -25,17 +25,27 @@ public class BGMManager : MonoBehaviour
 
     private void Start()
     {
-        PlayMusic(menuMusic);
+        // Khi ở Menu → phát nhạc Menu
+        if (SceneManager.GetActiveScene().name == "MainMenu")
+            PlayMusic(menuMusic);
+
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        // Nếu scene là Menu → chơi nhạc menu
         if (scene.name == "MainMenu")
         {
             PlayMusic(menuMusic);
         }
-        else if (scene.name == "Game")
+        // Nếu scene là Cutscene → KHÔNG chơi nhạc
+        else if (scene.name == "CutSceneOpening")
+        {
+            StopMusic(); // hoặc không làm gì
+        }
+        // Nếu scene là Map đầu tiên → chơi nhạc game
+        else if (scene.name == "MapStart")
         {
             PlayMusic(gameMusic);
         }
@@ -49,5 +59,11 @@ public class BGMManager : MonoBehaviour
         audioSource.clip = clip;
         audioSource.loop = true;
         audioSource.Play();
+    }
+
+    public void StopMusic()
+    {
+        audioSource.Stop();
+        audioSource.clip = null;
     }
 }
