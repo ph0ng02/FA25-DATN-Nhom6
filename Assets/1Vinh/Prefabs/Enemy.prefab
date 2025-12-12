@@ -132,7 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 614095e3dc4118841a9d34d077be2ad8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAttack
-  damage: 1
+  damage: 0.5
 --- !u!1001 &3807083087993062521
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -257,6 +257,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealths
   maxHealth: 100
+  healthSlider: {fileID: 0}
   dropItems:
   - {fileID: 6837640880549395162, guid: ee932b64c10dc924281e31ac3ad9dac8, type: 3}
   dropChance: 50
