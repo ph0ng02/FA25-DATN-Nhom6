@@ -10,7 +10,7 @@ public class AttackControl : MonoBehaviour
     [Header("Circle Slash Skill")]
     public float circleSlashCooldown = 5f;
     private float circleSlashTimer = 0f;
-    public float circleSlashDamage = 40f; // DAMAGE LÀ FLOAT
+    public float circleSlashDamage = 40f;
     public float circleSlashRange = 3f;
     public LayerMask enemyLayer;
 
@@ -21,59 +21,77 @@ public class AttackControl : MonoBehaviour
 
     void Update()
     {
-        // Combo timer giảm dần
+        // ===============================
+        // COMBO TIMER
+        // ===============================
         if (comboTimer > 0)
             comboTimer -= Time.deltaTime;
         else
             ResetCombo();
 
-        // Combo chuột trái
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+
+        // ===============================
+        // NORMAL ATTACK INPUT
+        // ===============================
+        if (Input.GetKeyDown(KeyCode.Mouse0)) DoCombo();
+        if (Input.GetKeyDown(KeyCode.Y)) DoForwardAttack();
+        if (Input.GetKeyDown(KeyCode.Mouse1)) DoHeavyAttack();
+
+
+        // ===========================================================
+        // DEBUG — NHẤN F THÌ LOG TÌNH TRẠNG SKILL
+        // ===========================================================
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            DoCombo();
+            if (SkillManager.Instance == null)
+                Debug.Log("❌ SkillManager.Instance = NULL");
+            else
+                Debug.Log("SkillManager FOUND — hasCircleSlash = " + SkillManager.Instance.hasCircleSlash);
         }
 
-        // Forward Attack (Y key)
-        if (Input.GetKeyDown(KeyCode.Y))
+
+        // ===========================================================
+        // CIRCLE SLASH SKILL LOGIC
+        // ===========================================================
+        if (SkillManager.Instance != null && SkillManager.Instance.hasCircleSlash)
         {
-            DoForwardAttack();
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                if (circleSlashTimer <= 0)
+                {
+                    Debug.Log("🎯 F Pressed — Cast Circle Slash!");
+                    CircleSlash();
+                }
+                else
+                {
+                    Debug.Log("⏳ Skill đang hồi: " + circleSlashTimer.ToString("F2") + "s");
+                }
+            }
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.F))
+                Debug.Log("❌ Nhấn F nhưng chưa mở khóa skill Circle Slash!");
         }
 
-        // Heavy Attack (Right Mouse)
-        if (Input.GetKeyDown(KeyCode.Mouse1))
-        {
-            DoHeavyAttack();
-        }
 
-        // Circle Slash Skill (F)
-        if (SkillManager.Instance.hasCircleSlash &&
-            Input.GetKeyDown(KeyCode.F) &&
-            circleSlashTimer <= 0)
-        {
-            CircleSlash();
-        }
-
-        // Giảm cooldown skill
+        // COOLDOWN GIẢM
         if (circleSlashTimer > 0)
             circleSlashTimer -= Time.deltaTime;
     }
 
+
     // ===========================================================
     //  CIRCLE SLASH SKILL
     // ===========================================================
-
     void CircleSlash()
     {
-        Debug.Log("Dùng Circle Slash!");
+        Debug.Log("🔥 Dùng Circle Slash!");
 
         anim.SetTrigger("CircleSlash");
+        circleSlashTimer = circleSlashCooldown;
 
-        circleSlashTimer = circleSlashCooldown; // Reset cooldown
-
-        // Gây damage sau 0.25 giây cho khớp animation
         Invoke(nameof(DoCircleSlashDamage), 0.25f);
-
-        // Hiệu ứng xoay
         StartCoroutine(SpinEffect());
     }
 
@@ -99,13 +117,13 @@ public class AttackControl : MonoBehaviour
         {
             if (enemy.TryGetComponent(out EnemyHealth eh))
             {
-                // damage là float → EnemyHealth phải nhận float
                 eh.TakeDamage((int)circleSlashDamage);
             }
         }
 
-        Debug.Log($"CircleSlash đánh trúng {hits.Length} kẻ địch!");
+        Debug.Log($"💥 CircleSlash đánh trúng {hits.Length} kẻ địch!");
     }
+
 
     private void OnDrawGizmosSelected()
     {
@@ -113,10 +131,10 @@ public class AttackControl : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, circleSlashRange);
     }
 
+
     // ===========================================================
     //  COMBO + ATTACKS
     // ===========================================================
-
     void DoCombo()
     {
         comboStep++;

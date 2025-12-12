@@ -45,6 +45,7 @@ public class EnemyHealths : MonoBehaviour, IDamageable
 
         if (currentHealth <= 0)
             Die();
+
     }
 
     void Die()
@@ -57,6 +58,13 @@ public class EnemyHealths : MonoBehaviour, IDamageable
         // Xoá thanh máu khi chết
         if (healthSlider != null)
             Destroy(healthSlider.gameObject);
+
+        // GỌI QUEST KILL
+        if (QuestManager.Instance != null && QuestManager.Instance.currentQuest != null)
+        {
+            QuestManager.Instance.AddKill();
+            Debug.Log("Kill added to quest!");
+        }
 
         Destroy(gameObject, 1f);
     }

@@ -23,36 +23,81 @@ public class Quest
     public int currentKillCount = 0;
 
     // ---- Collect Quest ----
-    public string requiredItemName;     // tên item cần nhặt
+    public string requiredItemName;
     public bool hasCollectedItem = false;
     public GameObject portalToActivate;
 
+    // ===========================================================
+    // KILL QUEST
+    // ===========================================================
     public void AddKill()
     {
         if (questType != QuestType.Kill) return;
+        if (!isAccepted || isCompleted) return;
 
-        if (isAccepted && !isCompleted)
+        currentKillCount++;
+
+        if (currentKillCount >= requiredKillCount)
         {
-            currentKillCount++;
-            if (currentKillCount >= requiredKillCount)
-                isCompleted = true;
+            CompleteQuest();
         }
     }
 
+    // ===========================================================
+    // COLLECT QUEST
+    // ===========================================================
     public void CollectItem(string itemName)
     {
         if (questType != QuestType.CollectItem) return;
-
         if (!isAccepted || isCompleted) return;
 
         if (itemName == requiredItemName)
         {
             hasCollectedItem = true;
-            isCompleted = true;
 
-            // Kích hoạt portal nếu có
-            if (portalToActivate != null)
-                portalToActivate.SetActive(true);
+            CompleteQuest();
+        }
+    }
+
+    // ===========================================================
+    // HOÀN THÀNH NHIỆM VỤ
+    // ===========================================================
+    private void CompleteQuest()
+    {
+        isCompleted = true;
+
+        Debug.Log("Nhiệm vụ hoàn thành!");
+
+        // Kích hoạt portal nếu có (dành cho Collect Item)
+        if (portalToActivate != null)
+            portalToActivate.SetActive(true);
+
+        // MỞ KHÓA SKILL Ở ĐÂY
+        if (!SkillManager.Instance.hasCircleSlash)
+        {
+            SkillManager.Instance.UnlockCircleSlash();
+            Debug.Log("📌 Skill Circle Slash đã được mở khóa thông qua nhiệm vụ!");
+        }
+    }
+
+    public void CheckComplete()
+    {
+        if (questType == QuestType.Kill)
+        {
+            if (currentKillCount >= requiredKillCount)
+            {
+                isCompleted = true;
+                Debug.Log("Quest completed!");
+            }
+        }
+
+        if (questType == QuestType.CollectItem)
+        {
+            if (hasCollectedItem)
+            {
+                isCompleted = true;
+                Debug.Log("Quest completed!");
+            }
         }
     }
 }

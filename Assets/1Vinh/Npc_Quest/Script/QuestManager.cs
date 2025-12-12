@@ -13,11 +13,16 @@ public class QuestManager : MonoBehaviour
 
     public void AddKill()
     {
-        if (currentQuest != null)
-        {
-            currentQuest.AddKill();
-        }
+        if (currentQuest == null) return;
+        if (currentQuest.questType != QuestType.Kill) return;
+
+        currentQuest.currentKillCount++;
+
+        Debug.Log("Kill added to quest! " + currentQuest.currentKillCount + "/" + currentQuest.requiredKillCount);
+
+        currentQuest.CheckComplete();
     }
+
     public void AddCollectedItem(string itemName)
     {
         if (currentQuest != null)
