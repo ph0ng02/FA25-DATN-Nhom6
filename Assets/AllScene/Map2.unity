@@ -1511,8 +1511,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3988495059602596968, guid: b174878f501cdb4478848c5cd1da9e05, type: 3}
       propertyPath: spawnCount
-      value: 9
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3988495059602596968, guid: b174878f501cdb4478848c5cd1da9e05, type: 3}
+      propertyPath: monsterPrefab
+      value: 
+      objectReference: {fileID: 2877080883101468504, guid: b01b0e5738caa554284be1617702522a, type: 3}
     - target: {fileID: 6677333852043465736, guid: b174878f501cdb4478848c5cd1da9e05, type: 3}
       propertyPath: m_Name
       value: MonterTrigger (3)
@@ -2310,7 +2314,7 @@ PrefabInstance:
     - target: {fileID: 7225345745703881472, guid: 2cc4ef9feaa80254d90b713fdf7ff612, type: 3}
       propertyPath: monsterPrefab
       value: 
-      objectReference: {fileID: 2132784206297542414, guid: 0f5c4e54df717b44991f9ba4ea0de028, type: 3}
+      objectReference: {fileID: 8037757423301288340, guid: 289a86d5781058b4eb570b7900614e7f, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2786,7 +2790,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7225345745703881472, guid: 2cc4ef9feaa80254d90b713fdf7ff612, type: 3}
       propertyPath: monsterName
-      value: Rift Sentinal
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7225345745703881472, guid: 2cc4ef9feaa80254d90b713fdf7ff612, type: 3}
       propertyPath: playerCamera
@@ -2795,7 +2799,7 @@ PrefabInstance:
     - target: {fileID: 7225345745703881472, guid: 2cc4ef9feaa80254d90b713fdf7ff612, type: 3}
       propertyPath: monsterPrefab
       value: 
-      objectReference: {fileID: 3712483909598995740, guid: 991980fc9a8d972439ff9d432d8bd561, type: 3}
+      objectReference: {fileID: 2132784206297542414, guid: 0f5c4e54df717b44991f9ba4ea0de028, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3541,6 +3545,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3988495059602596968, guid: b174878f501cdb4478848c5cd1da9e05, type: 3}
+      propertyPath: monsterPrefab
+      value: 
+      objectReference: {fileID: 3712483909598995740, guid: 991980fc9a8d972439ff9d432d8bd561, type: 3}
     - target: {fileID: 6677333852043465736, guid: b174878f501cdb4478848c5cd1da9e05, type: 3}
       propertyPath: m_Name
       value: MonterTrigger (2)
