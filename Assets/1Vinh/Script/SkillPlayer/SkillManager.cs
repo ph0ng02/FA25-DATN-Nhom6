@@ -15,6 +15,6 @@ public class SkillManager : MonoBehaviour
     public void UnlockCircleSlash()
     {
         hasCircleSlash = true;
-        Debug.Log("Đã mở skill Circle Slash!");
+        PlayerDataManager.Instance.data.hasCircleSlash = true;
     }
 }

@@ -725,6 +725,57 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5283876006452691453, guid: 8c0b03b59f35e0545aa86df33a404255, type: 3}
   m_PrefabInstance: {fileID: 867892341}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1068690288
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1068690290}
+  - component: {fileID: 1068690289}
+  m_Layer: 0
+  m_Name: PlayerDataManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1068690289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1068690288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7f8fe397ecdbd94abad1723947c6ac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerDataManager
+  data:
+    hp: 200
+    maxHp: 200
+    exp: 0
+    level: 1
+    hasCircleSlash: 0
+    hasFireball: 0
+--- !u!4 &1068690290
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1068690288}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 176.27658, y: 0, z: 313.41922}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1190967790
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2445,3 +2496,4 @@ SceneRoots:
   - {fileID: 4659249410366020532}
   - {fileID: 1874832915}
   - {fileID: 1204929494}
+  - {fileID: 1068690290}

@@ -20,8 +20,32 @@ public class HealthManagement : MonoBehaviour, IDamageable
 
     private void Start()
     {
-        currentHealth = maxHealth;
-        Debug.Log("🎯 HealthManagement Start: currentHealth = " + currentHealth);
+        PlayerStats ps = GetComponent<PlayerStats>();
+
+        currentHealth = (int)ps.currentHP;
+        maxHealth = (int)ps.maxHP;
+
+        UpdateHealthUI();
+
+        if (damageEffectImage != null)
+            damageEffectImage.enabled = false;
+
+        Debug.Log("Health loaded: " + currentHealth);
+
+        // 🔥 KIỂM TRA NGAY KHI LOAD SCENE
+        if (currentHealth <= 0)
+        {
+            Debug.Log("HP = 0 on scene load → calling Die()");
+            Die();
+        }
+
+        // Nếu có dữ liệu trước → LOAD lại
+        if (PlayerDataManager.Instance.data.hp > 0)
+            currentHealth = PlayerDataManager.Instance.data.hp;
+        else
+            currentHealth = maxHealth;
+
+        Debug.Log("🎯 Loaded HP = " + currentHealth);
 
         UpdateHealthUI();
 
@@ -29,16 +53,18 @@ public class HealthManagement : MonoBehaviour, IDamageable
             damageEffectImage.enabled = false;
     }
 
+
     public void TakeDamage(float damage)
     {
         currentHealth -= Mathf.RoundToInt(damage);
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
-        // Hiện hiệu ứng đỏ
-        if (damageEffectImage != null)
-            StartCoroutine(ShowDamageEffect());
-
         UpdateHealthUI();
+
+        // 👉 SAVE
+        PlayerStats ps = GetComponent<PlayerStats>();
+        ps.currentHP = currentHealth;
+        ps.SaveStats();
 
         if (currentHealth <= 0)
         {
@@ -50,6 +76,9 @@ public class HealthManagement : MonoBehaviour, IDamageable
     {
         currentHealth += amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
+        // Lưu HP
+        PlayerDataManager.Instance.data.hp = currentHealth;
 
         UpdateHealthUI();
     }
@@ -89,7 +118,10 @@ public class HealthManagement : MonoBehaviour, IDamageable
     public void SetHealth(int health)
     {
         currentHealth = Mathf.Clamp(health, 0, maxHealth);
+
+        // Lưu HP
+        PlayerDataManager.Instance.data.hp = currentHealth;
+
         UpdateHealthUI();
     }
-
 }

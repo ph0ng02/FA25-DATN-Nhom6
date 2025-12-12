@@ -656,6 +656,7 @@ GameObject:
   - component: {fileID: 4038893147100357366}
   - component: {fileID: 293258045144981611}
   - component: {fileID: 1647814665543495901}
+  - component: {fileID: 657169908551168882}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -889,6 +890,22 @@ MonoBehaviour:
   spawnPoint: {fileID: 6857571605737430762}
   vfxLifetime: 1
   cooldown: 5
+--- !u!114 &657169908551168882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2712316914296128882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1015378e0934263478ba0b3b090bb5d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
+  level: 1
+  exp: 0
+  maxHP: 200
+  currentHP: 200
 --- !u!1 &2772299432078239959
 GameObject:
   m_ObjectHideFlags: 0
