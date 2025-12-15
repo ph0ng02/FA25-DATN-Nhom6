@@ -9,7 +9,7 @@ public class CircleSlashSkill : MonoBehaviour
 
     [Header("Settings")]
     public float cooldown = 5f;
-    private float lastTimeUsed = 0f;
+    private float lastTimeUsed = 2f;
 
     private Animator anim;
 

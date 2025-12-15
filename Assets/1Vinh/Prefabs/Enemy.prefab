@@ -132,7 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 614095e3dc4118841a9d34d077be2ad8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAttack
-  damage: 0.5
+  damage: 1
 --- !u!1001 &3807083087993062521
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -143,15 +143,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 1d85481292d33124197faff870e9e054, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 43.680103
+      value: 229.98842
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1d85481292d33124197faff870e9e054, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.000008106232
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1d85481292d33124197faff870e9e054, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 237.2
+      value: 908.4038
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1d85481292d33124197faff870e9e054, type: 3}
       propertyPath: m_LocalRotation.w
