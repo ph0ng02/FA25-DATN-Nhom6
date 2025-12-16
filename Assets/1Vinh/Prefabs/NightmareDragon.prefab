@@ -720,6 +720,7 @@ GameObject:
   - component: {fileID: 2264829079332907460}
   - component: {fileID: 9000379292966593593}
   - component: {fileID: 314457294054500024}
+  - component: {fileID: 1382059693174723502}
   m_Layer: 0
   m_Name: NightmareDragon
   m_TagString: Enemy
@@ -875,6 +876,33 @@ CapsuleCollider:
   m_Height: 1.89
   m_Direction: 2
   m_Center: {x: 0, y: 2.67, z: 3.28}
+--- !u!54 &1382059693174723502
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3024720120464081414}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 48
+  m_CollisionDetection: 0
 --- !u!1 &3289045045862642642
 GameObject:
   m_ObjectHideFlags: 0

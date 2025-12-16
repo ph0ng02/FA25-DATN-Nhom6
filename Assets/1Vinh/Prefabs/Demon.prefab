@@ -1351,6 +1351,7 @@ GameObject:
   - component: {fileID: 5005404365064050693}
   - component: {fileID: 387160940776673857}
   - component: {fileID: 8846696368805834004}
+  - component: {fileID: 5321042174655754908}
   m_Layer: 0
   m_Name: Demon
   m_TagString: Untagged
@@ -1457,6 +1458,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.2013092, y: 12.160273, z: 1.4540243}
   m_Center: {x: 0.043754578, y: 16.356094, z: -0.22720054}
+--- !u!54 &5321042174655754908
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2132784206297542414}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 48
+  m_CollisionDetection: 0
 --- !u!1 &2229250493397952922
 GameObject:
   m_ObjectHideFlags: 0

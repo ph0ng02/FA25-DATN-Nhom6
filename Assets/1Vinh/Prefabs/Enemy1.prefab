@@ -368,7 +368,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 48
   m_CollisionDetection: 0
 --- !u!114 &2428864735739059114
 MonoBehaviour:
@@ -400,6 +400,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealths
   maxHealth: 100
+  healthSlider: {fileID: 0}
   dropItems:
   - {fileID: 6837640880549395162, guid: ee932b64c10dc924281e31ac3ad9dac8, type: 3}
   dropChance: 50
