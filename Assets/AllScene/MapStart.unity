@@ -1400,11 +1400,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5283876006452691453, guid: 8c0b03b59f35e0545aa86df33a404255, type: 3}
   m_PrefabInstance: {fileID: 1601839370}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1738578503 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8091526409959239829, guid: 8e018a4397eabb74db8d690826d54fdd, type: 3}
-  m_PrefabInstance: {fileID: 4169770664126011545}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1874832915
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1934,14 +1929,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6104843505773239791, guid: 8e018a4397eabb74db8d690826d54fdd, type: 3}
-      propertyPath: risingSlashVFX
-      value: 
-      objectReference: {fileID: 657438684078047963, guid: 34ec8672a9ff3314f8b157c9754d8d5f, type: 3}
-    - target: {fileID: 6104843505773239791, guid: 8e018a4397eabb74db8d690826d54fdd, type: 3}
-      propertyPath: risingVFXSpawnPoint
-      value: 
-      objectReference: {fileID: 1738578503}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

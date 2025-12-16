@@ -840,17 +840,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackControl
   circleSlashCooldown: 5
-  circleSlashDamage: 20
+  circleSlashDamage: 50
   circleSlashRange: 3
   enemyLayer:
     serializedVersion: 2
     m_Bits: 0
   jumpForce: 7
-  jumpSlashDamage: 50
+  jumpSlashDamage: 20
   jumpSlashRange: 3.5
   jumpSlashCooldown: 6
   jumpSlashVFX: {fileID: 7544656369827958377, guid: b145af20e31ccac41bd6637025ff1237, type: 3}
   vfxSpawnPoint: {fileID: 8091526409959239829}
+  risingSlashDamage: 20
+  risingSlashCooldown: 6
+  risingSlashVFX: {fileID: 657438684078047963, guid: 34ec8672a9ff3314f8b157c9754d8d5f, type: 3}
+  risingVFXSpawnPoint: {fileID: 8091526409959239829}
 --- !u!114 &4038893147100357366
 MonoBehaviour:
   m_ObjectHideFlags: 0

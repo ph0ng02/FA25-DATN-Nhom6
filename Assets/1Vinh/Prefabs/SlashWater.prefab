@@ -4936,7 +4936,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9742c3a5dcb64a14fbaa65d427fcb887, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageOnHits
-  damage: 40
+  damage: 20
 --- !u!114 &3333677569058097226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39014,8 +39014,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7936841439571494911}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.5376882, y: 0.4592291, z: 0.4592291, w: 0.5376882}
-  m_LocalPosition: {x: 0.7230445, y: 0.31225836, z: -0.2766266}
+  m_LocalRotation: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
+  m_LocalPosition: {x: 0.6777954, y: 0.39614925, z: -0.2766266}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
