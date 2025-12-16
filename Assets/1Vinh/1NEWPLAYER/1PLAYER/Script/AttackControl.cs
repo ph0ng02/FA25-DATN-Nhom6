@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class AttackControl : MonoBehaviour
 {
@@ -36,6 +37,19 @@ public class AttackControl : MonoBehaviour
 
     private bool isJumpSlashing = false;
 
+    // ===============================
+    // RISING SLASH SKILL (NEW)
+    // ===============================
+    [Header("Rising Slash Skill")]
+    public float risingSlashDamage = 35f;
+    public float risingSlashCooldown = 4f;
+    private float risingSlashTimer = 0f;
+
+    public GameObject risingSlashVFX;
+    public Transform risingVFXSpawnPoint;
+
+    private bool isRisingSlashing = false;
+
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -58,42 +72,40 @@ public class AttackControl : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             if (!isJumpSlashing && jumpSlashTimer <= 0)
-            {
                 JumpSlash();
-            }
-            else if (jumpSlashTimer > 0)
-            {
-                Debug.Log($"⏳ Jump Slash cooldown: {jumpSlashTimer:F1}s");
-            }
         }
 
         // ===============================
-        // NORMAL ATTACK INPUT
+        // RISING SLASH INPUT
+        // ===============================
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            if (!isRisingSlashing && risingSlashTimer <= 0)
+                RisingSlash();
+        }
+
+        // ===============================
+        // NORMAL ATTACK
         // ===============================
         if (Input.GetKeyDown(KeyCode.Mouse0)) DoCombo();
         if (Input.GetKeyDown(KeyCode.Y)) DoForwardAttack();
         if (Input.GetKeyDown(KeyCode.Mouse1)) DoHeavyAttack();
 
         // ===============================
-        // CIRCLE SLASH INPUT
+        // CIRCLE SLASH
         // ===============================
         if (SkillManager.Instance != null && SkillManager.Instance.hasCircleSlash)
         {
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                if (circleSlashTimer <= 0)
-                    CircleSlash();
-            }
+            if (Input.GetKeyDown(KeyCode.F) && circleSlashTimer <= 0)
+                CircleSlash();
         }
 
         // ===============================
-        // COOLDOWN TIMERS
+        // COOLDOWN
         // ===============================
-        if (circleSlashTimer > 0)
-            circleSlashTimer -= Time.deltaTime;
-
-        if (jumpSlashTimer > 0)
-            jumpSlashTimer -= Time.deltaTime;
+        if (circleSlashTimer > 0) circleSlashTimer -= Time.deltaTime;
+        if (jumpSlashTimer > 0) jumpSlashTimer -= Time.deltaTime;
+        if (risingSlashTimer > 0) risingSlashTimer -= Time.deltaTime;
     }
 
     // ===========================================================
@@ -103,7 +115,6 @@ public class AttackControl : MonoBehaviour
     {
         anim.SetTrigger("CircleSlash");
         circleSlashTimer = circleSlashCooldown;
-
         Invoke(nameof(DoCircleSlashDamage), 0.25f);
         StartCoroutine(SpinEffect());
     }
@@ -111,23 +122,17 @@ public class AttackControl : MonoBehaviour
     void DoCircleSlashDamage()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, circleSlashRange, enemyLayer);
-
         foreach (Collider enemy in hits)
-        {
             if (enemy.TryGetComponent(out EnemyHealth eh))
                 eh.TakeDamage((int)circleSlashDamage);
-        }
     }
 
-    System.Collections.IEnumerator SpinEffect()
+    IEnumerator SpinEffect()
     {
-        float duration = 0.35f;
-        float rotateSpeed = 1200f;
-        float t = 0f;
-
-        while (t < duration)
+        float t = 0;
+        while (t < 0.35f)
         {
-            transform.Rotate(0, rotateSpeed * Time.deltaTime, 0);
+            transform.Rotate(0, 1200f * Time.deltaTime, 0);
             t += Time.deltaTime;
             yield return null;
         }
@@ -139,52 +144,67 @@ public class AttackControl : MonoBehaviour
     void JumpSlash()
     {
         isJumpSlashing = true;
-        jumpSlashTimer = jumpSlashCooldown; // BẮT ĐẦU COOLDOWN
+        jumpSlashTimer = jumpSlashCooldown;
 
         ResetCombo();
-
         anim.SetTrigger("JumpSlash");
 
-        // FIX: Unity dùng rb.velocity
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
     }
 
-    // ⚠ ANIMATION EVENT – FRAME CHÉM XUỐNG
     public void OnJumpSlashHit()
     {
-        if (jumpSlashVFX != null && vfxSpawnPoint != null)
-        {
-            Instantiate(
-                jumpSlashVFX,
-                vfxSpawnPoint.position,
-                Quaternion.LookRotation(transform.forward)
-            );
-        }
+        if (jumpSlashVFX && vfxSpawnPoint)
+            Instantiate(jumpSlashVFX, vfxSpawnPoint.position, Quaternion.LookRotation(transform.forward));
 
         Collider[] hits = Physics.OverlapSphere(transform.position, jumpSlashRange, enemyLayer);
-
         foreach (Collider enemy in hits)
-        {
             if (enemy.TryGetComponent(out EnemyHealth eh))
                 eh.TakeDamage((int)jumpSlashDamage);
-        }
     }
 
-    // ⚠ ANIMATION EVENT – FRAME CUỐI
     public void EndJumpSlash()
     {
         isJumpSlashing = false;
     }
 
     // ===========================================================
-    // COMBO + ATTACK
+    // RISING SLASH (NEW)
+    // ===========================================================
+    void RisingSlash()
+    {
+        isRisingSlashing = true;
+        risingSlashTimer = risingSlashCooldown;
+
+        ResetCombo();
+        anim.SetTrigger("RisingSlash");
+    }
+
+    // ⚠ Animation Event
+    public void OnRisingSlashHit()
+    {
+        if (risingSlashVFX && risingVFXSpawnPoint)
+        {
+            Instantiate(
+                risingSlashVFX,
+                risingVFXSpawnPoint.position,
+                Quaternion.LookRotation(transform.forward)
+            );
+        }
+    }
+
+    public void EndRisingSlash()
+    {
+        isRisingSlashing = false;
+    }
+
+    // ===========================================================
+    // COMBO
     // ===========================================================
     void DoCombo()
     {
-        comboStep++;
-        if (comboStep > 5) comboStep = 1;
-
+        comboStep = comboStep % 5 + 1;
         anim.SetInteger("Combo", comboStep);
         anim.SetBool("Attack", true);
         comboTimer = comboWindow;
@@ -212,17 +232,5 @@ public class AttackControl : MonoBehaviour
         comboStep = 0;
         anim.SetInteger("Combo", 0);
         anim.SetBool("Attack", false);
-    }
-
-    // ===========================================================
-    // DEBUG GIZMOS
-    // ===========================================================
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, circleSlashRange);
-
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, jumpSlashRange);
     }
 }
