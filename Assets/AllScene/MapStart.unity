@@ -650,6 +650,18 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 1494376486}
+    - target: {fileID: 3611509611038535369, guid: 9fc13bd2af5bf5945805ee8982256cfc, type: 3}
+      propertyPath: offset.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611509611038535369, guid: 9fc13bd2af5bf5945805ee8982256cfc, type: 3}
+      propertyPath: offset.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611509611038535369, guid: 9fc13bd2af5bf5945805ee8982256cfc, type: 3}
+      propertyPath: offset.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6453765392448375494, guid: 9fc13bd2af5bf5945805ee8982256cfc, type: 3}
       propertyPath: m_Name
       value: Soul
