@@ -56,7 +56,8 @@ public class HealthManagement : MonoBehaviour, IDamageable
 
     public void TakeDamage(float damage)
     {
-        currentHealth -= Mathf.RoundToInt(damage);
+        Debug.Log("Taking damage: " + damage);
+        currentHealth -= Mathf.FloorToInt(damage); // Làm tròn xuống thay vì làm tròn gần
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
         UpdateHealthUI();
