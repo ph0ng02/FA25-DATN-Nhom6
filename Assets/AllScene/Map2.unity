@@ -3724,6 +3724,18 @@ PrefabInstance:
       propertyPath: offset.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3611509611038535369, guid: 9fc13bd2af5bf5945805ee8982256cfc, type: 3}
+      propertyPath: followOffset.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611509611038535369, guid: 9fc13bd2af5bf5945805ee8982256cfc, type: 3}
+      propertyPath: followOffset.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611509611038535369, guid: 9fc13bd2af5bf5945805ee8982256cfc, type: 3}
+      propertyPath: followOffset.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6453765392448375494, guid: 9fc13bd2af5bf5945805ee8982256cfc, type: 3}
       propertyPath: m_Name
       value: Soul
@@ -9077,19 +9089,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4938685659100756305, guid: 40062f416c4f83845a51c1ff1a0f24ef, type: 3}
       propertyPath: targetSceneName
-      value: Minigame
+      value: Map3
       objectReference: {fileID: 0}
     - target: {fileID: 8123891817823813046, guid: 40062f416c4f83845a51c1ff1a0f24ef, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 74.14
+      value: 182
       objectReference: {fileID: 0}
     - target: {fileID: 8123891817823813046, guid: 40062f416c4f83845a51c1ff1a0f24ef, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.29
+      value: 2.76
       objectReference: {fileID: 0}
     - target: {fileID: 8123891817823813046, guid: 40062f416c4f83845a51c1ff1a0f24ef, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 539.63
+      value: 83
       objectReference: {fileID: 0}
     - target: {fileID: 8123891817823813046, guid: 40062f416c4f83845a51c1ff1a0f24ef, type: 3}
       propertyPath: m_LocalRotation.w
