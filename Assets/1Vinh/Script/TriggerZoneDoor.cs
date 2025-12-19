@@ -11,7 +11,7 @@ public class TriggerZoneDoor : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // Đếm cả Player1 và Player2
-        if (other.CompareTag("Player") || other.CompareTag("Player2"))
+        if (other.CompareTag("Player"))
             playerCount++;
 
         if (other.CompareTag("Enemy"))
@@ -22,7 +22,7 @@ public class TriggerZoneDoor : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player") || other.CompareTag("Player2"))
+        if (other.CompareTag("Player"))
             playerCount--;
 
         if (other.CompareTag("Enemy"))
