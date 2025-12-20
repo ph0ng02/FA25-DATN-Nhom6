@@ -1,0 +1,94 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7763606146520050264
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6393879372112831603}
+  - component: {fileID: 2465270728090277790}
+  - component: {fileID: 7077913687530124535}
+  m_Layer: 0
+  m_Name: SoulSpeak
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6393879372112831603
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7763606146520050264}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 42.7956, y: 0.82, z: 29.87}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2465270728090277790
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7763606146520050264}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 10, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7077913687530124535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7763606146520050264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f32ce42e98682af4fb06ac41ef722b88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NPCDialogueTrigger
+  npcName: NPC
+  dialogueLines:
+  - "\"\u0110\xF3m l\u1EEDa n\xE0y l\xE0 g\xEC v\u1EADy? Sao l\u1EA1i b\xE1m theo
+    m\xECnh.\""
+  - "\"C\xF4 c\u0169ng b\u1ECB t\xEAn Akanos h\xFAt v\xE0o \u0111\xE2y sao?\""
+  - "\"Ng\u01B0\u01A1i bi\u1EBFt h\u1EAFn \u01B0? Ng\u01B0\u01A1i l\xE0 ai?\""
+  - "\"Ta c\u0169ng t\u1EEBng l\xE0 m\u1ED9t chi\u1EBFn binh b\u1ECB t\xEAn Akanos
+    x\xE2m chi\u1EBFm \u0111\u1EA5t n\u01B0\u1EDBc v\xE0 h\xFAt v\xE0o \u0111\xE2y,
+    nh\u01B0ng ta kh\xF4ng \u0111\u1EE7 s\u1EE9c m\u1EA1nh \u0111\u1EC3 \u0111\xE1nh
+    b\u1EA1i h\u1EAFn v\xE0 tho\xE1t kh\u1ECFi \u0111\xE2y n\xEAn b\xE2y gi\u1EDD
+    ta b\u1ECB m\u1EAFc k\u1EB9t \u1EDF d\u1EA1ng linh h\u1ED3n \u1EDF \u0111\xE2y.\""
+  - "\"V\xE2y ng\u01B0\u01A1i bi\u1EBFt t\xEAn Akanos \u1EDF \u0111\xE2u ch\u1EE9?
+    C\xF3 th\u1EC3 ch\u1EC9 \u0111\u01B0\u1EDDng ta \u0111\u1EBFn \u0111\xF3 kh\xF4ng?\""
+  - "\"\u0110\u01B0\u1EE3c th\xF4i, ta s\u1EBD \u0111i c\xF9ng v\xE0 ch\u1EC9 \u0111\u01B0\u1EDDng
+    c\xF4 \u0111\u1EBFn \u0111\xF3.\""
+  speakerLines:
+  - Kael
+  - Soul
+  - Kael
+  - Soul
+  - Kael
+  - Soul
+  dialogueUI: {fileID: 0}
+  dialogueText: {fileID: 0}
+  speakerText: {fileID: 0}
+  typingSpeed: 0.02
