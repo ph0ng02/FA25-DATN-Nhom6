@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/4Material(DANG)/Menu/MainMenu.unity
+    path: Assets/AllScene/MainMenu.unity
     guid: 2756d98a32caa4537a11a2d78a55c066
   - enabled: 1
     path: Assets/CutSceneOpening/CutSceneOpening.unity
@@ -21,13 +21,10 @@ EditorBuildSettings:
     path: Assets/AllScene/Map2.unity
     guid: cc333ca695331624ab5a738082609171
   - enabled: 1
-    path: Assets/AllScene/Minigame.unity
-    guid: 5fa8cba6417dce64f8f0828ce6965d37
-  - enabled: 1
     path: Assets/AllScene/Map3.unity
-    guid: c744bef19c2048a45978dffbe8d81245
+    guid: 3365763cffc830a45b328328a2855461
   - enabled: 1
-    path: Assets/AllScene/Map3.unity
+    path: Assets/AllScene/Map4.unity
     guid: 61e72eae7c507f74c8e00f1f0be4373e
   - enabled: 1
     path: Assets/AllScene/Map5.unity
@@ -36,8 +33,11 @@ EditorBuildSettings:
     path: Assets/AllScene/Map6.unity
     guid: be2f2374815de0f4daeaba0ddf72f4ec
   - enabled: 1
-    path: Assets/AllScene/Minigame1.unity
-    guid: 9c93c63d5665c924085859abac5f293d
+    path: Assets/AllScene/MusicScene.unity
+    guid: c29e8ff840482491e8184c6eb721afcb
+  - enabled: 1
+    path: Assets/AllScene/OptionScene.unity
+    guid: 2a9009d753135441b89f4cc481a8f230
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 9e7be553448fa2546aea5752021cbcf7, type: 2}
   m_UseUCBPForAssetBundles: 0

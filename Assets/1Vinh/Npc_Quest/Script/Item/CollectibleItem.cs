@@ -2,14 +2,29 @@ using UnityEngine;
 
 public class CollectibleItem : MonoBehaviour
 {
-    public string itemName;
+    public string itemName = "TestItem";
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        Debug.Log("🔥 TRIGGER HIT WITH: " + other.name);
+
+        if (!other.CompareTag("Player")) return;
+
+        Debug.Log("✅ PLAYER ENTER TRIGGER");
+
+        if (QuestManager.Instance == null)
         {
-            QuestManager.Instance.AddCollectedItem(itemName);
-            Destroy(gameObject);
+            Debug.LogError("❌ QuestManager NULL");
+            return;
         }
+
+        if (QuestManager.Instance.currentQuest == null)
+        {
+            Debug.LogError("❌ currentQuest NULL");
+            return;
+        }
+
+        QuestManager.Instance.AddCollectedItem(itemName);
+        Destroy(gameObject);
     }
 }

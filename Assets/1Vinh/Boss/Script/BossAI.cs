@@ -4,6 +4,9 @@ using System.Collections;
 
 public class BossAI : MonoBehaviour
 {
+    enum BossState { Idle, Move, Attack, Skill, Dead }
+    BossState state = BossState.Idle;
+
     [Header("References")]
     public Transform player;
     public Animator animator;
@@ -11,208 +14,214 @@ public class BossAI : MonoBehaviour
 
     [Header("Stats")]
     public float maxHP = 500f;
-    private float currentHP;
+    float currentHP;
 
     [Header("Ranges")]
-    public float detectRange = 15f;
+    public float detectRange = 20f;
     public float attackRange = 3f;
+    public float skillRange = 15f;
 
     [Header("Damage")]
     public float attackDamage = 20f;
     public float skill1Damage = 35f;
     public float skill2Damage = 50f;
 
-    [Header("Cooldowns")]
-    public float attackCooldown = 1f;
+    [Header("Cooldown")]
+    public float attackCooldown = 1.2f;
+    public float skill1Cooldown = 10f;
+    public float skill2Cooldown = 20f;
 
-    public float skill1Start = 10f;
-    public float skill1Cooldown = 20f;
-
-    public float skill2Start = 30f;
-    public float skill2Cooldown = 30f;
-
-    float lastAttack = -999f;
-    float lastSkill1 = -999f;
-    float lastSkill2 = -999f;
-
-    bool isAction = false;
-    bool isDead = false;
+    float lastAttack;
+    float lastSkill1;
+    float lastSkill2;
 
     [Header("VFX")]
-    public GameObject skill1VFX;
+    public GameObject skill1Projectile;
     public Transform skill1Point;
 
-    public GameObject skill2VFX;
+    public GameObject skill2Projectile;
     public Transform skill2Point;
 
-    private void Start()
+    Vector3 lockedPlayerPos;
+
+    bool isAction;
+
+    void Start()
     {
         currentHP = maxHP;
-
-        if (player == null)
+        if (!player)
             player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
-    private void Update()
+    void Update()
     {
-        if (isDead) return;
-        if (player == null) return;
+        if (state == BossState.Dead || player == null) return;
 
         float dist = Vector3.Distance(transform.position, player.position);
 
-        // Di chuyển theo player nếu không đang cast
-        if (!isAction && dist <= detectRange && dist > attackRange)
+        if (isAction) return;
+
+        if (dist > detectRange)
         {
-            agent.isStopped = false;
-            agent.SetDestination(player.position);
-            animator.SetFloat("Speed", agent.velocity.magnitude);
-        }
-        else
-        {
-            agent.isStopped = true;
-            animator.SetFloat("Speed", 0);
+            SetIdle();
+            return;
         }
 
-        // Trong tầm đánh
-        if (dist <= attackRange)
+        if (dist > attackRange)
         {
-            FacePlayer();
-
-            if (!isAction)
-                CombatLogic();
+            MoveToPlayer();
+            return;
         }
+
+        FacePlayer();
+        DecideCombat();
     }
 
-    private void FacePlayer()
-    {
-        Vector3 dir = player.position - transform.position;
-        dir.y = 0;
-        transform.rotation = Quaternion.Slerp(
-            transform.rotation,
-            Quaternion.LookRotation(dir),
-            Time.deltaTime * 10f
-        );
-    }
+    // =======================
+    // LOGIC
+    // =======================
 
-    private void CombatLogic()
+    void DecideCombat()
     {
         float t = Time.time;
 
-        // Skill 2 — Ưu tiên cao nhất
-        if (t >= skill2Start && t - lastSkill2 >= skill2Cooldown)
+        if (t - lastSkill2 >= skill2Cooldown && Vector3.Distance(transform.position, player.position) <= skillRange)
         {
-            StartCoroutine(DoSkill2());
+            StartCoroutine(CastSkill2());
             return;
         }
 
-        // Skill 1
-        if (t >= skill1Start && t - lastSkill1 >= skill1Cooldown)
+        if (t - lastSkill1 >= skill1Cooldown && Vector3.Distance(transform.position, player.position) <= skillRange)
         {
-            StartCoroutine(DoSkill1());
+            StartCoroutine(CastSkill1());
             return;
         }
 
-        // Đánh thường
         if (t - lastAttack >= attackCooldown)
         {
-            StartCoroutine(DoAttack());
-            return;
+            StartCoroutine(Attack());
         }
     }
 
-    // ===========================
-    // ACTIONS
-    // ===========================
+    // =======================
+    // MOVE / IDLE
+    // =======================
 
-    IEnumerator DoAttack()
+    void MoveToPlayer()
+    {
+        state = BossState.Move;
+        agent.isStopped = false;
+        agent.SetDestination(player.position);
+        animator.SetFloat("Speed", agent.velocity.magnitude);
+    }
+
+    void SetIdle()
+    {
+        state = BossState.Idle;
+        agent.isStopped = true;
+        animator.SetFloat("Speed", 0);
+    }
+
+    void FacePlayer()
+    {
+        Vector3 dir = player.position - transform.position;
+        dir.y = 0;
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 10f);
+    }
+
+    // =======================
+    // ACTIONS
+    // =======================
+
+    IEnumerator Attack()
     {
         isAction = true;
+        state = BossState.Attack;
+
         animator.SetTrigger("Attack");
 
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(0.8f);
 
-        lastAttack = Time.time;   // cooldown đặt SAU khi đánh xong
+        lastAttack = Time.time;
         isAction = false;
     }
 
-    IEnumerator DoSkill1()
+    IEnumerator CastSkill1()
     {
         isAction = true;
+        state = BossState.Skill;
+
+        lockedPlayerPos = player.position;
         animator.SetTrigger("Skill1");
 
-        yield return new WaitForSeconds(1.2f);
+        yield return new WaitForSeconds(1.3f);
 
-        lastSkill1 = Time.time;   // cooldown đặt SAU khi skill xong
+        lastSkill1 = Time.time;
         isAction = false;
     }
 
-    IEnumerator DoSkill2()
+    IEnumerator CastSkill2()
     {
         isAction = true;
+        state = BossState.Skill;
+
+        lockedPlayerPos = player.position;
         animator.SetTrigger("Skill2");
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.6f);
 
-        lastSkill2 = Time.time;   // cooldown đặt SAU khi skill xong
+        lastSkill2 = Time.time;
         isAction = false;
     }
 
-    // ===========================
+    // =======================
     // ANIMATION EVENTS
-    // ===========================
+    // =======================
 
-    public void NormalAttack()
+    public void NormalAttackHit()
     {
-        DealDamage(attackDamage);
-    }
-
-    public void Skill1Hit()
-    {
-        DealDamage(skill1Damage);
-        if (skill1VFX != null)
-            Instantiate(skill1VFX, skill1Point.position, skill1Point.rotation);
-    }
-
-    public void Skill2Hit()
-    {
-        DealDamage(skill2Damage);
-        if (skill2VFX != null)
-            Instantiate(skill2VFX, skill2Point.position, skill2Point.rotation);
-    }
-
-    // ===========================
-    // DAMAGE
-    // ===========================
-
-    void DealDamage(float dmg)
-    {
-        if (player == null) return;
-
-        float dist = Vector3.Distance(transform.position, player.position);
-        if (dist <= attackRange + 0.5f)
+        if (Vector3.Distance(transform.position, player.position) <= attackRange)
         {
-            HealthManagement hp = player.GetComponent<HealthManagement>();
-            if (hp != null)
-                hp.TakeDamage(dmg);
+            player.GetComponent<HealthManagement>()?.TakeDamage(attackDamage);
         }
     }
 
-    // ===========================
-    // BOSS TAKE DAMAGE
-    // ===========================
+    public void Skill1Fire()
+    {
+        FireProjectile(skill1Projectile, skill1Point, skill1Damage);
+    }
+
+    public void Skill2Fire()
+    {
+        FireProjectile(skill2Projectile, skill2Point, skill2Damage);
+    }
+
+    void FireProjectile(GameObject prefab, Transform point, float dmg)
+    {
+        if (!prefab) return;
+
+        GameObject proj = Instantiate(prefab, point.position, Quaternion.identity);
+        proj.transform.LookAt(lockedPlayerPos);
+
+        proj.GetComponent<BossProjectile>().Init(lockedPlayerPos, dmg);
+    }
+
+    // =======================
+    // DAMAGE
+    // =======================
+
     public void TakeDamage(float dmg)
     {
-        if (isDead) return;
+        if (state == BossState.Dead) return;
 
         currentHP -= dmg;
-
         if (currentHP <= 0)
             Die();
     }
 
     void Die()
     {
-        isDead = true;
+        state = BossState.Dead;
         agent.isStopped = true;
         animator.SetTrigger("Die");
         Destroy(gameObject, 5f);

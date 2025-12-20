@@ -105,33 +105,30 @@ public class EnemyMiniBossAI : MonoBehaviour
     }
 
     private IEnumerator Skill1Explosion()
+{
+    Vector3 pos = player.position;
+    Quaternion rot = Quaternion.LookRotation(player.position - transform.position);
+
+    GameObject fx = Instantiate(skill1VFX, pos, rot);
+
+    yield return new WaitForSeconds(1.2f);
+
+    float damage = 25f;
+    float radius = 3f;
+
+    Collider[] hits = Physics.OverlapSphere(pos, radius);
+    foreach (var hit in hits)
     {
-        Vector3 pos = player.position;
-        Quaternion rot = Quaternion.LookRotation(player.position - transform.position);
-
-        GameObject fx = Instantiate(skill1VFX, pos, rot);
-
-        // Chờ đúng thời điểm nổ
-        yield return new WaitForSeconds(1.2f);
-
-        float damage = 25f;
-        float radius = 3f;
-
-        // Lấy tất cả collider trong radius
-        Collider[] hits = Physics.OverlapSphere(pos, radius);
-        foreach (var hit in hits)
+        if (hit.CompareTag("Player"))
         {
-            // Chỉ gây damage nếu object là player
-            if (hit.CompareTag("Player"))
-            {
-                IDamageable dmg = hit.GetComponent<IDamageable>();
-                if (dmg != null)
-                    dmg.TakeDamage(damage);
-            }
+            IDamageable dmg = hit.GetComponent<IDamageable>();
+            if (dmg != null)
+                dmg.TakeDamage(damage);
         }
-
-        Destroy(fx, 2f);
     }
+
+    // ❌ KHÔNG cần Destroy nữa nếu dùng Stop Action = Destroy
+}
 
     // ============================
     //         SKILL 2

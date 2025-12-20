@@ -18,18 +18,20 @@ public class Quest
     public bool isAccepted = false;
     public bool isCompleted = false;
 
-    // ---- Kill Quest ----
+    // ---------- KILL QUEST ----------
     public int requiredKillCount = 1;
     public int currentKillCount = 0;
 
-    // ---- Collect Quest ----
+    // ---------- COLLECT QUEST ----------
     public string requiredItemName;
-    public bool hasCollectedItem = false;
+    public int requiredItemCount = 1;
+    public int currentItemCount = 0;
+
     public GameObject portalToActivate;
 
-    // ===========================================================
-    // KILL QUEST
-    // ===========================================================
+    // ===============================
+    // ADD KILL
+    // ===============================
     public void AddKill()
     {
         if (questType != QuestType.Kill) return;
@@ -38,66 +40,36 @@ public class Quest
         currentKillCount++;
 
         if (currentKillCount >= requiredKillCount)
-        {
             CompleteQuest();
-        }
     }
 
-    // ===========================================================
-    // COLLECT QUEST
-    // ===========================================================
+    // ===============================
+    // COLLECT ITEM
+    // ===============================
     public void CollectItem(string itemName)
     {
         if (questType != QuestType.CollectItem) return;
         if (!isAccepted || isCompleted) return;
 
-        if (itemName == requiredItemName)
-        {
-            hasCollectedItem = true;
+        if (itemName != requiredItemName) return;
 
+        currentItemCount++;
+
+        Debug.Log($"📦 Nhặt item: {currentItemCount}/{requiredItemCount}");
+
+        if (currentItemCount >= requiredItemCount)
             CompleteQuest();
-        }
     }
 
-    // ===========================================================
-    // HOÀN THÀNH NHIỆM VỤ
-    // ===========================================================
-    private void CompleteQuest()
+    // ===============================
+    // COMPLETE QUEST
+    // ===============================
+    void CompleteQuest()
     {
         isCompleted = true;
+        Debug.Log("🎉 QUEST COMPLETED!");
 
-        Debug.Log("Nhiệm vụ hoàn thành!");
-
-        // Kích hoạt portal nếu có (dành cho Collect Item)
         if (portalToActivate != null)
             portalToActivate.SetActive(true);
-
-        // MỞ KHÓA SKILL Ở ĐÂY
-        if (!SkillManager.Instance.hasCircleSlash)
-        {
-            SkillManager.Instance.UnlockCircleSlash();
-            Debug.Log("📌 Skill Circle Slash đã được mở khóa thông qua nhiệm vụ!");
-        }
-    }
-
-    public void CheckComplete()
-    {
-        if (questType == QuestType.Kill)
-        {
-            if (currentKillCount >= requiredKillCount)
-            {
-                isCompleted = true;
-                Debug.Log("Quest completed!");
-            }
-        }
-
-        if (questType == QuestType.CollectItem)
-        {
-            if (hasCollectedItem)
-            {
-                isCompleted = true;
-                Debug.Log("Quest completed!");
-            }
-        }
     }
 }
