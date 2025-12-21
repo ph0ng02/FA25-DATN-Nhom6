@@ -515,7 +515,7 @@ MonoBehaviour:
   doorOpenHeight: 5
   moveSpeed: 2
   interactKey: 101
-  interactDistance: 5
+  interactDistance: 2
   interactText: {fileID: 3433019482934275463}
 --- !u!1001 &151528551900477114
 PrefabInstance:
