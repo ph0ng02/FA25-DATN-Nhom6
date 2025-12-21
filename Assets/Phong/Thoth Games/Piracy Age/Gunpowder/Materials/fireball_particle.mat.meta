@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7a726420710d0494f9443b7a0a08d30a
+timeCreated: 1485348092
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 288600
+  packageName: Piracy Age "Gunpowder"
+  packageVersion: 1.0
+  assetPath: Assets/Thoth Games/Piracy Age/Gunpowder/Materials/fireball_particle.mat
+  uploadId: 673164
