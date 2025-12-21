@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class EnemyHealthsss : MonoBehaviour, IDamageable
 {
@@ -106,18 +107,28 @@ public class EnemyHealthsss : MonoBehaviour, IDamageable
     }
 
     void Die()
-    {
-        if (anim != null)
-            anim.SetTrigger("Die");
+{
+    if (anim != null)
+        anim.SetTrigger("Die");
 
-        DropItem();
+    if (agent != null)
+        agent.isStopped = true;
 
-        // Xoá thanh máu khi chết
-        if (healthSlider != null)
-            Destroy(healthSlider.gameObject);
+    DropItem();
 
-        Destroy(gameObject, 1f);
-    }
+    if (healthSlider != null)
+        Destroy(healthSlider.gameObject);
+
+    // 👉 Chuyển scene sau khi boss chết
+    StartCoroutine(LoadCutsceneAfterDelay());
+}
+
+IEnumerator LoadCutsceneAfterDelay()
+{
+    yield return new WaitForSeconds(2f); // chờ animation Die
+
+    SceneManager.LoadScene("CutsceneEndgame");
+}
 
     // Thêm vào cuối EnemyHealthsss
     public int GetCurrentHealth()
