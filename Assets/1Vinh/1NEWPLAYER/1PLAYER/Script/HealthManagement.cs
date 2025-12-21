@@ -6,7 +6,7 @@ using System;
 public class HealthManagement : MonoBehaviour, IDamageable
 {
     [Header("Player Health")]
-    [SerializeField] private int maxHealth = 200;
+    [SerializeField] private int maxHealth = 100;
     [SerializeField] private int currentHealth;
 
     [Header("UI")]

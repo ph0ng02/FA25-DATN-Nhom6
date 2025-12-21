@@ -20,10 +20,10 @@ public class PlayerDataManager : MonoBehaviour
 [System.Serializable]
 public class PlayerSaveData
 {
-    public int hp = 200;
+    public int hp = 100;
 
     // Thêm maxHp bị thiếu
-    public int maxHp = 200;
+    public int maxHp = 100;
 
     public int exp = 0;
     public int level = 1;

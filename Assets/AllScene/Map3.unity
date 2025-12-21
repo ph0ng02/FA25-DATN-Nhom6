@@ -517,6 +517,14 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4165675048280997086, guid: 3ca614cf4ced70746b64edb4b481924f, type: 3}
+      propertyPath: m_Value
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 4165675048280997086, guid: 3ca614cf4ced70746b64edb4b481924f, type: 3}
+      propertyPath: m_MaxValue
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 6823481653839247243, guid: 3ca614cf4ced70746b64edb4b481924f, type: 3}
       propertyPath: m_Name
       value: ===canvans===
@@ -6793,7 +6801,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77734c4d61f7a6f40a762a13d6b177ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DisappearBlock
-  standTime: 4
+  standTime: 5
   fadeTime: 1
   respawnTime: 3
 --- !u!1001 &745783357
@@ -7559,7 +7567,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77734c4d61f7a6f40a762a13d6b177ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DisappearBlock
-  standTime: 4
+  standTime: 5
   fadeTime: 1
   respawnTime: 3
 --- !u!1001 &1234824879
@@ -7902,7 +7910,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77734c4d61f7a6f40a762a13d6b177ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DisappearBlock
-  standTime: 4
+  standTime: 5
   fadeTime: 1
   respawnTime: 3
 --- !u!1001 &1425591756
@@ -8460,9 +8468,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 657169908551168882, guid: 8e018a4397eabb74db8d690826d54fdd, type: 3}
+      propertyPath: maxHP
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 657169908551168882, guid: 8e018a4397eabb74db8d690826d54fdd, type: 3}
+      propertyPath: currentHP
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 2712316914296128882, guid: 8e018a4397eabb74db8d690826d54fdd, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 4038893147100357366, guid: 8e018a4397eabb74db8d690826d54fdd, type: 3}
+      propertyPath: maxHealth
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 4038893147100357366, guid: 8e018a4397eabb74db8d690826d54fdd, type: 3}
       propertyPath: healthSlider
@@ -8548,7 +8568,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77734c4d61f7a6f40a762a13d6b177ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DisappearBlock
-  standTime: 4
+  standTime: 5
   fadeTime: 1
   respawnTime: 3
 --- !u!4 &1604875680 stripped
@@ -8568,7 +8588,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77734c4d61f7a6f40a762a13d6b177ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DisappearBlock
-  standTime: 4
+  standTime: 5
   fadeTime: 1
   respawnTime: 3
 --- !u!4 &1618247668 stripped
@@ -11126,7 +11146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77734c4d61f7a6f40a762a13d6b177ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DisappearBlock
-  standTime: 4
+  standTime: 5
   fadeTime: 1
   respawnTime: 3
 --- !u!1001 &1988009326
@@ -11327,7 +11347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77734c4d61f7a6f40a762a13d6b177ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DisappearBlock
-  standTime: 4
+  standTime: 5
   fadeTime: 1
   respawnTime: 3
 --- !u!1 &2048218009 stripped
@@ -11347,7 +11367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77734c4d61f7a6f40a762a13d6b177ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DisappearBlock
-  standTime: 4
+  standTime: 5
   fadeTime: 1
   respawnTime: 3
 --- !u!4 &2072655568 stripped

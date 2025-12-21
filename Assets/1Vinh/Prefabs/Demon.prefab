@@ -1432,7 +1432,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c79812caf48680544b24079d94ae90e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealths
-  maxHealth: 300
+  maxHealth: 200
   healthSlider: {fileID: 0}
   dropItems: []
   dropChance: 50

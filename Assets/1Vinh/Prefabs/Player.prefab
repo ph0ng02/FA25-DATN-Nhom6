@@ -867,7 +867,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 144090cf5b6973c4d8ded2627aa07768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthManagement
-  maxHealth: 200
+  maxHealth: 300
   currentHealth: 0
   healthSlider: {fileID: 0}
   dieCanvasController: {fileID: 0}
@@ -916,8 +916,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
   level: 1
   exp: 0
-  maxHP: 200
-  currentHP: 200
+  maxHP: 300
+  currentHP: 300
 --- !u!82 &3181659352529732639
 AudioSource:
   m_ObjectHideFlags: 0
