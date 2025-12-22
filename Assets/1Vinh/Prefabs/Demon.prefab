@@ -1419,7 +1419,7 @@ MonoBehaviour:
   attackPoint2: {fileID: 916534497876782437}
   attackVFX1: {fileID: 1171201465392465800, guid: 4aa9f30a28a77224ba84b2a2c334c71b, type: 3}
   attackVFX2: {fileID: 1171201465392465800, guid: 4aa9f30a28a77224ba84b2a2c334c71b, type: 3}
-  attackDamage: 10
+  attackDamage: 5
 --- !u!114 &387160940776673857
 MonoBehaviour:
   m_ObjectHideFlags: 0

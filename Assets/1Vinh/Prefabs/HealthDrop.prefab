@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422a88a73e1653c4fa3698726371f52a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthPickup
-  healAmount: 20
+  healAmount: 40
   rotateSpeed: 60
 --- !u!1001 &2226491724856029724
 PrefabInstance:

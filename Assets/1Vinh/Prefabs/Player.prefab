@@ -840,18 +840,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackControl
   circleSlashCooldown: 5
-  circleSlashDamage: 50
+  circleSlashDamage: 40
   circleSlashRange: 3
   enemyLayer:
     serializedVersion: 2
     m_Bits: 0
   jumpForce: 7
-  jumpSlashDamage: 20
+  jumpSlashDamage: 30
   jumpSlashRange: 3.5
   jumpSlashCooldown: 6
   jumpSlashVFX: {fileID: 7544656369827958377, guid: b145af20e31ccac41bd6637025ff1237, type: 3}
   vfxSpawnPoint: {fileID: 8091526409959239829}
-  risingSlashDamage: 20
+  risingSlashDamage: 30
   risingSlashCooldown: 6
   risingSlashVFX: {fileID: 657438684078047963, guid: 34ec8672a9ff3314f8b157c9754d8d5f, type: 3}
   risingVFXSpawnPoint: {fileID: 8091526409959239829}
@@ -867,7 +867,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 144090cf5b6973c4d8ded2627aa07768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthManagement
-  maxHealth: 300
+  maxHealth: 200
   currentHealth: 0
   healthSlider: {fileID: 0}
   dieCanvasController: {fileID: 0}
@@ -916,8 +916,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
   level: 1
   exp: 0
-  maxHP: 300
-  currentHP: 300
+  maxHP: 200
+  currentHP: 200
 --- !u!82 &3181659352529732639
 AudioSource:
   m_ObjectHideFlags: 0
