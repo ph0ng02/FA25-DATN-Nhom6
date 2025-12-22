@@ -305,7 +305,7 @@ MonoBehaviour:
   m_Children: []
   m_Clips:
   - m_Version: 1
-    m_Start: 8.083333333333334
+    m_Start: 14.783333333333335
     m_ClipIn: 0
     m_Asset: {fileID: -2702315752996007699}
     m_Duration: 1.1833333333333336
@@ -374,7 +374,7 @@ MonoBehaviour:
     m_PreExtrapolationTime: 0
     m_DisplayName: Text (TMP)
   - m_Version: 1
-    m_Start: 9.266666666666667
+    m_Start: 15.966666666666669
     m_ClipIn: 0
     m_Asset: {fileID: -100297535886435239}
     m_Duration: 2.0666666666666664
@@ -443,7 +443,7 @@ MonoBehaviour:
     m_PreExtrapolationTime: 0
     m_DisplayName: Text (TMP) (1)
   - m_Version: 1
-    m_Start: 11.333333333333334
+    m_Start: 18.033333333333335
     m_ClipIn: 0
     m_Asset: {fileID: 1661967409563442303}
     m_Duration: 2.25
