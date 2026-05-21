@@ -1,0 +1,197 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &2397542284496843603
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: cbc6516bd6d8b46f2800507c6279a24c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 166.89458
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cbc6516bd6d8b46f2800507c6279a24c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.7976475
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cbc6516bd6d8b46f2800507c6279a24c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 816.52
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cbc6516bd6d8b46f2800507c6279a24c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cbc6516bd6d8b46f2800507c6279a24c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cbc6516bd6d8b46f2800507c6279a24c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cbc6516bd6d8b46f2800507c6279a24c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cbc6516bd6d8b46f2800507c6279a24c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cbc6516bd6d8b46f2800507c6279a24c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cbc6516bd6d8b46f2800507c6279a24c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7595265095057763771, guid: cbc6516bd6d8b46f2800507c6279a24c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: c09e0240cd5ad4a1c95f2f725c5e47cd, type: 2}
+    - target: {fileID: -6304501075377984481, guid: cbc6516bd6d8b46f2800507c6279a24c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: c09e0240cd5ad4a1c95f2f725c5e47cd, type: 2}
+    - target: {fileID: -5959602628264345634, guid: cbc6516bd6d8b46f2800507c6279a24c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 8d44d293f75ca4c36b8d8d03d991cc1d, type: 2}
+    - target: {fileID: -4495326745851365769, guid: cbc6516bd6d8b46f2800507c6279a24c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: e3a75f7dc69614effac9f84ac3f5ae01, type: 2}
+    - target: {fileID: -3893289733710981193, guid: cbc6516bd6d8b46f2800507c6279a24c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: c09e0240cd5ad4a1c95f2f725c5e47cd, type: 2}
+    - target: {fileID: -1780553325894131600, guid: cbc6516bd6d8b46f2800507c6279a24c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: c09e0240cd5ad4a1c95f2f725c5e47cd, type: 2}
+    - target: {fileID: 919132149155446097, guid: cbc6516bd6d8b46f2800507c6279a24c, type: 3}
+      propertyPath: m_Name
+      value: NPC_Nira
+      objectReference: {fileID: 0}
+    - target: {fileID: 1837890182111364168, guid: cbc6516bd6d8b46f2800507c6279a24c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: c09e0240cd5ad4a1c95f2f725c5e47cd, type: 2}
+    - target: {fileID: 3311584258262367608, guid: cbc6516bd6d8b46f2800507c6279a24c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: c09e0240cd5ad4a1c95f2f725c5e47cd, type: 2}
+    - target: {fileID: 4759066206035993729, guid: cbc6516bd6d8b46f2800507c6279a24c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: c09e0240cd5ad4a1c95f2f725c5e47cd, type: 2}
+    - target: {fileID: 7582213524985037879, guid: cbc6516bd6d8b46f2800507c6279a24c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 8d44d293f75ca4c36b8d8d03d991cc1d, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cbc6516bd6d8b46f2800507c6279a24c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6307017037783647087}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cbc6516bd6d8b46f2800507c6279a24c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1432675614832177041}
+  m_SourcePrefab: {fileID: 100100000, guid: cbc6516bd6d8b46f2800507c6279a24c, type: 3}
+--- !u!1 &3279924346266881538 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cbc6516bd6d8b46f2800507c6279a24c, type: 3}
+  m_PrefabInstance: {fileID: 2397542284496843603}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6307017037783647087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3279924346266881538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e2abebdfb4949b499ce7e3ba52be109, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueQuestNPC
+  dialogueLines:
+  - "\"Ng\u01B0\u01A1i...kh\xF4ng ph\u1EA3i ng\u01B0\u1EDDi c\u1EE7a th\xE0nh ph\u1ED1
+    n\xE0y. Ng\u01B0\u01A1i \u0111\u1EBFn t\u1EEB b\xEAn kia khe n\u1EE9t \u0111\xFAng
+    ch\u1EE9?\""
+  - "\"C\xF4 l\xE0 ai? V\xE0 chuy\u1EC7n g\xEC \u0111\xE3 x\u1EA3y ra v\u1EDBi n\u01A1i
+    n\xE0y v\u1EADy?\""
+  - "\"Ta l\xE0 Nira, l\xE0 ng\u01B0\u1EDDi may m\u1EAFn s\u1ED1ng s\xF3t qua cu\u1ED9c
+    x\xE2m chi\u1EBFm \u0111\u1EA7u ti\xEAn c\u1EE7a t\xEAn Akanos. N\u01A1i \u0111\xE2y
+    tr\u01B0\u1EDBc t\u1EEBng l\xE0 nh\xE0 c\u1EE7a gia t\u1ED9c ta cho \u0111\u1EBFn
+    khi h\u1EAFn \u0111\u1EBFn \u0111\xE2y chi\u1EBFm l\u1EA5y nh\xE0 c\u1EE7a ta
+    v\xE0 m\u1EDF c\xE1nh c\u1ED5ng h\u01B0 kh\xF4ng \u0111\u1EA7u ti\xEAn.\""
+  - "\"C\xE1c chi\u1EBFn binh v\xEC b\u1EA3o v\u1EC7 gia t\u1ED9c ta \u0111\u1EC1u
+    \u0111\xE3 b\u1ECB t\xEAn Akanos ti\xEAu di\u1EC7t v\xE0 ph\xE1 s\u1EADp l\xE2u
+    \u0111\xE0i bi\u1EBFn t\u1EA5t c\u1EA3 th\xE0nh tro b\u1EE5i.\""
+  - "\"M\xE0 t\u1EA1i sao ng\u01B0\u01A1i l\u1EA1i xu\u1EA5t hi\u1EC7n \u1EDF \u0111\xE2y?\nKh\xF4ng
+    l\u1EBD \u0111\u1EA5t n\u01B0\u1EDBc c\u1EE7a ng\u01B0\u01A1i c\u0169ng b\u1ECB
+    h\u1EAFn chi\u1EBFm \u01B0?\""
+  - "\"\u0110\xFAng v\u1EADy. H\u1EAFn \u0111\xE3 xuy\xEAn qua m\u1ED9t khe n\u1EE9t
+    v\xE0 h\xFAt t\u1EA5t c\u1EA3 binh l\xEDnh v\xE0o \u0111\xE2y. B\xE2y gi\u1EDD
+    t\xF4i \u0111ang mu\u1ED1n t\xECm \u0111\u01B0\u1EDDng \u0111i \u0111\u1EBFn
+    ch\u1ED7 h\u1EAFn \u0111\u1EC3 ti\xEAu   di\u1EC7t h\u1EAFn. C\xF4 c\xF3 th\u1EC3
+    gi\xFAp t\xF4i \u0111\u01B0\u1EE3c kh\xF4ng.\""
+  - "\"\u0110\u01B0\u1EE3c th\xF4i nh\u01B0ng gi\xFAp ta 2 vi\u1EC7c \u0111\u01B0\u1EE3c
+    kh\xF4ng?\nTa c\u1EA3m nh\u1EADn \u0111\u01B0\u1EE3c m\u1ED9t tia s\xE1ng nh\u1ECF
+    \u1EDF g\u1EA7n d\xF2ng su\u1ED1i.\nTa c\xF3 th\u1EC3 h\u1EA5p th\u1EE5 nh\u1EEFng
+    n\u0103ng l\u01B0\u1EE3ng t\u1EEB tia s\xE1ng \u0111\xF3.\nC\xF3 th\u1EC3 n\xF3
+    s\u1EBD gi\xFAp \u0111\u01B0\u1EE3c chung ta hi\u1EC3u ra \u0111\u01B0\u1EE3c
+    g\xEC \u0111\xF3.\""
+  speakerLines:
+  - Nira
+  - Kael
+  - Nira
+  - Nira
+  - Nira
+  - Kael
+  - Nira
+  quest:
+    questName: 
+    description: 
+    questType: 0
+    isAccepted: 0
+    isCompleted: 0
+    requiredKillCount: 1
+    currentKillCount: 0
+    requiredItemName: 
+    hasCollectedItem: 0
+    portalToActivate: {fileID: 0}
+  uiPanel: {fileID: 0}
+  uiText: {fileID: 0}
+  speakerText: {fileID: 0}
+--- !u!114 &1432675614832177041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3279924346266881538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94a674bc151ddb04481285e271899a99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestManager
+  currentQuest:
+    questName: "Nh\u1EB7t m\u1EA3nh tinh th\u1EC3 \xE1nh s\xE1ng"
+    description: "C\xF3 m\u1ED9t v\u1EADt tinh th\u1EC3 \xE1nh s\xE1ng xu\u1EA5t
+      hi\u1EC7n \u1EDF g\u1EA7n d\xF2ng su\u1ED1i. Mang v\xE0 \u0111em v\u1EC1 cho
+      Nira"
+    questType: 1
+    isAccepted: 0
+    isCompleted: 0
+    requiredKillCount: 1
+    currentKillCount: 0
+    requiredItemName: 
+    hasCollectedItem: 0
+    portalToActivate: {fileID: 0}

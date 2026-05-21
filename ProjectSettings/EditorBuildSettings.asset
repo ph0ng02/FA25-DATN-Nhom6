@@ -6,8 +6,41 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/AllScene/MainMenu.unity
+    guid: 2756d98a32caa4537a11a2d78a55c066
+  - enabled: 1
+    path: Assets/CutSceneOpening/CutSceneOpening.unity
+    guid: d638810e7e6fed349be10fb003f7f926
+  - enabled: 1
+    path: Assets/AllScene/MapStart.unity
+    guid: b641442504398d441b712d07e076c8e6
+  - enabled: 1
+    path: Assets/AllScene/Map1.unity
+    guid: be3fddd2732517e4d907a6a56c543fee
+  - enabled: 1
+    path: Assets/AllScene/Map2.unity
+    guid: cc333ca695331624ab5a738082609171
+  - enabled: 1
+    path: Assets/AllScene/Map3.unity
+    guid: 3365763cffc830a45b328328a2855461
+  - enabled: 1
+    path: Assets/AllScene/Map4.unity
+    guid: 61e72eae7c507f74c8e00f1f0be4373e
+  - enabled: 1
+    path: Assets/AllScene/Map5.unity
+    guid: caa7a7a2560ffc94f8e218561f2642f6
+  - enabled: 1
+    path: Assets/AllScene/Map6.unity
+    guid: be2f2374815de0f4daeaba0ddf72f4ec
+  - enabled: 1
+    path: Assets/AllScene/MusicScene.unity
+    guid: c29e8ff840482491e8184c6eb721afcb
+  - enabled: 1
+    path: Assets/AllScene/OptionScene.unity
+    guid: 2a9009d753135441b89f4cc481a8f230
+  - enabled: 1
+    path: Assets/AllScene/CutsceneEndgame.unity
+    guid: 09dab089cc5b6c44fa2d1247d1a323d8
   m_configObjects:
-    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+    com.unity.input.settings: {fileID: 11400000, guid: 9e7be553448fa2546aea5752021cbcf7, type: 2}
   m_UseUCBPForAssetBundles: 0
